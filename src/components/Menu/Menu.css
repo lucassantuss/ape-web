@@ -1,0 +1,137 @@
+.menu-header {
+    background-color: #5393f7;
+    padding: 10px 20px;
+}
+
+.menu-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.menu-logo {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+}
+
+.menu-logo a {
+    text-decoration: none;
+    color: white;
+    margin-left: 10px;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+}
+
+.menu-items-right {
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.menu-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    margin-right: 20px;
+}
+
+.menu-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    margin-right: 15px;
+}
+
+.menu-login a,
+.menu-login button {
+    background-color: transparent;
+    border: 2px solid white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.menu-login a:hover,
+.menu-login button:hover {
+    cursor: pointer;
+    background-color: white;
+    color: #5393f7;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .menu-logo {
+        font-size: 24px;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+
+    .menu-items-right {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #5393f7;
+        width: 100%;
+        height: 0;
+        overflow: hidden;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu-items-right.menu-open {
+        height: auto;
+        padding: 15px 0;
+    }
+
+    .menu-links {
+        flex-direction: column;
+        gap: 10px;
+        margin: 0;
+    }
+
+    .menu-links a {
+        font-size: 16px;
+    }
+
+    .menu-login {
+        padding-top: 20px;
+        padding-bottom: 10px;
+    }
+
+    .menu-login a,
+    .menu-login button {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-logo {
+        font-size: 24px;
+    }
+
+    .menu-links a,
+    .menu-login a,
+    .menu-login button {
+        font-size: 16px;
+    }
+}

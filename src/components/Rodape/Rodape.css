@@ -1,0 +1,112 @@
+.footer {
+    background-color: #f9f9f9;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.footer-columns {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-column h4,
+.footer-column h4 a {
+    font-size: 18px;
+    font-weight: bold;
+    color: #5393f7;
+    margin-bottom: 15px;
+    text-decoration: none;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+    text-decoration: none;
+    color: #777;
+    font-size: 18px;
+}
+
+.footer-column ul li a:hover {
+    color: black;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 5px 0;
+    color: #777;
+}
+
+.footer-social {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.footer-social svg {
+    font-size: 18px;
+    color: #777;
+    cursor: pointer;
+}
+
+.footer-social svg:hover {
+    color: #000;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .footer-columns {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .footer-column {
+        text-align: center;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-column h4,
+    .footer-column ul li a {
+        font-size: 18px;
+    }
+
+    .footer-bottom p {
+        font-size: 16px;
+    }
+
+    .footer-social svg {
+        font-size: 18px;
+    }
+}
