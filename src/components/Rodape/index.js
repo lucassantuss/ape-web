@@ -57,7 +57,7 @@ export default function Rodape() {
             {/* Parte inferior do rodapé com informações adicionais */}
             <div className="footer-bottom">
                 {/* Direitos autorais */}
-                <p>&copy; Copyright 2024 - APE - Todos os direitos reservados</p>
+                <p>&copy; Copyright 2025 - APE - Todos os direitos reservados</p>
                 {/* Informações institucionais da empresa, como CNPJ e endereço */}
                 <p>CNPJ 12.345.678/0001-23 / Estrada dos Alvarengas, 4001, São Bernardo do Campo</p>
                 {/* Ícones das redes sociais */}

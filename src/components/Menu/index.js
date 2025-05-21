@@ -33,14 +33,14 @@ export default function Menu() {
                     {userLogged() ? (
                         <>
                             <Link to="/parcerias">
-                                <img src="/logo-fundo-branco.png" alt="Logo" className="logo-img" />
+                                <img src="/logo-branca.png" alt="Logo" className="logo-img" />
                             </Link>
                             <Link to="/parcerias">ape</Link>
                         </>
                     ) : (
                         <>
                             <Link to="/">
-                                <img src="/logo-fundo-branco.png" alt="Logo" className="logo-img" />
+                                <img src="/logo-branca.png" alt="Logo" className="logo-img" />
                             </Link>
                             <Link to="/">ape</Link>
                         </>
@@ -54,17 +54,15 @@ export default function Menu() {
                 <div className={`menu-items-right ${menuOpen ? "menu-open" : ""}`}>
                     <ul className="menu-links">
                         {userLogged() ? (
-                            <li><Link to="/parcerias" onClick={handleLinkClick}>Parcerias</Link></li>
+                            <>
+                                <li><Link to="/parcerias" onClick={handleLinkClick}>Trocar Exercício</Link></li>
+                                <li><Link to="/parcerias" onClick={handleLinkClick}>Relatório de Execução</Link></li>
+                            </>
                         ) : (
                             <>
                                 <li><Link to="/cadastro-loja" onClick={handleLinkClick}>Cadastrar Loja</Link></li>
-                                <li><Link to="/planos" onClick={handleLinkClick}>Planos</Link></li>
-                                <li><Link to="/como-funciona" onClick={handleLinkClick}>Como Funciona</Link></li>
                             </>
                         )}
-
-                        <li><Link to="/quem-somos" onClick={handleLinkClick}>Quem Somos</Link></li>
-                        <li><Link to="/faq" onClick={handleLinkClick}>FAQ</Link></li>
 
                         {userLogged() && (
                             <li><Link to="/minha-conta" onClick={handleLinkClick}>Minha Conta</Link></li>
