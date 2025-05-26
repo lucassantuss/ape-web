@@ -55,8 +55,8 @@ export default function Menu() {
                     <ul className="menu-links">
                         {userLogged() ? (
                             <>
-                                <li><Link to="/parcerias" onClick={handleLinkClick}>Trocar Exercício</Link></li>
-                                <li><Link to="/parcerias" onClick={handleLinkClick}>Relatório de Execução</Link></li>
+                                <li><Link to="/trocar-exercicio" onClick={handleLinkClick}>Trocar Exercício</Link></li>
+                                <li><Link to="/relatorio" onClick={handleLinkClick}>Relatório de Execução</Link></li>
                             </>
                         ) : (
                             <>
