@@ -60,7 +60,9 @@ export default function Menu() {
                             </>
                         ) : (
                             <>
-                                <li><Link to="/cadastro-loja" onClick={handleLinkClick}>Cadastrar Loja</Link></li>
+                                <li><Link to="/como-funciona" onClick={handleLinkClick}>Como Funciona</Link></li>
+                                <li><Link to="/quem-somos" onClick={handleLinkClick}>Quem Somos</Link></li>
+                                <li><Link to="/faq" onClick={handleLinkClick}>FAQ</Link></li>
                             </>
                         )}
 

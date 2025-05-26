@@ -21,16 +21,6 @@ export default function Rodape() {
                         {/* Link para a página inicial com o nome do site */}
                         <Link to="/">APE</Link>
                     </h4>
-                    <ul>
-                        {/* Verifica se o usuário não está logado e exibe o link para cadastro da loja */}
-                        {
-                            !userLogged() && (
-                                <li><Link to="/cadastro-loja">Cadastre sua loja</Link></li>
-                            )
-                        }
-                        {/* Link para a página de planos */}
-                        <li><Link to="/planos">Planos</Link></li>
-                    </ul>
                 </div>
 
                 {/* Segunda coluna do rodapé */}

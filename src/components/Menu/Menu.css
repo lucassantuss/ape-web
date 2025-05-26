@@ -1,5 +1,5 @@
 .menu-header {
-    background-color: #5393f7;
+    background-color: #00994d;
     padding: 10px 20px;
 }
 
@@ -64,7 +64,7 @@
 .menu-login button:hover {
     cursor: pointer;
     background-color: white;
-    color: #5393f7;
+    color: #00994d;
 }
 
 .menu-toggle {
@@ -89,7 +89,7 @@
         position: absolute;
         top: 60px;
         right: 0;
-        background-color: #5393f7;
+        background-color: #00994d;
         width: 100%;
         height: 0;
         overflow: hidden;

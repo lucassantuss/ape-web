@@ -31,7 +31,7 @@ export default function Login() {
     return (
         <div className="login-container">
             <div className="login-logo-section">
-                <img src="/logo.png" alt="Logo" className="login-logo" />
+                <img src="/logo-verde.png" alt="Logo" className="login-logo" />
                 <h1 className="login-logo-text">ape</h1>
             </div>
             <div className="login-box-section">

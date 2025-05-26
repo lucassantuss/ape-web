@@ -23,13 +23,13 @@
 
 .login-logo-text {
     font-size: 24px;
-    color: #5694ff;
+    color: #00994d;
     font-weight: bold;
 }
 
 .login-box-section {
     flex: 1;
-    background-color: #5694ff;
+    background-color: #00994d;
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -87,7 +87,7 @@
 }
 
 .login-button {
-    background-color: #5694ff;
+    background-color: #00994d;
     color: white;
     border: 2px solid white;
     padding: 12px 0;
@@ -100,7 +100,7 @@
 
 .login-button:hover {
     background-color: white;
-    color: #5393f7;
+    color: #00994d;
 }
 
 .login-create-account {
