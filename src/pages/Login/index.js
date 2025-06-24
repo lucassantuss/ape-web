@@ -17,6 +17,7 @@ export default function Login() {
             event.preventDefault();
             try {
                 await signIn({ username: usuario, password: senha, tipo: tipoUsuario });
+                console.log("passei aqui" + username + password + tipo)
                 if(tipoUsuario == "aluno")
                     window.location.href = "/Login/Entrar";
                 else if(tipoUsuario == "personal")
