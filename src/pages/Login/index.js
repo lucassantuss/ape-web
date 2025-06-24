@@ -10,18 +10,19 @@ export default function Login() {
 
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
+    const [tipoUsuario, setTipoUsuario] = useState("aluno"); // 'aluno' ou 'personal'
 
     const handleSubmit = useCallback(
         async (event) => {
             event.preventDefault();
             try {
-                await signIn({ username: usuario, password: senha });
+                await signIn({ username: usuario, password: senha, tipo: tipoUsuario });
                 window.location.href = "/parcerias";
             } catch (error) {
                 alert("Login e/ou senha inválidos!");
             }
         },
-        [usuario, senha, signIn]
+        [usuario, senha, tipoUsuario, signIn]
     );
 
     useEffect(() => {
@@ -35,12 +36,31 @@ export default function Login() {
                     <img src="/logo-branca.png" alt="Logo" className="login-logo" />
                     <h2>Login</h2>
                 </div>
+
+                {/* Abas de seleção */}
+                <div className="login-tabs">
+                    <button
+                        type="button"
+                        className={tipoUsuario === "aluno" ? "tab active" : "tab"}
+                        onClick={() => setTipoUsuario("aluno")}
+                    >
+                        Aluno
+                    </button>
+                    <button
+                        type="button"
+                        className={tipoUsuario === "personal" ? "tab active" : "tab"}
+                        onClick={() => setTipoUsuario("personal")}
+                    >
+                        Personal Trainer
+                    </button>
+                </div>
+
                 <form onSubmit={handleSubmit}>
                     <div className="login-input-group">
                         <label htmlFor="user">Usuário</label>
-                        <input 
-                            type="user" 
-                            id="user" 
+                        <input
+                            type="text"
+                            id="user"
                             placeholder="Digite o usuário"
                             onChange={(event) => setUsuario(event.target.value)}
                             required
@@ -48,9 +68,9 @@ export default function Login() {
                     </div>
                     <div className="login-input-group">
                         <label htmlFor="password">Senha</label>
-                        <input 
-                            type="password" 
-                            id="password" 
+                        <input
+                            type="password"
+                            id="password"
                             placeholder="Digite a senha"
                             onChange={(event) => setSenha(event.target.value)}
                             required
@@ -58,6 +78,7 @@ export default function Login() {
                     </div>
                     <button type="submit" className="login-button">Entrar</button>
                 </form>
+
                 <Link to="/cadastro-loja" className="login-create-account">Criar conta</Link>
             </div>
         </div>
