@@ -10,7 +10,7 @@ export default function Login() {
 
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
-    const [tipoUsuario, setTipoUsuario] = useState("aluno"); // 'aluno' ou 'personal'
+    const [tipoUsuario, setTipoUsuario] = useState(""); // 'aluno' ou 'personal'
 
     const handleSubmit = useCallback(
         async (event) => {
@@ -23,6 +23,7 @@ export default function Login() {
                 else if(tipoUsuario == "personal")
                     window.location.href = "/Login/Entrar";
             } catch (error) {
+                console.log(error);
                 alert("Login e/ou senha inválidos!");
             }
         },
