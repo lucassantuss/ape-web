@@ -35,14 +35,14 @@ export default function Menu() {
                             <Link to="/parcerias">
                                 <img src="/logo-branca.png" alt="Logo" className="logo-img" />
                             </Link>
-                            <Link to="/parcerias">ape</Link>
+                            <Link to="/parcerias">APE</Link>
                         </>
                     ) : (
                         <>
                             <Link to="/">
                                 <img src="/logo-branca.png" alt="Logo" className="logo-img" />
                             </Link>
-                            <Link to="/">ape</Link>
+                            <Link to="/">APE</Link>
                         </>
                     )}
                 </div>
