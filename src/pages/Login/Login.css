@@ -156,7 +156,7 @@
 
 .tab {
     padding: 10px 20px;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     border: none;
     border-radius: 5px;
     font-weight: bold;
@@ -165,6 +165,6 @@
 }
 
     .tab.active {
-        background-color: #007bff;
+        background-color: #117900;
         color: white;
     }

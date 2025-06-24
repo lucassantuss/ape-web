@@ -17,7 +17,10 @@ export default function Login() {
             event.preventDefault();
             try {
                 await signIn({ username: usuario, password: senha, tipo: tipoUsuario });
-                window.location.href = "/parcerias";
+                if(tipoUsuario == "aluno")
+                    window.location.href = "/Login/Entrar";
+                else if(tipoUsuario == "personal")
+                    window.location.href = "/Login/Entrar";
             } catch (error) {
                 alert("Login e/ou senha inválidos!");
             }
@@ -27,6 +30,7 @@ export default function Login() {
 
     useEffect(() => {
         localStorage.removeItem("@AuthToken_PackAndPromote");
+        console.log("Tipo de usuário selecionado:", tipoUsuario);
     }, []);
 
     return (
