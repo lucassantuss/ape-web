@@ -4,7 +4,7 @@ import axios from "axios";
 const api = axios.create({
   //baseURL: "https://pack-and-promote.azurewebsites.net/", // URL base da API
   // baseURL: "https://api.com.br/", // URL base da API
-  baseURL: "http://localhost:5119"
+  baseURL: "http://localhost:5000"
 });
 
 export default api;

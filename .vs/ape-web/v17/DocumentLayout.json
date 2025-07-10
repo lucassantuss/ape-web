@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\pages\\Login\\Login.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\Login\\Login.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\pages\\Login\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\Login\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\context\\Authentication.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\context\\Authentication.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\components\\Menu\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\Menu\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\pages\\Login\\Login.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\Login\\Login.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\App.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -26,17 +30,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "index.js",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\pages\\Login\\index.js",
               "RelativeDocumentMoniker": "src\\pages\\Login\\index.js",
               "ToolTip": "C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\pages\\Login\\index.js",
               "RelativeToolTip": "src\\pages\\Login\\index.js",
-              "ViewState": "AgIAACQAAAAAAAAAAAAAACkAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-06-24T19:02:16.104Z",
               "IsPinned": true,
@@ -44,7 +48,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Login.css",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\pages\\Login\\Login.css",
               "RelativeDocumentMoniker": "src\\pages\\Login\\Login.css",
@@ -62,20 +66,33 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Authentication.js",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\context\\Authentication.js",
+              "RelativeDocumentMoniker": "src\\context\\Authentication.js",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\context\\Authentication.js",
+              "RelativeToolTip": "src\\context\\Authentication.js",
+              "ViewState": "AgIAADAAAAAAAAAAAAAmwFkAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-06-24T21:08:35.603Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
               "Title": "index.js",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\components\\Menu\\index.js",
               "RelativeDocumentMoniker": "src\\components\\Menu\\index.js",
               "ToolTip": "C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\components\\Menu\\index.js",
               "RelativeToolTip": "src\\components\\Menu\\index.js",
-              "ViewState": "AgIAABoAAAAAAAAAAAAQwCwAAAAsAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-06-24T19:13:52.323Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "App.js",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\Faculdade\\TCC\\ape-web\\src\\App.js",
               "RelativeDocumentMoniker": "src\\App.js",
@@ -83,8 +100,7 @@
               "RelativeToolTip": "src\\App.js",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-06-24T19:02:04.346Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-24T19:02:04.346Z"
             }
           ]
         }
