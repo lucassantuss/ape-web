@@ -1,0 +1,44 @@
+.button-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.button-group .button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-group .button-primary {
+    background-color: transparent;
+    color: #5393f7;
+    border: 2px solid #5393f7;
+}
+
+.button-group .button-primary:hover {
+    background-color: #5393f7;
+    color: white;
+}
+
+.button-group .button-cancel {
+    background-color: transparent;
+    color: #ff4d4d;
+    border: 2px solid #ff4d4d;
+}
+
+.button-group .button-cancel:hover {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+}

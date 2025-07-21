@@ -1,0 +1,23 @@
+.faq-item {
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.faq-item:hover {
+    background-color: #f9f9f9;
+}
+
+.faq-question {
+    font-size: 18px;
+    font-weight: bold;
+    color: #00994d;
+}
+
+.faq-answer {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+}

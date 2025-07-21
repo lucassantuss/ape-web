@@ -27,18 +27,25 @@ function App() {
             <Route path="login" element={<Login />} /> {/* Página de login */}
           </Route>
 
-          {/* Rotas protegidas */}
-          {/*<Route element={<PrivateRoute role="ADMINISTRADOR,CLIENTE" />}> */}{/* Permissão necessária: ADMINISTRADOR ou CLIENTE */}
-            <Route path="parcerias" element={<Parcerias />} /> {/* Página de parcerias */}
+          {/* Rotas protegidas ALUNO */}
+          <Route element={<PrivateRoute role="ADMINISTRADOR,ALUNO" />}> {/* Permissão necessária: ADMINISTRADOR ou CLIENTE */}
+            <Route path="exercicio" element={<Parcerias />} /> {/* Página de exercícios */}
+            <Route path="relatorio-execucao" element={<Parcerias />} /> {/* Página de Relatório de Execução */}
             <Route path="minha-conta" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
             <Route path="logout" element={<Login />} /> {/* Logout redireciona para login */}
-          {/*</Route>*/}
+          </Route>
+
+          {/* Rotas protegidas PERSONAL */}
+          <Route element={<PrivateRoute role="ADMINISTRADOR,PERSONAL" />}> {/* Permissão necessária: ADMINISTRADOR ou CLIENTE */}
+            <Route path="alunos" element={<Parcerias />} /> {/* Página de Aluno Vinculados */}
+            <Route path="alunos-detalhes" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
+            <Route path="logout" element={<Login />} /> {/* Logout redireciona para login */}
+          </Route>
 
           {/* Rota para páginas não encontradas */}
           <Route path="*" element={<NotFound />} /> {/* Página "404 Not Found" */}
         </Routes>
 
-        <Rodape /> {/* Componente fixo do rodapé */}
       </AuthenticationProvider>
     </BrowserRouter>
   );
