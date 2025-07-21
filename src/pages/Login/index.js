@@ -17,8 +17,7 @@ export default function Login() {
             event.preventDefault();
             try {
                 await signIn({ usuario: usuario, senha: senha, tipoUsuario: tipoUsuario });
-                debugger;
-                if (tipoUsuario === "aluno")
+                if (tipoUsuario == "aluno")
                     window.location.href = "/minha-conta";
                 else if (tipoUsuario === "personal")
                     window.location.href = "/minha-conta";
@@ -50,7 +49,6 @@ export default function Login() {
                             className={tipoUsuario === "aluno" ? "tab active" : "tab"}
                             onClick={() => {
                                 setTipoUsuario("aluno");
-                                console.log("Tipo de usuário selecionado: aluno");
                             }}
 
                         >
@@ -61,7 +59,6 @@ export default function Login() {
                             className={tipoUsuario === "personal" ? "tab active" : "tab"}
                             onClick={() => {
                                 setTipoUsuario("personal");
-                                console.log("Tipo de usuário selecionado: personal");
                             }}
                         >
                             Personal Trainer
