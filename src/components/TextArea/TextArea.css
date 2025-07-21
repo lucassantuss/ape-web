@@ -1,0 +1,31 @@
+.textArea-group {
+    margin-bottom: 20px;
+}
+
+.textArea-group label {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.textArea-group textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    touch-action: none;
+    resize: vertical;
+}
+
+@media (max-width: 768px) {
+    .textArea-group textarea {
+        font-size: 16px;
+        padding: 12px;
+    }
+}

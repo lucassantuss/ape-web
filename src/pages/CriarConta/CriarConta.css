@@ -1,0 +1,30 @@
+.cadastro-loja-container {
+    margin: 0 auto;
+    padding: 20px 275px;
+}
+
+@media (max-width: 768px) {
+    .cadastro-loja-container {
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .title-group h1 {
+        font-size: 28px;
+    }
+
+    .title-group h2 {
+        font-size: 24px;
+    }
+
+    .input-group input,
+    .textArea-group textarea,
+    .select-group select {
+        font-size: 16px;
+        padding: 8px;
+    }
+}
+
+.error-message {
+    color: red;
+}

@@ -18,9 +18,9 @@ export default function Login() {
             try {
                 await signIn({ usuario: usuario, senha: senha, tipoUsuario: tipoUsuario });
                 debugger;
-                if (tipoUsuario == "aluno")
+                if (tipoUsuario === "aluno")
                     window.location.href = "/minha-conta";
-                else if (tipoUsuario == "personal")
+                else if (tipoUsuario === "personal")
                     window.location.href = "/minha-conta";
             } catch (error) {
                 console.log(error);
@@ -91,7 +91,7 @@ export default function Login() {
                     <button type="submit" className="login-button">Entrar</button>
                 </form>
 
-                <Link to="/cadastro-loja" className="login-create-account">Criar conta</Link>
+                <Link to="/criar-conta" className="login-create-account">Criar conta</Link>
             </div>
         </div>
     );

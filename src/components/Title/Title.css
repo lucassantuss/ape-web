@@ -5,12 +5,12 @@
   
   .title-group h1 {
     font-size: 32px;
-    color: #00994d;
+    color: #5393f7;
     margin-bottom: 10px;
   }
   
   .title-group h2 {
-    color: #00994d;
+    color: #5393f7;
     font-size: 28px;
   }
   
@@ -22,4 +22,4 @@
     .title-group h2 {
       font-size: 24px;
     }
-  }
+  }  
