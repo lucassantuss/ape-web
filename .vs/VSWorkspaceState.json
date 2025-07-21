@@ -6,7 +6,9 @@
     "\\src\\pages",
     "\\src\\pages\\MinhaConta",
     "\\src\\pages\\NotFound",
-    "\\src\\pages\\Parcerias"
+    "\\src\\pages\\Parcerias",
+    "\\src\\services"
   ],
+  "SelectedNode": "\\src\\index.js",
   "PreviewInSolutionExplorer": false
 }

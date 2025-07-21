@@ -28,11 +28,11 @@ function App() {
           </Route>
 
           {/* Rotas protegidas */}
-          <Route element={<PrivateRoute role="ADMINISTRADOR,CLIENTE" />}> {/* Permissão necessária: ADMINISTRADOR ou CLIENTE */}
+          {/*<Route element={<PrivateRoute role="ADMINISTRADOR,CLIENTE" />}> */}{/* Permissão necessária: ADMINISTRADOR ou CLIENTE */}
             <Route path="parcerias" element={<Parcerias />} /> {/* Página de parcerias */}
             <Route path="minha-conta" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
             <Route path="logout" element={<Login />} /> {/* Logout redireciona para login */}
-          </Route>
+          {/*</Route>*/}
 
           {/* Rota para páginas não encontradas */}
           <Route path="*" element={<NotFound />} /> {/* Página "404 Not Found" */}

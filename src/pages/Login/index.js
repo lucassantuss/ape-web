@@ -10,16 +10,18 @@ export default function Login() {
 
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
-    const [tipoUsuario, setTipoUsuario] = useState("aluno"); // 'aluno' ou 'personal'
+    const [tipoUsuario, setTipoUsuario] = useState("aluno");
 
     const handleSubmit = useCallback(
         async (event) => {
             event.preventDefault();
             try {
-                debugger;
-                console.log("passei aqui", usuario, senha, tipoUsuario);
                 await signIn({ usuario: usuario, senha: senha, tipoUsuario: tipoUsuario });
-                //window.location.href = "/Login/Entrar";
+                debugger;
+                if (tipoUsuario == "aluno")
+                    window.location.href = "/minha-conta";
+                else if (tipoUsuario == "personal")
+                    window.location.href = "/minha-conta";
             } catch (error) {
                 console.log(error);
                 alert("Login e/ou senha inválidos!");
