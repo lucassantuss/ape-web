@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import MinhaConta from "pages/MinhaConta";
 import Parcerias from "pages/Parcerias";
 import NotFound from "pages/NotFound";
+import CriarConta from "pages/CriarConta";
 
 import DefaultPage from "./components/DefaultPage"; // Layout padrão
 import Menu from "./components/Menu"; // Componente do menu principal
@@ -22,13 +23,14 @@ function App() {
       <AuthenticationProvider> {/* Provedor do contexto de autenticação */}
         <Menu /> {/* Componente fixo do menu no topo da página */}
 
-        <Routes> {/* Definição de rotas */}          
+        <Routes> {/* Definição de rotas */}
           {/* Rotas públicas */}
           <Route path="/" element={<DefaultPage />}> {/* Layout padrão para rotas públicas */}
             <Route path="/" element={<Home />} /> {/* Página inicial */}
             <Route path="/quem-somos" element={<QuemSomos />} /> {/* Quem Somos */}
             <Route path="/faq" element={<Faq />} /> {/* FAQ */}
             <Route path="login" element={<Login />} /> {/* Página de login */}
+            <Route path="criar-conta" element={<CriarConta />} /> {/* Logout redireciona para login */}
           </Route>
 
           {/* Rotas protegidas ALUNO */}
