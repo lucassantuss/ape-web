@@ -13,6 +13,8 @@ import Rodape from "components/Rodape"; // Componente do rodapé
 import PrivateRoute from "utils/PrivateRoute"; // Gerenciamento de rotas privadas
 
 import './App.css';
+import QuemSomos from "pages/QuemSomos";
+import Faq from "pages/Faq";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           {/* Rotas públicas */}
           <Route path="/" element={<DefaultPage />}> {/* Layout padrão para rotas públicas */}
             <Route path="/" element={<Home />} /> {/* Página inicial */}
+            <Route path="/quem-somos" element={<QuemSomos />} /> {/* Quem Somos */}
+            <Route path="/faq" element={<Faq />} /> {/* FAQ */}
             <Route path="login" element={<Login />} /> {/* Página de login */}
           </Route>
 
@@ -38,7 +42,8 @@ function App() {
           {/* Rotas protegidas PERSONAL */}
           <Route element={<PrivateRoute role="ADMINISTRADOR,PERSONAL" />}> {/* Permissão necessária: ADMINISTRADOR ou CLIENTE */}
             <Route path="alunos" element={<Parcerias />} /> {/* Página de Aluno Vinculados */}
-            <Route path="alunos-detalhes" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
+            <Route path="alunos-detalhes" element={<MinhaConta />} /> {/* Página "Aluno Detalhes" */}
+            <Route path="minha-conta" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
             <Route path="logout" element={<Login />} /> {/* Logout redireciona para login */}
           </Route>
 
@@ -46,6 +51,7 @@ function App() {
           <Route path="*" element={<NotFound />} /> {/* Página "404 Not Found" */}
         </Routes>
 
+        <Rodape /> {/* Componente fixo do rodapé */}
       </AuthenticationProvider>
     </BrowserRouter>
   );
