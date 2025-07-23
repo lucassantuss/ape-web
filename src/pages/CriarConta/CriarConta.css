@@ -1,10 +1,22 @@
-.cadastro-loja-container {
+.cadastro-usuario-container {
     margin: 0 auto;
     padding: 20px 275px;
 }
 
+.selectPersonal {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    touch-action: none;
+}
+
 @media (max-width: 768px) {
-    .cadastro-loja-container {
+    .cadastro-usuario-container {
         justify-content: center;
         padding: 20px;
     }

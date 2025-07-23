@@ -1,89 +1,41 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthentication } from "context/Authentication";
-import InputMask from 'react-input-mask';
-import Select from 'components/Select';
-import CheckboxGroup from 'components/CheckboxGroup';
-import TextArea from 'components/TextArea';
+import Modal from 'components/Modal';
 import Input from 'components/Input';
+import SearchInput from 'components/SearchInput';
 import Button from 'components/Button';
 import Title from 'components/Title';
 import api from 'services/api';
 
 import './CriarConta.css';
 
-const CadastroLoja = () => {
+const CriarConta = () => {
     const { userLogged } = useAuthentication();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
+        perfil: '',
+        nome: '',
         usuario: '',
         senha: '',
-        nomeDaLoja: '',
-        cnpj: '',
-        endereco: '',
-        telefone: '',
         email: '',
-        descricaoDaLoja: '',
-        categoria: '',
-        publicoAlvo: [],
-        idade: [],
-        regiao: [],
-        preferenciaParcerias: []
+        personal: ''
     });
 
     const [errors, setErrors] = useState({});
-    const [categorias, setCategorias] = useState([]);
-    const [publicosAlvo, setPublicosAlvo] = useState([]);
-    const [idades, setIdades] = useState([]);
-    const [regioes, setRegioes] = useState([]);
-    const [preferenciasParcerias, setPreferenciasParcerias] = useState([]);
-    const [planos, setPlanos] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [tipoUsuario, setTipoUsuario] = useState("aluno");
 
-    // Função para buscar os dados da API
+    // FunÃ§Ã£o para buscar os dados da API
     const fetchData = async () => {
         try {
-            // Requisição para listar categorias
-            const categoriasResponse = await api.get('Categoria/ListarCategorias');
-            setCategorias(categoriasResponse.data.map(categoria => ({
-                value: categoria.idCategoria,
-                label: categoria.nomeCategoria
-            })));
-
-            // Requisição para listar faixas etárias
-            const faixasEtariasResponse = await api.get('FaixaEtaria/ListarFaixasEtarias');
-            setIdades(faixasEtariasResponse.data.map(faixa => ({
-                value: faixa.idFaixaEtaria,
-                label: faixa.descricaoFaixaEtaria
-            })));
-
-            // Requisição para listar públicos alvo
-            const publicosAlvoResponse = await api.get('PublicoAlvo/ListarPublicosAlvo');
-            setPublicosAlvo(publicosAlvoResponse.data.map(publico => ({
-                value: publico.idPublicoAlvo,
-                label: publico.descricaoPublicoAlvo
-            })));
-
-            // Requisição para listar regiões alvo
-            const regioesAlvoResponse = await api.get('RegiaoAlvo/ListarRegioesAlvo');
-            setRegioes(regioesAlvoResponse.data.map(regiao => ({
-                value: regiao.idRegiaoAlvo,
-                label: regiao.nomeRegiaoAlvo
-            })));
-
-            // Requisição para listar preferências de parcerias
-            const preferenciasAlvoResponse = await api.get('PreferenciaAlvo/ListarPreferenciasAlvo');
-            setPreferenciasParcerias(preferenciasAlvoResponse.data.map(preferencia => ({
-                value: preferencia.idPreferenciaAlvo,
-                label: preferencia.descricaoPreferenciaAlvo
-            })));
-
-            // Requisição para listar os planos
-            const planosResponse = await api.get('Plano/ListarPlanos');
-            setPlanos(planosResponse.data.map(plano => ({
-                value: plano.idPlano,
-                label: plano.nomePlano
-            })));
+            // RequisiÃ§Ã£o para listar categorias
+            //const categoriasResponse = await api.get('Categoria/ListarCategorias');
+            //setCategorias(categoriasResponse.data.map(categoria => ({
+            //    value: categoria.idCategoria,
+            //    label: categoria.nomeCategoria
+            //})));
         } catch (error) {
             console.error("Erro ao buscar dados da API:", error);
         }
@@ -94,115 +46,50 @@ const CadastroLoja = () => {
         fetchData();
     }, []);
 
-    const handleCheckboxGroupChange = (name, selectedOptions) => {
-        setFormData({ ...formData, [name]: selectedOptions });
-        setErrors({ ...errors, [name]: '' });
-    };
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
         setErrors({ ...errors, [name]: '' }); // Limpar erro quando o campo for alterado
     };
 
-    // Função para validar os campos do formulário
+    // FunÃ§Ã£o para validar os campos do formulÃ¡rio
     const validateForm = () => {
         const newErrors = {};
         let isValid = true;
 
         const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
-        // Verificando se os campos obrigatórios estão preenchidos
+        // Verificando se os campos obrigatÃ³rios estÃ£o preenchidos
+        if (!formData.perfil) {
+            newErrors.perfil = 'Campo obrigatÃ³rio';
+            isValid = false;
+        }
+
+        if (!formData.nome) {
+            newErrors.nome = 'Campo obrigatÃ³rio';
+            isValid = false;
+        }
+
         if (!formData.usuario) {
-            newErrors.usuario = 'Campo obrigatório';
+            newErrors.usuario = 'Campo obrigatÃ³rio';
             isValid = false;
         }
 
         if (!formData.senha) {
-            newErrors.senha = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (!formData.nomeDaLoja) {
-            newErrors.nomeDaLoja = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (!formData.cnpj) {
-            newErrors.cnpj = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (!formData.endereco) {
-            newErrors.endereco = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (!formData.telefone) {
-            newErrors.telefone = 'Campo obrigatório';
+            newErrors.senha = 'Campo obrigatÃ³rio';
             isValid = false;
         }
 
         if (!formData.email) {
-            newErrors.email = 'Campo obrigatório';
+            newErrors.email = 'Campo obrigatÃ³rio';
             isValid = false;
         } else if (!validateEmail(formData.email)) {
-            newErrors.email = 'Email inválido';
+            newErrors.email = 'Email invÃ¡lido';
             isValid = false;
         }
 
-        if (!formData.descricaoDaLoja) {
-            newErrors.descricaoDaLoja = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (!formData.categoria) {
-            newErrors.categoria = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (!formData.publicoAlvo) {
-            newErrors.publicoAlvo = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (!formData.idade) {
-            newErrors.idade = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (!formData.regiao) {
-            newErrors.regiao = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (!formData.preferenciaParcerias) {
-            newErrors.preferenciaParcerias = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (!formData.plano) {
-            newErrors.plano = 'Campo obrigatório';
-            isValid = false;
-        }
-
-        if (formData.publicoAlvo.length === 0) {
-            newErrors.publicoAlvo = 'Selecione pelo menos uma opção';
-            isValid = false;
-        }
-
-        if (formData.idade.length === 0) {
-            newErrors.idade = 'Selecione pelo menos uma opção';
-            isValid = false;
-        }
-
-        if (formData.regiao.length === 0) {
-            newErrors.regiao = 'Selecione pelo menos uma opção';
-            isValid = false;
-        }
-
-        if (formData.preferenciaParcerias.length === 0) {
-            newErrors.preferenciaParcerias = 'Selecione pelo menos uma opção';
+        if (!formData.personal) {
+            newErrors.personal = 'Campo obrigatÃ³rio';
             isValid = false;
         }
 
@@ -210,228 +97,226 @@ const CadastroLoja = () => {
         return isValid;
     };
 
-    // Função para chamar a API e salvar o usuário
+    // FunÃ§Ã£o para chamar a API e salvar o usuÃ¡rio
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validando o formulário
+        // Validando o formulÃ¡rio
         if (!validateForm()) {
-            return; // Se o formulário não for válido, não enviaremos os dados
+            return; // Se o formulÃ¡rio nÃ£o for vÃ¡lido, nÃ£o enviaremos os dados
         }
 
         // Criando o objeto no formato esperado pela API
         const novoUsuarioDto = {
-            Login: formData.usuario,
+            Perfil: formData.perfil,
+            Nome: formData.nome,
+            Usuario: formData.usuario,
             Senha: formData.senha,
-            NomeLoja: formData.nomeDaLoja,
-            EnderecoLoja: formData.endereco,
-            TelefoneLoja: formData.telefone,
-            EmailLoja: formData.email,
-            DescricaoLoja: formData.descricaoDaLoja,
-            CNPJLoja: formData.cnpj,
-            IdCategoria: parseInt(formData.categoria, 10),
-            IdPlano: parseInt(formData.plano, 10),
-            PublicoAlvo: formData.publicoAlvo
-                .filter(op => op)
-                .map(op => parseInt(op, 10)),
-            FaixaEtaria: formData.idade
-                .filter(op => op)
-                .map(op => parseInt(op, 10)),
-            RegiaoAlvo: formData.regiao
-                .filter(op => op)
-                .map(op => parseInt(op, 10)),
-            PreferenciaAlvo: formData.preferenciaParcerias
-                .filter(op => op)
-                .map(op => parseInt(op, 10))
+            Email: formData.email,
+            Personal: formData.personal //pegar o ID do Personal (talvez: parseInt(formData.personal, 10))
         };
 
         try {
             // Fazendo o POST para a API
             const response = await api.post('Login/CriarUsuario', novoUsuarioDto);
             if (response.status === 201) {
-                alert('Usuário e loja criados com sucesso!');
-                // Limpar o formulário após salvar
+                alert('UsuÃ¡rio e loja criados com sucesso!');
+                // Limpar o formulÃ¡rio apÃ³s salvar
                 setFormData({
+                    perfil: '',
+                    nome: '',
                     usuario: '',
                     senha: '',
-                    nomeDaLoja: '',
-                    cnpj: '',
-                    endereco: '',
-                    telefone: '',
                     email: '',
-                    descricaoDaLoja: '',
-                    categoria: '',
-                    publicoAlvo: [],
-                    idade: [],
-                    regiao: [],
-                    preferenciaParcerias: [],
-                    plano: ''
+                    personal: ''
                 });
 
                 navigate('/login');
             }
         } catch (error) {
-            console.error("Erro ao salvar o usuário:", error);
-            alert('Erro ao criar usuário. Tente novamente.');
+            console.error("Erro ao salvar o usuÃ¡rio:", error);
+            alert('Erro ao criar usuÃ¡rio. Tente novamente.');
         }
     };
 
+    const [pesquisa, setPesquisa] = useState('');
+    const [selecionado, setSelecionado] = useState(null);
+
+    const personais = [
+        { id: 1, nomeCompleto: 'Carlos Silva' },
+        { id: 2, nomeCompleto: 'Mariana Costa' },
+        { id: 3, nomeCompleto: 'JoÃ£o Moraes' },
+        { id: 4, nomeCompleto: 'Amanda Ribeiro' },
+        { id: 5, nomeCompleto: 'Pedro Fernandes' },
+    ];
+
+    const resultadosFiltrados = personais.filter((p) =>
+        p.nomeCompleto.toLowerCase().includes(pesquisa.toLowerCase())
+    );
+
+    const handlePesquisa = (event) => {
+        setPesquisa(event.target.value);
+    };
+
+    const handleSelecionado = (event) => {
+        const idSelecionado = parseInt(event.target.value);
+        const personal = personais.find((p) => p.id === idSelecionado);
+        setSelecionado(personal);
+        console.log('Selecionado:', personal);
+    };
+
     return (
-        <div className="cadastro-loja-container">
+        <div className="cadastro-usuario-container">
             {
                 userLogged() ? (
                     <Link to="/parcerias">
-                        <Title titulo="Você já está logado!" titulo2="Para criar uma nova conta é necessário estar deslogado" />
+                        <Title titulo="VocÃª jÃ¡ estÃ¡ logado!" titulo2="Para criar uma nova conta Ã© necessÃ¡rio estar deslogado" />
                     </Link>
                 ) : (
-                    <>
-                        <Title titulo="Cadastro da Loja" />
+                    tipoUsuario == "aluno" ? (
+                        <>
+                            <Title titulo="Cadastro de Contas" />
 
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                label="Usuário"
-                                name="usuario"
-                                value={formData.usuario}
-                                onChange={handleChange}
-                                placeholder="Digite o usuário"
-                                maxLength={100}
-                                error={errors.usuario}
-                            />
+                            <div className="login-tabs">
+                                <button
+                                    type="button"
+                                    className={tipoUsuario === "aluno" ? "tab active" : "tab"}
+                                    onClick={() => {
+                                        setTipoUsuario("aluno");
+                                    }}
 
-                            <Input
-                                label="Senha"
-                                name="senha"
-                                value={formData.senha}
-                                onChange={handleChange}
-                                placeholder="Digite a senha"
-                                type="password"
-                                maxLength={100}
-                                error={errors.senha}
-                            />
-
-                            <Input
-                                label="Nome da Loja"
-                                name="nomeDaLoja"
-                                value={formData.nomeDaLoja}
-                                onChange={handleChange}
-                                placeholder="Digite o nome da loja"
-                                maxLength={100}
-                                error={errors.nomeDaLoja}
-                            />
-
-                            <div className="input-group">
-                                <label>CNPJ</label>
-                                <InputMask
-                                    mask="99.999.999/9999-99"
-                                    name="cnpj"
-                                    placeholder="Digite o CNPJ"
-                                    value={formData.cnpj}
-                                    onChange={handleChange}
-                                />
-                                {errors.cnpj && <span className="error-message">{errors.cnpj}</span>}
+                                >
+                                    Aluno
+                                </button>
+                                <button
+                                    type="button"
+                                    className={tipoUsuario === "personal" ? "tab active" : "tab"}
+                                    onClick={() => {
+                                        setTipoUsuario("personal");
+                                    }}
+                                >
+                                    Personal Trainer
+                                </button>
                             </div>
 
-                            <Input
-                                label="Endereço"
-                                name="endereco"
-                                value={formData.endereco}
-                                onChange={handleChange}
-                                placeholder="Digite o endereço"
-                                maxLength={255}
-                                error={errors.endereco}
-                            />
-
-                            <div className="input-group">
-                                <label>Telefone</label>
-                                <InputMask
-                                    mask="(99) 99999-9999"
-                                    name="telefone"
-                                    placeholder="Digite o telefone"
-                                    value={formData.telefone}
+                            <form onSubmit={handleSubmit}>
+                                <Input
+                                    label="Nome"
+                                    name="nome"
+                                    value={formData.nome}
                                     onChange={handleChange}
+                                    placeholder="Digite o nome completo"
+                                    maxLength={100}
+                                    error={errors.nome}
                                 />
-                                {errors.telefone && <span className="error-message">{errors.telefone}</span>}
+
+                                <Input
+                                    label="UsuÃ¡rio"
+                                    name="usuario"
+                                    value={formData.usuario}
+                                    onChange={handleChange}
+                                    placeholder="Digite o usuÃ¡rio"
+                                    maxLength={100}
+                                    error={errors.usuario}
+                                />
+
+                                <Input
+                                    label="Senha"
+                                    name="senha"
+                                    value={formData.senha}
+                                    onChange={handleChange}
+                                    placeholder="Digite a senha"
+                                    type="password"
+                                    maxLength={100}
+                                    error={errors.senha}
+                                />
+
+                                <Input
+                                    label="Email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    placeholder="Digite o email"
+                                    maxLength={255}
+                                    error={errors.email}
+                                />
+
+                                <SearchInput
+                                    label="Personal Trainer"
+                                    name="personal"
+                                    value={formData.endereco}
+                                    onChange={handleChange}
+                                    placeholder="Pesquise seu personal"
+                                    maxLength={255}
+                                    error={errors.personal}
+                                    onClick={() => setShowModal(true)}
+                                    readOnly={true}
+                                />
+
+                                <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+                                    <Input
+                                        label="Personal Trainer"
+                                        name="personal"
+                                        value={formData.endereco}
+                                        onChange={handlePesquisa}
+                                        placeholder="Selecione o personal"
+                                        maxLength={255}
+                                        error={errors.endereco}
+                                    />
+                                    {resultadosFiltrados.length > 0 && (
+                                        <select className="selectPersonal" onChange={handleSelecionado} defaultValue="">
+                                            <option value="" disabled>Selecione um personal</option>
+                                            {resultadosFiltrados.map((p) => (
+                                                <option key={p.id} value={p.id}>
+                                                    {p.nomeCompleto}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    )}
+
+                                    {selecionado && (
+                                        <div style={{ marginTop: '1rem' }}>
+                                            <strong>Personal selecionado:</strong> {selecionado.nomeCompleto}
+                                        </div>
+                                    )}
+                                </Modal>
+
+                                <Button label="Cadastrar" type="submit" />
+                            </form>
+                        </>
+                    ) : (
+                        <>
+                            <Title titulo="Cadastro de Contas" />
+
+                            <div className="login-tabs">
+                                <button
+                                    type="button"
+                                    className={tipoUsuario === "aluno" ? "tab active" : "tab"}
+                                    onClick={() => {
+                                        setTipoUsuario("aluno");
+                                    }}
+
+                                >
+                                    Aluno
+                                </button>
+                                <button
+                                    type="button"
+                                    className={tipoUsuario === "personal" ? "tab active" : "tab"}
+                                    onClick={() => {
+                                        setTipoUsuario("personal");
+                                    }}
+                                >
+                                    Personal Trainer
+                                </button>
                             </div>
+                            <h2>AQUI VAI TER AS COISAS DO PERSONAL</h2>
+                        </>
 
-                            <Input
-                                label="E-mail"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                placeholder="Digite o e-mail"
-                                maxLength={100}
-                                error={errors.email}
-                            />
-
-                            <TextArea
-                                label="Descrição da Loja"
-                                name="descricaoDaLoja"
-                                value={formData.descricaoDaLoja}
-                                onChange={handleChange}
-                                placeholder="Digite uma breve descrição sobre a loja"
-                                maxLength={255}
-                                error={errors.descricaoDaLoja}
-                            />
-
-                            <Select
-                                label="Categoria"
-                                name="categoria"
-                                value={formData.categoria}
-                                onChange={handleChange}
-                                options={categorias}
-                                error={errors.categoria}
-                            />
-
-                            <Select
-                                label="Plano"
-                                name="plano"
-                                value={formData.plano}
-                                onChange={handleChange}
-                                options={planos}
-                                error={errors.plano}
-                            />
-
-                            <CheckboxGroup
-                                label="Público-Alvo"
-                                name="publicoAlvo"
-                                options={publicosAlvo}
-                                selectedOptions={formData.publicoAlvo}
-                                onChange={handleCheckboxGroupChange}
-                                error={errors.publicoAlvo}
-                            />
-
-                            <CheckboxGroup
-                                label="Idade"
-                                name="idade"
-                                options={idades}
-                                selectedOptions={formData.idade}
-                                onChange={handleCheckboxGroupChange}
-                                error={errors.idade}
-                            />
-
-                            <CheckboxGroup
-                                label="Região"
-                                name="regiao"
-                                options={regioes}
-                                selectedOptions={formData.regiao}
-                                onChange={handleCheckboxGroupChange}
-                                error={errors.regiao}
-                            />
-
-                            <CheckboxGroup
-                                label="Preferência de Parcerias"
-                                name="preferenciaParcerias"
-                                options={preferenciasParcerias}
-                                selectedOptions={formData.preferenciaParcerias}
-                                onChange={handleCheckboxGroupChange}
-                                error={errors.preferenciaParcerias}
-                            />
-
-                            <Button label="Cadastrar" type="submit" />
-                        </form>
-                    </>)}
-        </div>
+                    )
+                )
+            }
+        </div >
     );
 };
 
-export default CadastroLoja;
+export default CriarConta;

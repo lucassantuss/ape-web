@@ -4,36 +4,36 @@
     justify-content: center;
 }
 
-.button-group .button {
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+    .button-group .button {
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-.button-group .button-primary {
-    background-color: transparent;
-    color: #5393f7;
-    border: 2px solid #5393f7;
-}
+    .button-group .button-primary {
+        background-color: transparent;
+        color: #00994d;
+        border: 2px solid #00994d;
+    }
 
-.button-group .button-primary:hover {
-    background-color: #5393f7;
-    color: white;
-}
+        .button-group .button-primary:hover {
+            background-color: #00994d;
+            color: white;
+        }
 
-.button-group .button-cancel {
-    background-color: transparent;
-    color: #ff4d4d;
-    border: 2px solid #ff4d4d;
-}
+    .button-group .button-cancel {
+        background-color: transparent;
+        color: #00994d;
+        border: 2px solid #00994d;
+    }
 
-.button-group .button-cancel:hover {
-    background-color: #ff4d4d;
-    color: white;
-}
+        .button-group .button-cancel:hover {
+            background-color: #00994d;
+            color: white;
+        }
 
 @media (max-width: 768px) {
     .button {
