@@ -1,5 +1,6 @@
-import Title from "components/Title";
+import Exercicio from "pages/Exercicio";
 
 export default function Home() {
-  return <Title titulo="Tela Inicial - APE" />;
+  return <Exercicio />;
+  // return <Title titulo="Tela Inicial - APE" />;
 }

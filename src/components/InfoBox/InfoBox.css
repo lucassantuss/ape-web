@@ -1,0 +1,20 @@
+.info-box {
+  background-color: #00994d;
+  color: #FFFFFF;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  font-size: 1.1rem;
+  word-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+  .info-box {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+}
