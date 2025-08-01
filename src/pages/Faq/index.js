@@ -6,7 +6,7 @@ export default function Faq() {
     const faqs = [
         {
             question: "🖥️ Preciso de algum equipamento específico para usar a APE?",
-            answer: "Você precisa apenas de um dispostivo com câmera e acesso à internet. " + 
+            answer: "Você precisa apenas de um dispositivo com câmera e acesso à internet. " + 
             "A ferramenta funciona diretamente no navegador, sem necessidade de instalar " + 
             "softwares adicionais."
         },
