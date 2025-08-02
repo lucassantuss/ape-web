@@ -9,23 +9,60 @@ import Title from 'components/Title';
 import api from 'services/api';
 
 import './CriarConta.css';
+import Select from '../../components/Select';
 
 const CriarConta = () => {
     const { userLogged } = useAuthentication();
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        perfil: '',
-        nome: '',
-        usuario: '',
-        senha: '',
-        email: '',
-        personal: ''
-    });
-
     const [errors, setErrors] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [tipoUsuario, setTipoUsuario] = useState("aluno");
+    const [pesquisa, setPesquisa] = useState('');
+
+    const personais = [
+        { id: '1', nomeCompleto: 'Carlos Silva' },
+        { id: '2', nomeCompleto: 'Mariana Costa' },
+        { id: '3', nomeCompleto: 'João Moraes' },
+        { id: '4', nomeCompleto: 'Amanda Ribeiro' },
+        { id: '5', nomeCompleto: 'Pedro Fernandes' },
+    ];
+
+    const [formDataAluno, setFormDataAluno] = useState({
+        nome: '',
+        usuario: '',
+        email: '',
+        cpf: '',
+        senha: '',
+        confSenha: '',
+        personal: ''
+    });
+
+    const [formDataPersonal, setFormDataPersonal] = useState({
+        nome: '',
+        usuario: '',
+        senha: '',
+        confSenha: '',
+        email: '',
+        cpf: '',
+        cref: '',
+        estado: '',
+        cidade: ''
+    });
+
+    // Fora do componente, ou no início dele
+    const estado = [
+        { value: 'SP', label: 'São Paulo' },
+        { value: 'RJ', label: 'Rio de Janeiro' },
+        { value: 'MG', label: 'Minas Gerais' },
+    ];
+
+    const cidade = [
+        { value: 'sao-paulo', label: 'São Paulo' },
+        { value: 'campinas', label: 'Campinas' },
+        { value: 'rj', label: 'Rio de Janeiro' },
+    ];
+
 
     // Função para buscar os dados da API
     const fetchData = async () => {
@@ -46,9 +83,51 @@ const CriarConta = () => {
         fetchData();
     }, []);
 
+    function formatarCPF(valor) {
+        // Remove tudo que não for número
+        valor = valor.replace(/\D/g, '');
+
+        // Aplica a máscara
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+        return valor;
+    }
+
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, '');
+
+        if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+        let soma = 0;
+        for (let i = 0; i < 9; i++) soma += parseInt(cpf[i]) * (10 - i);
+        let resto = (soma * 10) % 11;
+        if (resto === 10 || resto === 11) resto = 0;
+        if (resto !== parseInt(cpf[9])) return false;
+
+        soma = 0;
+        for (let i = 0; i < 10; i++) soma += parseInt(cpf[i]) * (11 - i);
+        resto = (soma * 10) % 11;
+        if (resto === 10 || resto === 11) resto = 0;
+
+        return resto === parseInt(cpf[10]) ? true : false;
+    }
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+
+        if (name === 'cpf') {
+            value = formatarCPF(value);
+        }
+
+        if (tipoUsuario == "aluno") {
+            setFormDataAluno({ ...formDataAluno, [name]: value });
+        }
+        else if (tipoUsuario == "personal") {
+            setFormDataPersonal({ ...formDataPersonal, [name]: value });
+        }
         setErrors({ ...errors, [name]: '' }); // Limpar erro quando o campo for alterado
     };
 
@@ -60,37 +139,100 @@ const CriarConta = () => {
         const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
         // Verificando se os campos obrigatórios estão preenchidos
-        if (!formData.perfil) {
-            newErrors.perfil = 'Campo obrigatório';
-            isValid = false;
-        }
+        if (tipoUsuario == "aluno") {
+            if (!formDataAluno.nome) {
+                newErrors.nome = 'Campo obrigatório';
+                isValid = false;
+            }
 
-        if (!formData.nome) {
-            newErrors.nome = 'Campo obrigatório';
-            isValid = false;
-        }
+            if (!formDataAluno.usuario) {
+                newErrors.usuario = 'Campo obrigatório';
+                isValid = false;
+            }
 
-        if (!formData.usuario) {
-            newErrors.usuario = 'Campo obrigatório';
-            isValid = false;
-        }
+            if (!formDataAluno.email) {
+                newErrors.email = 'Campo obrigatório';
+                isValid = false;
+            } else if (!validateEmail(formDataAluno.email)) {
+                newErrors.email = 'Email inválido';
+                isValid = false;
+            }
 
-        if (!formData.senha) {
-            newErrors.senha = 'Campo obrigatório';
-            isValid = false;
-        }
+            if (!formDataAluno.cpf) {
+                newErrors.cpf = 'Campo obrigatório';
+                isValid = false;
+            } else if (!validarCPF(formDataAluno.cpf)) {
+                newErrors.email = 'CPF inválido';
+                isValid = false;
+            }
 
-        if (!formData.email) {
-            newErrors.email = 'Campo obrigatório';
-            isValid = false;
-        } else if (!validateEmail(formData.email)) {
-            newErrors.email = 'Email inválido';
-            isValid = false;
-        }
+            if (!formDataAluno.senha) {
+                newErrors.senha = 'Campo obrigatório';
+                isValid = false;
+            } else if (formDataAluno.senha != formDataAluno.confSenha) {
+                newErrors.senha = 'Os campos de senha não batem';
+                newErrors.confSenha = 'Os campos de senha não batem';
+                isValid = false;
+            }
 
-        if (!formData.personal) {
-            newErrors.personal = 'Campo obrigatório';
-            isValid = false;
+            if (!formDataAluno.confSenha) {
+                newErrors.confSenha = 'Campo obrigatório';
+                isValid = false;
+            }
+
+            if (!formDataAluno.personal) {
+                newErrors.personal = 'Campo obrigatório';
+                isValid = false;
+            }
+        }
+        else if (tipoUsuario == "personal") {
+            if (!formDataPersonal.nome) {
+                newErrors.nome = 'Campo obrigatório';
+                isValid = false;
+            }
+
+            if (!formDataPersonal.usuario) {
+                newErrors.usuario = 'Campo obrigatório';
+                isValid = false;
+            }
+
+            if (!formDataPersonal.email) {
+                newErrors.email = 'Campo obrigatório';
+                isValid = false;
+            } else if (!validateEmail(formDataPersonal.email)) {
+                newErrors.email = 'Email inválido';
+                isValid = false;
+            }
+
+            if (!formDataPersonal.confSenha) {
+                newErrors.senha = 'Campo obrigatório';
+                isValid = false;
+            }
+
+            if (!formDataPersonal.confSenha) {
+                newErrors.confSenha = 'Campo obrigatório';
+                isValid = false;
+            }
+
+            if (!formDataPersonal.cpf) {
+                newErrors.cpf = 'Campo obrigatório';
+                isValid = false;
+            }
+
+            if (!formDataPersonal.cref) {
+                newErrors.cref = 'Campo obrigatório';
+                isValid = false;
+            }
+
+            if (!formDataPersonal.estado) {
+                newErrors.estado = 'Campo obrigatório';
+                isValid = false;
+            }
+
+            if (!formDataPersonal.cidade) {
+                newErrors.cidade = 'Campo obrigatório';
+                isValid = false;
+            }
         }
 
         setErrors(newErrors);
@@ -106,49 +248,71 @@ const CriarConta = () => {
             return; // Se o formulário não for válido, não enviaremos os dados
         }
 
-        // Criando o objeto no formato esperado pela API
-        const novoUsuarioDto = {
-            Perfil: formData.perfil,
-            Nome: formData.nome,
-            Usuario: formData.usuario,
-            Senha: formData.senha,
-            Email: formData.email,
-            Personal: formData.personal //pegar o ID do Personal (talvez: parseInt(formData.personal, 10))
-        };
-
         try {
             // Fazendo o POST para a API
-            const response = await api.post('Login/CriarUsuario', novoUsuarioDto);
+            debugger;
+            var novoUsuarioDto;
+            const response = '';
+            if (tipoUsuario == "aluno") {
+                novoUsuarioDto = {
+                    //Perfil: formDataAluno.perfil,
+                    Nome: formDataAluno.nome,
+                    Usuario: formDataAluno.usuario,
+                    Senha: formDataAluno.senha,
+                    Email: formDataAluno.email,
+                    Personal: formDataAluno.personal, //pegar o ID do Personal (talvez: parseInt(formData.personal, 10))
+                    CPF: formDataAluno.cpf
+                };
+                console.log("Enviando para API:", JSON.stringify(novoUsuarioDto, null, 2));
+
+                response = await api.post('Aluno/CriarAluno', novoUsuarioDto);
+            }
+            else if (tipoUsuario == "personal") {
+                novoUsuarioDto = {
+                    //Perfil: formDataPersonal.perfil,
+                    Nome: formDataPersonal.nome,
+                    Usuario: formDataPersonal.usuario,
+                    Senha: formDataPersonal.senha,
+                    Email: formDataPersonal.email,
+                    CPF: formDataPersonal.cpf,
+                    CREF: formDataPersonal.cref,
+                    Estado: formDataPersonal.estado,
+                    Cidade: formDataPersonal.cidade
+                };
+
+                response = await api.post('Personal/CriarPersonal', novoUsuarioDto);
+            }
             if (response.status === 201) {
-                alert('Usuário e loja criados com sucesso!');
+                alert('Usuário ' + tipoUsuario + ' criado com sucesso!');
                 // Limpar o formulário após salvar
-                setFormData({
-                    perfil: '',
+                setFormDataAluno({
+                    nome: '',
+                    usuario: '',
+                    email: '',
+                    cpf: '',
+                    senha: '',
+                    confSenha: '',
+                    personal: ''
+                });
+
+                setFormDataPersonal({
                     nome: '',
                     usuario: '',
                     senha: '',
+                    confSenha: '',
                     email: '',
-                    personal: ''
+                    cpf: '',
+                    cref: '',
+                    estado: '',
+                    cidade: ''
                 });
 
                 navigate('/login');
             }
         } catch (error) {
-            console.error("Erro ao salvar o usuário:", error);
             alert('Erro ao criar usuário. Tente novamente.');
         }
     };
-
-    const [pesquisa, setPesquisa] = useState('');
-    const [selecionado, setSelecionado] = useState(null);
-
-    const personais = [
-        { id: 1, nomeCompleto: 'Carlos Silva' },
-        { id: 2, nomeCompleto: 'Mariana Costa' },
-        { id: 3, nomeCompleto: 'João Moraes' },
-        { id: 4, nomeCompleto: 'Amanda Ribeiro' },
-        { id: 5, nomeCompleto: 'Pedro Fernandes' },
-    ];
 
     const resultadosFiltrados = personais.filter((p) =>
         p.nomeCompleto.toLowerCase().includes(pesquisa.toLowerCase())
@@ -160,10 +324,17 @@ const CriarConta = () => {
 
     const handleSelecionado = (event) => {
         const idSelecionado = parseInt(event.target.value);
-        const personal = personais.find((p) => p.id === idSelecionado);
-        setSelecionado(personal);
-        console.log('Selecionado:', personal);
+        const personal = personais.find((p) => p.id === event.target.value);
+
+        setFormDataAluno((prevFormData) => ({
+            ...prevFormData,
+            personal: {
+                id: personal.id,
+                nomeCompleto: personal.nomeCompleto
+            }
+        }));
     };
+
 
     return (
         <div className="cadastro-usuario-container">
@@ -203,7 +374,7 @@ const CriarConta = () => {
                                 <Input
                                     label="Nome"
                                     name="nome"
-                                    value={formData.nome}
+                                    value={formDataAluno.nome}
                                     onChange={handleChange}
                                     placeholder="Digite o nome completo"
                                     maxLength={100}
@@ -213,7 +384,7 @@ const CriarConta = () => {
                                 <Input
                                     label="Usuário"
                                     name="usuario"
-                                    value={formData.usuario}
+                                    value={formDataAluno.usuario}
                                     onChange={handleChange}
                                     placeholder="Digite o usuário"
                                     maxLength={100}
@@ -223,7 +394,7 @@ const CriarConta = () => {
                                 <Input
                                     label="Senha"
                                     name="senha"
-                                    value={formData.senha}
+                                    value={formDataAluno.senha}
                                     onChange={handleChange}
                                     placeholder="Digite a senha"
                                     type="password"
@@ -232,19 +403,40 @@ const CriarConta = () => {
                                 />
 
                                 <Input
+                                    label="Confirmar Senha"
+                                    name="confSenha"
+                                    value={formDataAluno.confSenha}
+                                    onChange={handleChange}
+                                    placeholder="Confirme a senha"
+                                    type="password"
+                                    maxLength={100}
+                                    error={errors.confSenha}
+                                />
+
+                                <Input
                                     label="Email"
                                     name="email"
-                                    value={formData.email}
+                                    value={formDataAluno.email}
                                     onChange={handleChange}
                                     placeholder="Digite o email"
                                     maxLength={255}
                                     error={errors.email}
                                 />
 
+                                <Input
+                                    label="CPF"
+                                    name="cpf"
+                                    value={formDataAluno.cpf}
+                                    onChange={handleChange}
+                                    placeholder="Digite o cpf"
+                                    maxLength={14}
+                                    error={errors.cpf}
+                                />
+
                                 <SearchInput
                                     label="Personal Trainer"
                                     name="personal"
-                                    value={formData.endereco}
+                                    value={formDataAluno.personal.nomeCompleto}
                                     onChange={handleChange}
                                     placeholder="Pesquise seu personal"
                                     maxLength={255}
@@ -257,15 +449,15 @@ const CriarConta = () => {
                                     <Input
                                         label="Personal Trainer"
                                         name="personal"
-                                        value={formData.endereco}
+                                        value=""
                                         onChange={handlePesquisa}
-                                        placeholder="Selecione o personal"
+                                        placeholder="Pesquise seu personal"
                                         maxLength={255}
-                                        error={errors.endereco}
+                                        error={errors.personal}
                                     />
                                     {resultadosFiltrados.length > 0 && (
-                                        <select className="selectPersonal" onChange={handleSelecionado} defaultValue="">
-                                            <option value="" disabled>Selecione um personal</option>
+                                        <select className="selectPersonal" onChange={handleSelecionado} defaultValue="" style={{ margin: '0 0 5% 0' }}>
+                                            <option value="">Selecione um personal</option>
                                             {resultadosFiltrados.map((p) => (
                                                 <option key={p.id} value={p.id}>
                                                     {p.nomeCompleto}
@@ -274,14 +466,10 @@ const CriarConta = () => {
                                         </select>
                                     )}
 
-                                    {selecionado && (
-                                        <div style={{ marginTop: '1rem' }}>
-                                            <strong>Personal selecionado:</strong> {selecionado.nomeCompleto}
-                                        </div>
-                                    )}
+                                    {/*<Button label="Confirmar Personal" type="submit" />*/}
                                 </Modal>
 
-                                <Button label="Cadastrar" type="submit" />
+                                <Button label="Cadastrar Aluno" type="submit" />
                             </form>
                         </>
                     ) : (
@@ -309,7 +497,104 @@ const CriarConta = () => {
                                     Personal Trainer
                                 </button>
                             </div>
-                            <h2>AQUI VAI TER AS COISAS DO PERSONAL</h2>
+
+                            <form onSubmit={handleSubmit}>
+                                <Input
+                                    label="Nome"
+                                    name="nome"
+                                    value={formDataPersonal.nome}
+                                    onChange={handleChange}
+                                    placeholder="Digite o nome completo"
+                                    maxLength={100}
+                                    error={errors.nome}
+                                />
+
+                                <Input
+                                    label="Usuário"
+                                    name="usuario"
+                                    value={formDataPersonal.usuario}
+                                    onChange={handleChange}
+                                    placeholder="Digite o usuário"
+                                    maxLength={100}
+                                    error={errors.usuario}
+                                />
+
+                                <Input
+                                    label="Senha"
+                                    name="senha"
+                                    value={formDataPersonal.senha}
+                                    onChange={handleChange}
+                                    placeholder="Digite a senha"
+                                    type="password"
+                                    maxLength={100}
+                                    error={errors.senha}
+                                />
+
+                                <Input
+                                    label="Confirmar Senha"
+                                    name="confSenha"
+                                    value={formDataPersonal.confSenha}
+                                    onChange={handleChange}
+                                    placeholder="Confirme a senha"
+                                    type="password"
+                                    maxLength={100}
+                                    error={errors.senha}
+                                />
+
+                                <Input
+                                    label="Email"
+                                    name="email"
+                                    value={formDataPersonal.email}
+                                    onChange={handleChange}
+                                    placeholder="Digite o email"
+                                    maxLength={255}
+                                    error={errors.email}
+                                />
+
+                                <Input
+                                    label="CPF"
+                                    name="cpf"
+                                    value={formDataPersonal.cpf}
+                                    onChange={handleChange}
+                                    placeholder="Digite seu CPF"
+                                    maxLength={255}
+                                    error={errors.cpf}
+                                />
+
+                                <Input
+                                    label="N° CREF (Conselho Regional de Educação Física)"
+                                    name="cref"
+                                    value={formDataPersonal.email}
+                                    onChange={handleChange}
+                                    placeholder="Digite seu número CREF"
+                                    maxLength={255}
+                                    error={errors.cref}
+                                />
+
+                                <Select
+                                    label="Estado"
+                                    name="estado"
+                                    value={formDataPersonal.estado}
+                                    onChange={handleChange}
+                                    placeholder=""
+                                    maxLength={255}
+                                    error={errors.email}
+                                    options={estado}
+                                />
+
+                                <Select
+                                    label="Cidade"
+                                    name="cidade"
+                                    value={formDataPersonal.cidade}
+                                    onChange={handleChange}
+                                    placeholder="Digite o email"
+                                    maxLength={255}
+                                    error={errors.email}
+                                    options={cidade}
+                                />
+
+                                <Button label="Cadastrar Personal" type="submit" />
+                            </form>
                         </>
 
                     )

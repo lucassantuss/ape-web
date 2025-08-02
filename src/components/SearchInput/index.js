@@ -24,8 +24,9 @@ const SearchInput = ({
                 maxLength={maxLength}
                 readOnly={readOnly}
             />
-            {error && <span className="error-message">{error}</span>}
             <button type="button" onClick={onClick}>🔍</button>
+            <br />
+            {error && <span className="error-message">{error}</span>}
         </div>
     );
 };

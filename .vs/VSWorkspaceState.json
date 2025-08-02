@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\Input",
+    "\\src\\pages",
+    "\\src\\pages\\CriarConta",
+    "\\src\\pages\\Login",
+    "\\src\\services"
+  ],
+  "SelectedNode": "\\src\\components\\Input\\index.js",
+  "PreviewInSolutionExplorer": false
+}
