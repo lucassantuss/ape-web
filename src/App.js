@@ -17,6 +17,7 @@ import './App.css';
 import QuemSomos from "pages/QuemSomos";
 import Exercicio from "pages/Exercicio";
 import Faq from "pages/Faq";
+import RelatorioResultados from "pages/RelatorioResultados";
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
             <Route path="/quem-somos" element={<QuemSomos />} /> {/* Quem Somos */}
             <Route path="/faq" element={<Faq />} /> {/* FAQ */}
             <Route path="exercicio" element={<Exercicio />} /> {/* Página de exercícios */}
+
+            <Route path="relatorio-resultados" element={<RelatorioResultados />} /> {/* Página "Relatório de Resultados */}
 
             <Route path="login" element={<Login />} /> {/* Página de login */}
             <Route path="criar-conta" element={<CriarConta />} /> {/* Logout redireciona para login */}
