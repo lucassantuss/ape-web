@@ -1,50 +1,34 @@
 import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram } from 'react-icons/fa';
-import { useAuthentication } from "context/Authentication";
 import { Link } from "react-router-dom";
 
 import './Rodape.css';
 
-// Componente funcional que renderiza o rodapé do site
 export default function Rodape() {
-    // Extrai a função `userLogged` do contexto de autenticação, que verifica se o usuário está logado
-    const { userLogged } = useAuthentication();
-
     return (
-        // Elemento principal do rodapé
         <footer className="footer">
-            {/* Div que contém as colunas do rodapé */}
             <div className="footer-columns">
 
-                {/* Primeira coluna do rodapé */}
                 <div className="footer-column">
                     <h4>
-                        {/* Link para a página inicial com o nome do site */}
                         <Link to="/">APE</Link>
                     </h4>
                 </div>
 
-                {/* Segunda coluna do rodapé */}
                 <div className="footer-column">
                     <h4>Descubra</h4>
                     <ul>
-                        {/* Link para a página que explica como a plataforma funciona */}
-                        <li><Link to="/como-funciona">Como Funciona</Link></li>
-                        {/* Link para a página sobre informações da equipe ou empresa */}
                         <li><Link to="/quem-somos">Quem Somos</Link></li>
                     </ul>
                 </div>
 
-                {/* Terceira coluna do rodapé */}
                 <div className="footer-column">
                     <h4>Saiba mais</h4>
                     <ul>
-                        {/* Link para a página de perguntas frequentes */}
                         <li><Link to="/faq">FAQ</Link></li>
                     </ul>
                 </div>
             </div>
 
-            {/* Parte inferior do rodapé com informações adicionais */}
             <div className="footer-bottom">
                 {/* Direitos autorais */}
                 <p>&copy; Copyright 2025 - APE - Todos os direitos reservados</p>

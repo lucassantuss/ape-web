@@ -32,10 +32,10 @@ export default function Menu() {
                 <div className="menu-logo">
                     {userLogged() ? (
                         <>
-                            <Link to="/parcerias">
+                            <Link to="/exercicio">
                                 <img src="/logo-branca.png" alt="Logo" className="logo-img" />
                             </Link>
-                            <Link to="/parcerias">APE</Link>
+                            <Link to="/exercicio">APE</Link>
                         </>
                     ) : (
                         <>
@@ -55,19 +55,15 @@ export default function Menu() {
                     <ul className="menu-links">
                         {userLogged() ? (
                             <>
-                                <li><Link to="/trocar-exercicio" onClick={handleLinkClick}>Trocar Exercício</Link></li>
-                                <li><Link to="/relatorio" onClick={handleLinkClick}>Relatório de Execução</Link></li>
+                                <li><Link to="/historico-treinos" onClick={handleLinkClick}>Histórico de Treinos</Link></li>
+                                <li><Link to="/relatorio-exercicios" onClick={handleLinkClick}>Relatório de Exercícios</Link></li>
+                                <li><Link to="/minha-conta" onClick={handleLinkClick}>Minha Conta</Link></li>
                             </>
                         ) : (
                             <>
-                                <li><Link to="/como-funciona" onClick={handleLinkClick}>Como Funciona</Link></li>
                                 <li><Link to="/quem-somos" onClick={handleLinkClick}>Quem Somos</Link></li>
                                 <li><Link to="/faq" onClick={handleLinkClick}>FAQ</Link></li>
                             </>
-                        )}
-
-                        {userLogged() && (
-                            <li><Link to="/minha-conta" onClick={handleLinkClick}>Minha Conta</Link></li>
                         )}
                     </ul>
 

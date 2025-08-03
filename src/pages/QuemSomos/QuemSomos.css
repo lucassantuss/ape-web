@@ -1,87 +1,99 @@
-.relatorio-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
+.quem-somos-page {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    background-color: #FFFFFF;
+    text-align: left;
 }
 
-.relatorio-select-aluno {
-  margin-bottom: 20px;
+.quem-somos-title {
+    font-size: 32px;
+    color: #00994d;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.relatorio-select-aluno label {
-  font-weight: bold;
-  margin-right: 10px;
-  font-size: 18px;
+.quem-somos-content {
+    padding: 20px;
 }
 
-.relatorio-lista {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.quem-somos-subtitle {
+    font-size: 24px;
+    color: #00994d;
+    margin-top: 40px;
+    font-weight: bold;
 }
 
-.relatorio-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 15px;
-  background-color: #f9f9f9;
+.quem-somos-text {
+    margin-top: 0px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 15px;
+    text-align: justify;
 }
 
-.relatorio-card h3 {
-  margin: 0 0 10px;
-  color: #00994d;
-  font-size: 24px;
+.quem-somos-values {
+    list-style-type: disc;
+    padding-left: 20px;
+    color: #666;
+    font-size: 18px;
+    margin-top: 10px;
 }
 
-.relatorio-card p {
-  margin: 4px 0;
-  font-size: 16px;
-  color: #333;
+.quem-somos-values li {
+    margin-bottom: 10px;
 }
 
 /* Responsividade para tablets */
 @media (max-width: 768px) {
-  .relatorio-container {
-    max-width: 95%;
-    padding: 20px;
-  }
+    .quem-somos-page {
+        padding: 20px;
+        max-width: 95%;
+    }
 
-  .relatorio-select-aluno label {
-    font-size: 16px;
-  }
+    .quem-somos-title {
+        font-size: 28px;
+    }
 
-  .relatorio-card h3 {
-    font-size: 20px;
-  }
+    .quem-somos-subtitle {
+        font-size: 18px;
+    }
 
-  .relatorio-card p {
-    font-size: 15px;
-  }
+    .quem-somos-text {
+        font-size: 16px;
+    }
+
+    .quem-somos-values {
+        font-size: 16px;
+        padding-left: 25px;
+    }
 }
 
 /* Responsividade para dispositivos móveis */
 @media (max-width: 480px) {
-  .relatorio-container {
-    max-width: 100%;
-    padding: 15px;
-  }
+    .quem-somos-page {
+        padding: 20px;
+        max-width: 100%;
+    }
 
-  .relatorio-select-aluno label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 16px;
-  }
+    .quem-somos-title {
+        font-size: 28px;
+    }
 
-  .relatorio-card {
-    padding: 12px;
-  }
+    .quem-somos-subtitle {
+        font-size: 18px;
+        margin-top: 30px;
+    }
 
-  .relatorio-card h3 {
-    font-size: 18px;
-  }
+    .quem-somos-text {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
 
-  .relatorio-card p {
-    font-size: 14px;
-  }
+    .quem-somos-values {
+        font-size: 16px;
+        padding-left: 20px;
+    }
 }
