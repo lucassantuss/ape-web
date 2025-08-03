@@ -33,6 +33,7 @@ function App() {
             <Route path="exercicio" element={<Exercicio />} /> {/* Página de exercícios */}
 
             <Route path="relatorio-resultados" element={<RelatorioResultados />} /> {/* Página "Relatório de Resultados */}
+            <Route path="minha-conta" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
 
             <Route path="login" element={<Login />} /> {/* Página de login */}
             <Route path="criar-conta" element={<CriarConta />} /> {/* Logout redireciona para login */}
@@ -50,7 +51,6 @@ function App() {
           <Route element={<PrivateRoute role="ADMINISTRADOR,PERSONAL" />}> {/* Permissão necessária: ADMINISTRADOR ou CLIENTE */}
             <Route path="alunos" element={<MinhaConta />} /> {/* Página de Aluno Vinculados */}
             <Route path="alunos-detalhes" element={<MinhaConta />} /> {/* Página "Aluno Detalhes" */}
-            <Route path="minha-conta-personal" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
             <Route path="logout-personal" element={<Login />} /> {/* Logout redireciona para login */}
           </Route>
 
