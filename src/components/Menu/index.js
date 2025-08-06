@@ -55,14 +55,13 @@ export default function Menu() {
                     <ul className="menu-links">
                         {userLogged() ? (
                             <>
-                                <li><Link to="/historico-treinos" onClick={handleLinkClick}>Histórico de Treinos</Link></li>
+                                {/* <li><Link to="/historico-treinos" onClick={handleLinkClick}>Histórico de Treinos</Link></li> */}
                                 <li><Link to="/relatorio-exercicios" onClick={handleLinkClick}>Relatório de Exercícios</Link></li>
                                 <li><Link to="/minha-conta" onClick={handleLinkClick}>Minha Conta</Link></li>
                             </>
                         ) : (
                             <>
                                 {/* Comentar esses */}
-                                <li><Link to="/historico-treinos" onClick={handleLinkClick}>Histórico de Treinos</Link></li>
                                 <li><Link to="/relatorio-resultados" onClick={handleLinkClick}>Relatório de Exercícios</Link></li>
                                 <li><Link to="/minha-conta" onClick={handleLinkClick}>Minha Conta</Link></li>
                                 <li><Link to="/criar-conta" onClick={handleLinkClick}>Criar Conta</Link></li>

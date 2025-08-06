@@ -5,6 +5,8 @@ import Input from 'components/Input';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 
+import { formatCPF, validateCPF } from 'utils/Validations';
+
 import './MinhaConta.css';
 
 export default function MinhaConta() {
@@ -29,13 +31,35 @@ export default function MinhaConta() {
 	const [editando, setEditando] = useState(false);
 	const [showModalExcluir, setShowModalExcluir] = useState(false);
 	const [dadosEditados, setDadosEditados] = useState(usuario);
+	const [errors, setErrors] = useState({});
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setDadosEditados((prev) => ({ ...prev, [name]: value }));
+
+		// Máscara automática para CPF
+		if (name === "cpf") {
+			newValue = formatCPF(newValue);
+		}
+
+		setDadosEditados((prev) => ({ ...prev, [name]: newValue }));
+		setErrors((prev) => ({ ...prev, [name]: "" })); // limpa erro do campo alterado
 	};
 
 	const handleSalvar = () => {
+		let newErrors = {};
+
+		// Validação de CPF
+		if (!validateCPF(dadosEditados.cpf)) {
+			newErrors.cpf = "CPF inválido";
+		}
+
+		// Se tiver erros, não salva
+		if (Object.keys(newErrors).length > 0) {
+			setErrors(newErrors);
+			return;
+		}
+
 		console.log('Dados salvos:', dadosEditados);
 		setEditando(false);
 	};
@@ -145,7 +169,7 @@ export default function MinhaConta() {
 				) : (
 					<Button label="Alterar Dados" onClick={() => setEditando(true)} />
 				)}
-        <br></br>
+				<br></br>
 				<Button label="Excluir Conta" onClick={() => setShowModalExcluir(true)} />
 			</div>
 
@@ -154,7 +178,7 @@ export default function MinhaConta() {
 				<p>Tem certeza que deseja excluir sua conta? Essa ação é irreversível.</p>
 				<div className="minha-conta-modal-botoes">
 					<Button label="Confirmar Exclusão" onClick={handleExcluirConta} />
-            <br></br>
+					<br></br>
 					<Button label="Cancelar" onClick={() => setShowModalExcluir(false)} />
 				</div>
 			</Modal>
