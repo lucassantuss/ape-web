@@ -19,13 +19,20 @@ const CriarConta = () => {
     const [showModal, setShowModal] = useState(false);
     const [tipoUsuario, setTipoUsuario] = useState("aluno");
     const [pesquisa, setPesquisa] = useState('');
+    const [nomePersonal, setNomePersonal] = useState('');
+
+    //teste
+    const [resposta, setResposta] = useState({
+        Mensagem: '',
+        Sucesso: ''
+    });
 
     const personais = [
-        { id: '1', nomeCompleto: 'Carlos Silva' },
-        { id: '2', nomeCompleto: 'Mariana Costa' },
-        { id: '3', nomeCompleto: 'João Moraes' },
-        { id: '4', nomeCompleto: 'Amanda Ribeiro' },
-        { id: '5', nomeCompleto: 'Pedro Fernandes' },
+        { id: 1, nomeCompleto: 'Carlos Silva' },
+        { id: 2, nomeCompleto: 'Mariana Costa' },
+        { id: 3, nomeCompleto: 'João Moraes' },
+        { id: 4, nomeCompleto: 'Amanda Ribeiro' },
+        { id: 5, nomeCompleto: 'Pedro Fernandes' }
     ];
 
     const [formDataAluno, setFormDataAluno] = useState({
@@ -35,7 +42,7 @@ const CriarConta = () => {
         cpf: '',
         senha: '',
         confSenha: '',
-        personal: ''
+        idPersonal: ''
     });
 
     const [formDataPersonal, setFormDataPersonal] = useState({
@@ -118,15 +125,24 @@ const CriarConta = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
+        let novoValor;
         if (name === 'cpf') {
-            value = formatarCPF(value);
-        }
+            novoValor = formatarCPF(value);
 
-        if (tipoUsuario == "aluno") {
-            setFormDataAluno({ ...formDataAluno, [name]: value });
+            if (tipoUsuario == "aluno") {
+                setFormDataAluno({ ...formDataAluno, [name]: novoValor });
+            }
+            else if (tipoUsuario == "personal") {
+                setFormDataPersonal({ ...formDataPersonal, [name]: value });
+            }
         }
-        else if (tipoUsuario == "personal") {
-            setFormDataPersonal({ ...formDataPersonal, [name]: value });
+        else {
+            if (tipoUsuario == "aluno") {
+                setFormDataAluno({ ...formDataAluno, [name]: value });
+            }
+            else if (tipoUsuario == "personal") {
+                setFormDataPersonal({ ...formDataPersonal, [name]: value });
+            }
         }
         setErrors({ ...errors, [name]: '' }); // Limpar erro quando o campo for alterado
     };
@@ -137,7 +153,7 @@ const CriarConta = () => {
         let isValid = true;
 
         const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
-
+        
         // Verificando se os campos obrigatórios estão preenchidos
         if (tipoUsuario == "aluno") {
             if (!formDataAluno.nome) {
@@ -162,7 +178,7 @@ const CriarConta = () => {
                 newErrors.cpf = 'Campo obrigatório';
                 isValid = false;
             } else if (!validarCPF(formDataAluno.cpf)) {
-                newErrors.email = 'CPF inválido';
+                newErrors.cpf = 'CPF inválido';
                 isValid = false;
             }
 
@@ -180,7 +196,7 @@ const CriarConta = () => {
                 isValid = false;
             }
 
-            if (!formDataAluno.personal) {
+            if (!formDataAluno.idPersonal) {
                 newErrors.personal = 'Campo obrigatório';
                 isValid = false;
             }
@@ -250,22 +266,23 @@ const CriarConta = () => {
 
         try {
             // Fazendo o POST para a API
-            debugger;
             var novoUsuarioDto;
-            const response = '';
+            var response = '';
+            
             if (tipoUsuario == "aluno") {
                 novoUsuarioDto = {
                     //Perfil: formDataAluno.perfil,
-                    Nome: formDataAluno.nome,
+                    //Id:0,
                     Usuario: formDataAluno.usuario,
-                    Senha: formDataAluno.senha,
+                    Nome: formDataAluno.nome,
                     Email: formDataAluno.email,
-                    Personal: formDataAluno.personal, //pegar o ID do Personal (talvez: parseInt(formData.personal, 10))
-                    CPF: formDataAluno.cpf
+                    CPF: formDataAluno.cpf,
+                    Senha: formDataAluno.senha,
+                    IdPersonal: formDataAluno.idPersonal
                 };
                 console.log("Enviando para API:", JSON.stringify(novoUsuarioDto, null, 2));
-
                 response = await api.post('Aluno/CriarAluno', novoUsuarioDto);
+                debugger;
             }
             else if (tipoUsuario == "personal") {
                 novoUsuarioDto = {
@@ -282,7 +299,8 @@ const CriarConta = () => {
 
                 response = await api.post('Personal/CriarPersonal', novoUsuarioDto);
             }
-            if (response.status === 201) {
+            //if (response.status === 201) {
+            if (response.data.sucesso) {
                 alert('Usuário ' + tipoUsuario + ' criado com sucesso!');
                 // Limpar o formulário após salvar
                 setFormDataAluno({
@@ -323,15 +341,11 @@ const CriarConta = () => {
     };
 
     const handleSelecionado = (event) => {
-        const idSelecionado = parseInt(event.target.value);
-        const personal = personais.find((p) => p.id === event.target.value);
+        const personal = personais.find((p) => p.id === parseInt(event.target.value));
+        setNomePersonal(personal.nomeCompleto);
 
         setFormDataAluno((prevFormData) => ({
-            ...prevFormData,
-            personal: {
-                id: personal.id,
-                nomeCompleto: personal.nomeCompleto
-            }
+            ...prevFormData, idPersonal: personal.id
         }));
     };
 
@@ -359,7 +373,7 @@ const CriarConta = () => {
                                 >
                                     Aluno
                                 </button>
-                                <button
+                                <buttoneg
                                     type="button"
                                     className={tipoUsuario === "personal" ? "tab active" : "tab"}
                                     onClick={() => {
@@ -367,7 +381,7 @@ const CriarConta = () => {
                                     }}
                                 >
                                     Personal Trainer
-                                </button>
+                                </buttoneg>
                             </div>
 
                             <form onSubmit={handleSubmit}>
@@ -436,7 +450,7 @@ const CriarConta = () => {
                                 <SearchInput
                                     label="Personal Trainer"
                                     name="personal"
-                                    value={formDataAluno.personal.nomeCompleto}
+                                    value={nomePersonal}
                                     onChange={handleChange}
                                     placeholder="Pesquise seu personal"
                                     maxLength={255}
