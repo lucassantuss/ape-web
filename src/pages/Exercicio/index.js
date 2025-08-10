@@ -9,7 +9,7 @@ export default function Exercicio() {
     canvasRef,
     videoRef,
     counter,
-    stage,
+    stageRef,
     angle,
     isRunning,
     exercise,
@@ -19,7 +19,7 @@ export default function Exercicio() {
 
   return (
     <div className="container">
-      <InfoBox counter={counter} stage={stage} angle={angle} />
+      <InfoBox counter={counter} stage={stageRef} angle={angle} />
       <VideoCanvas canvasRef={canvasRef} videoRef={videoRef} />
       <SelectExercicio selectedExercise={exercise} onChange={setExercise} />
       {!isRunning && (

@@ -35,7 +35,7 @@ export default function MinhaConta() {
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setDadosEditados((prev) => ({ ...prev, [name]: value }));
+		let newValue = value;
 
 		// Máscara automática para CPF
 		if (name === "cpf") {
@@ -43,7 +43,7 @@ export default function MinhaConta() {
 		}
 
 		setDadosEditados((prev) => ({ ...prev, [name]: newValue }));
-		setErrors((prev) => ({ ...prev, [name]: "" })); // limpa erro do campo alterado
+		setErrors((prev) => ({ ...prev, [name]: "" }));
 	};
 
 	const handleSalvar = () => {
