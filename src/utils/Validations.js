@@ -5,6 +5,8 @@ export const validateEmail = (email) => {
 
 // Formatar CPF com máscara
 export const formatCPF = (valor) => {
+  if (!valor) return false;
+
   valor = valor.replace(/\D/g, '');
   valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
   valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
@@ -14,6 +16,8 @@ export const formatCPF = (valor) => {
 
 // Validar CPF
 export const validateCPF = (cpf) => {
+  if (!cpf) return false;
+
   cpf = cpf.replace(/\D/g, '');
 
   if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;

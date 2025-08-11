@@ -1,73 +1,22 @@
-import { useState, useEffect } from 'react';
 import Title from 'components/Title';
 import Select from 'components/Select';
-import './RelatorioResultados.css';
 import Button from 'components/Button';
 import TextArea from 'components/TextArea';
+import useRelatorioResultados from 'hooks/useRelatorioResultados';
+import './RelatorioResultados.css';
 
 const RelatorioResultados = () => {
-    const mockAlunos = [
-        { value: '1', label: 'Lucas Andrade' },
-        { value: '2', label: 'Fernanda Lima' }
-    ];
-
-    const mockResultadosPorAluno = {
-        '1': [
-            {
-                exercicio: 'Rosca Direta',
-                dataHora: '2025-08-01T10:30:00',
-                repeticoes: 12,
-                observacaoAluno: 'Execução perfeita.',
-                observacaoPersonal: ''
-            },
-            {
-                exercicio: 'Meio-Agachamento',
-                dataHora: '2025-07-30T09:00:00',
-                repeticoes: 15,
-                observacaoAluno: 'Alinhamento corrigido.',
-                observacaoPersonal: 'Bom progresso.'
-            }
-        ],
-        '2': [
-            {
-                exercicio: 'Meio-Agachamento',
-                dataHora: '2025-07-29T08:15:00',
-                repeticoes: 20,
-                observacaoAluno: 'Boa resistência.',
-                observacaoPersonal: ''
-            }
-        ]
-    };
-
-    const [alunoSelecionado, setAlunoSelecionado] = useState('');
-    const [resultados, setResultados] = useState([]);
-    const [modalAberto, setModalAberto] = useState(false);
-    const [textoObservacao, setTextoObservacao] = useState('');
-    const [indiceSelecionado, setIndiceSelecionado] = useState(null);
-
-    useEffect(() => {
-        if (alunoSelecionado) {
-            const resultadosMock = mockResultadosPorAluno[alunoSelecionado] || [];
-            setResultados(resultadosMock);
-        } else {
-            setResultados([]);
-        }
-    }, [alunoSelecionado]);
-
-    const abrirModal = (index) => {
-        setIndiceSelecionado(index);
-        setTextoObservacao(resultados[index]?.observacaoPersonal || '');
-        setModalAberto(true);
-    };
-
-    const salvarObservacao = () => {
-        if (indiceSelecionado !== null) {
-            const novosResultados = [...resultados];
-            novosResultados[indiceSelecionado].observacaoPersonal = textoObservacao;
-            setResultados(novosResultados);
-        }
-        setModalAberto(false);
-    };
+    const {
+        alunoSelecionado,
+        setAlunoSelecionado,
+        resultados,
+        modalAberto,
+        textoObservacao,
+        setTextoObservacao,
+        abrirModal,
+        salvarObservacao,
+        setModalAberto
+    } = useRelatorioResultados();
 
     return (
         <div className="relatorio-container">
@@ -81,7 +30,10 @@ const RelatorioResultados = () => {
                 name="aluno"
                 value={alunoSelecionado}
                 onChange={(e) => setAlunoSelecionado(e.target.value)}
-                options={mockAlunos}
+                options={[
+                    { value: '1', label: 'Lucas Andrade' },
+                    { value: '2', label: 'Fernanda Lima' }
+                ]}
             />
 
             {resultados.length > 0 && (
@@ -93,7 +45,7 @@ const RelatorioResultados = () => {
                             <p><strong>Repetições:</strong> {resultado.repeticoes}</p>
                             <p><strong>Observações do Aluno:</strong> {resultado.observacaoAluno || 'Nenhuma'}</p>
                             <p><strong>Observações do Personal:</strong> {resultado.observacaoPersonal || 'Nenhuma'}</p>
-                            <br></br>
+                            <br />
                             <Button 
                                 label={`Adicionar Observação`}
                                 className="botao-observacao" 
@@ -116,7 +68,7 @@ const RelatorioResultados = () => {
                         />
                         <div className="modal-botoes">
                             <Button label={`Salvar`} onClick={salvarObservacao} />
-                            <br></br>
+                            <br />
                             <Button label={`Cancelar`} onClick={() => setModalAberto(false)} />
                         </div>
                     </div>

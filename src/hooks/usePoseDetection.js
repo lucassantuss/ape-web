@@ -105,7 +105,7 @@ export function usePoseDetection() {
     }
 
     canvasCtx.restore();
-  }, [exercise, stageRef]);
+  }, [exercise, stageRef, analisarExercicio]);
 
   const setupCamera = async () => {
     const video = videoRef.current;

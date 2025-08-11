@@ -30,28 +30,28 @@ function App() {
             <Route path="/" element={<Home />} /> {/* Página inicial */}
             <Route path="/quem-somos" element={<QuemSomos />} /> {/* Quem Somos */}
             <Route path="/faq" element={<Faq />} /> {/* FAQ */}
-            <Route path="exercicio" element={<Exercicio />} /> {/* Página de exercícios */}
+            <Route path="/exercicio" element={<Exercicio />} /> {/* Página de exercícios */}
 
-            <Route path="relatorio-resultados" element={<RelatorioResultados />} /> {/* Página "Relatório de Resultados */}
-            <Route path="minha-conta" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
+            <Route path="/relatorio-resultados" element={<RelatorioResultados />} /> {/* Página "Relatório de Resultados */}
+            <Route path="/minha-conta" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
 
-            <Route path="login" element={<Login />} /> {/* Página de login */}
-            <Route path="criar-conta" element={<CriarConta />} /> {/* Logout redireciona para login */}
+            <Route path="/login" element={<Login />} /> {/* Página de login */}
+            <Route path="/criar-conta" element={<CriarConta />} /> {/* Logout redireciona para login */}
           </Route>
 
           {/* Rotas protegidas ALUNO */}
           <Route element={<PrivateRoute role="ADMINISTRADOR,ALUNO" />}> {/* Permissão necessária: ADMINISTRADOR ou CLIENTE */}
-            <Route path="exercicio" element={<Exercicio />} /> {/* Página de exercícios */}
-            <Route path="relatorio-resultados" element={<RelatorioResultados />} /> {/* Página "Relatório de Resultados */}
-            <Route path="minha-conta-aluno" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
-            <Route path="logout-aluno" element={<Login />} /> {/* Logout redireciona para login */}
+            <Route path="/exercicio" element={<Exercicio />} /> {/* Página de exercícios */}
+            <Route path="/relatorio-resultados" element={<RelatorioResultados />} /> {/* Página "Relatório de Resultados */}
+            <Route path="/minha-conta-aluno" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
+            <Route path="/logout-aluno" element={<Login />} /> {/* Logout redireciona para login */}
           </Route>
 
           {/* Rotas protegidas PERSONAL */}
           <Route element={<PrivateRoute role="ADMINISTRADOR,PERSONAL" />}> {/* Permissão necessária: ADMINISTRADOR ou CLIENTE */}
-            <Route path="alunos" element={<MinhaConta />} /> {/* Página de Aluno Vinculados */}
-            <Route path="alunos-detalhes" element={<MinhaConta />} /> {/* Página "Aluno Detalhes" */}
-            <Route path="logout-personal" element={<Login />} /> {/* Logout redireciona para login */}
+            <Route path="/alunos" element={<MinhaConta />} /> {/* Página de Aluno Vinculados */}
+            <Route path="/alunos-detalhes" element={<MinhaConta />} /> {/* Página "Aluno Detalhes" */}
+            <Route path="/logout-personal" element={<Login />} /> {/* Logout redireciona para login */}
           </Route>
 
           {/* Rota para páginas não encontradas */}
