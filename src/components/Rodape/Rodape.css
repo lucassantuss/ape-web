@@ -52,30 +52,17 @@
     font-size: 14px;
     border-top: 1px solid #ddd;
     padding-top: 20px;
-    flex-wrap: wrap;
     gap: 10px;
     text-align: center;
+
+    flex-direction: column;
+        gap: 5px;
 }
 
 .footer-bottom p {
+    align-items: center;
     margin: 5px 0;
     color: #777;
-}
-
-.footer-social {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-}
-
-.footer-social svg {
-    font-size: 18px;
-    color: #777;
-    cursor: pointer;
-}
-
-.footer-social svg:hover {
-    color: #000;
 }
 
 /* Responsividade */
@@ -89,11 +76,6 @@
     .footer-column {
         text-align: center;
     }
-
-    .footer-bottom {
-        flex-direction: column;
-        gap: 5px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -104,9 +86,5 @@
 
     .footer-bottom p {
         font-size: 16px;
-    }
-
-    .footer-social svg {
-        font-size: 18px;
     }
 }
