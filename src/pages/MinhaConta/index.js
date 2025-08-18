@@ -1,74 +1,29 @@
-import { useState } from 'react';
-import { useAuthentication } from 'context/Authentication';
+import useMinhaConta from 'hooks/useMinhaConta';
 import Title from 'components/Title';
 import Input from 'components/Input';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 
-import { formatCPF, validateCPF } from 'utils/Validations';
-
 import './MinhaConta.css';
 
 export default function MinhaConta() {
-	const { userLogged } = useAuthentication();
+	const {
+		editando,
+		setEditando,
+		showModalExcluir,
+		setShowModalExcluir,
+		dadosEditados,
+		errors,
+		handleChange,
+		handleSalvar,
+		handleExcluirConta,
+		loading,
+		error,
+	} = useMinhaConta();
 
-	// Simulação de dados mockados
-	const usuario = userLogged() || {
-		tipo: 'aluno', // ou 'personal'
-		nome: 'Lucas Almeida',
-		email: 'lucas.almeida@email.com',
-		usuario: 'lucasalmeida',
-		cpf: '123.456.789-00',
-		cref: '123456-G/SP',
-		estado: 'SP',
-		cidade: 'São Paulo',
-		personal: {
-			id: '1',
-			nomeCompleto: 'Carlos Silva',
-		},
-	};
-
-	const [editando, setEditando] = useState(false);
-	const [showModalExcluir, setShowModalExcluir] = useState(false);
-	const [dadosEditados, setDadosEditados] = useState(usuario);
-	const [errors, setErrors] = useState({});
-
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setDadosEditados((prev) => ({ ...prev, [name]: value }));
-
-		// Máscara automática para CPF
-		if (name === "cpf") {
-			newValue = formatCPF(newValue);
-		}
-
-		setDadosEditados((prev) => ({ ...prev, [name]: newValue }));
-		setErrors((prev) => ({ ...prev, [name]: "" })); // limpa erro do campo alterado
-	};
-
-	const handleSalvar = () => {
-		let newErrors = {};
-
-		// Validação de CPF
-		if (!validateCPF(dadosEditados.cpf)) {
-			newErrors.cpf = "CPF inválido";
-		}
-
-		// Se tiver erros, não salva
-		if (Object.keys(newErrors).length > 0) {
-			setErrors(newErrors);
-			return;
-		}
-
-		console.log('Dados salvos:', dadosEditados);
-		setEditando(false);
-	};
-
-	const handleExcluirConta = () => {
-		setShowModalExcluir(false);
-		console.log('Conta excluída!');
-		// Aqui você pode fazer a chamada para a API
-	};
+	if (loading) return <p>Carregando dados...</p>;
+	if (error) return <p>Erro ao carregar dados: {error.message}</p>;
+	if (!dadosEditados) return <p>Usuário não encontrado.</p>;
 
 	return (
 		<div className="minha-conta-container">
@@ -78,7 +33,7 @@ export default function MinhaConta() {
 				<div className="minha-conta-box left">
 					<label>Nome:</label>
 					{editando ? (
-						<Input name="nome" value={dadosEditados.nome} onChange={handleChange} />
+						<Input name="nome" value={dadosEditados.nome || ""} onChange={handleChange} />
 					) : (
 						<p>{dadosEditados.nome}</p>
 					)}
@@ -87,7 +42,7 @@ export default function MinhaConta() {
 				<div className="minha-conta-box right">
 					<label>Email:</label>
 					{editando ? (
-						<Input name="email" value={dadosEditados.email} onChange={handleChange} />
+						<Input name="email" value={dadosEditados.email || ""} onChange={handleChange} />
 					) : (
 						<p>{dadosEditados.email}</p>
 					)}
@@ -96,7 +51,7 @@ export default function MinhaConta() {
 				<div className="minha-conta-box left">
 					<label>Usuário:</label>
 					{editando ? (
-						<Input name="usuario" value={dadosEditados.usuario} onChange={handleChange} />
+						<Input name="usuario" value={dadosEditados.usuario || ""} onChange={handleChange} />
 					) : (
 						<p>{dadosEditados.usuario}</p>
 					)}
@@ -105,7 +60,7 @@ export default function MinhaConta() {
 				<div className="minha-conta-box right">
 					<label>CPF:</label>
 					{editando ? (
-						<Input name="cpf" value={dadosEditados.cpf} onChange={handleChange} />
+						<Input name="cpf" maxLength={14} value={dadosEditados.cpf || ""} onChange={handleChange} />
 					) : (
 						<p>{dadosEditados.cpf}</p>
 					)}
@@ -117,13 +72,8 @@ export default function MinhaConta() {
 						{editando ? (
 							<Input
 								name="personal.nomeCompleto"
-								value={dadosEditados.personal?.nomeCompleto}
-								onChange={(e) => {
-									setDadosEditados((prev) => ({
-										...prev,
-										personal: { ...prev.personal, nomeCompleto: e.target.value },
-									}));
-								}}
+								value={dadosEditados.personal?.nomeCompleto || ""}
+								onChange={handleChange}
 							/>
 						) : (
 							<p>{dadosEditados.personal?.nomeCompleto}</p>
@@ -136,7 +86,7 @@ export default function MinhaConta() {
 						<div className="minha-conta-box left">
 							<label>CREF:</label>
 							{editando ? (
-								<Input name="cref" value={dadosEditados.cref} onChange={handleChange} />
+								<Input name="cref" value={dadosEditados.cref || ""} onChange={handleChange} />
 							) : (
 								<p>{dadosEditados.cref}</p>
 							)}
@@ -145,7 +95,7 @@ export default function MinhaConta() {
 						<div className="minha-conta-box right">
 							<label>Estado:</label>
 							{editando ? (
-								<Input name="estado" value={dadosEditados.estado} onChange={handleChange} />
+								<Input name="estado" value={dadosEditados.estado || ""} onChange={handleChange} />
 							) : (
 								<p>{dadosEditados.estado}</p>
 							)}
@@ -154,7 +104,7 @@ export default function MinhaConta() {
 						<div className="minha-conta-box left">
 							<label>Cidade:</label>
 							{editando ? (
-								<Input name="cidade" value={dadosEditados.cidade} onChange={handleChange} />
+								<Input name="cidade" value={dadosEditados.cidade || ""} onChange={handleChange} />
 							) : (
 								<p>{dadosEditados.cidade}</p>
 							)}
@@ -169,7 +119,7 @@ export default function MinhaConta() {
 				) : (
 					<Button label="Alterar Dados" onClick={() => setEditando(true)} />
 				)}
-				<br></br>
+				<br />
 				<Button label="Excluir Conta" onClick={() => setShowModalExcluir(true)} />
 			</div>
 
@@ -178,7 +128,7 @@ export default function MinhaConta() {
 				<p>Tem certeza que deseja excluir sua conta? Essa ação é irreversível.</p>
 				<div className="minha-conta-modal-botoes">
 					<Button label="Confirmar Exclusão" onClick={handleExcluirConta} />
-					<br></br>
+					<br />
 					<Button label="Cancelar" onClick={() => setShowModalExcluir(false)} />
 				</div>
 			</Modal>

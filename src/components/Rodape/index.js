@@ -30,17 +30,7 @@ export default function Rodape() {
             </div>
 
             <div className="footer-bottom">
-                {/* Direitos autorais */}
                 <p>&copy; Copyright 2025 - APE - Todos os direitos reservados</p>
-                {/* Informações institucionais da empresa, como CNPJ e endereço */}
-                <p>CNPJ 12.345.678/0001-23 / Estrada dos Alvarengas, 4001, São Bernardo do Campo</p>
-                {/* Ícones das redes sociais */}
-                <div className="footer-social">
-                    <FaFacebookF /> {/* Ícone do Facebook */}
-                    <FaTwitter />   {/* Ícone do Twitter */}
-                    <FaYoutube />   {/* Ícone do YouTube */}
-                    <FaInstagram /> {/* Ícone do Instagram */}
-                </div>
             </div>
         </footer>
     );

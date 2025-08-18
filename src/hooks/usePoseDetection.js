@@ -5,7 +5,6 @@ export function usePoseDetection() {
   const videoRef = useRef(null);
 
   const [counter, setCounter] = useState(0);
-  const [stage, setStage] = useState('---');
   const [angle, setAngle] = useState(0);
 
   const [isRunning, setIsRunning] = useState(false);
@@ -13,6 +12,7 @@ export function usePoseDetection() {
 
   const poseRef = useRef(null);
   const rafRef = useRef(null);
+  const stageRef = useRef('---');
 
   const calcularAngulo = (a, b, c) => {
     const radians = Math.atan2(c[1] - b[1], c[0] - b[0]) - Math.atan2(a[1] - b[1], a[0] - b[0]);
@@ -43,9 +43,9 @@ export function usePoseDetection() {
       anguloEsquerdo = calcularAngulo(ls, le, lw);
       setAngle(anguloEsquerdo);
 
-      if (anguloEsquerdo > 145) setStage('baixo');
-      if (anguloEsquerdo < 30 && stage === 'baixo') {
-        setStage('cima');
+      if (anguloEsquerdo > 145) stageRef.current = 'baixo';
+      if (anguloEsquerdo < 30 && stageRef.current === 'baixo') {
+        stageRef.current = 'cima';
         setCounter((prev) => prev + 1);
       }
 
@@ -73,9 +73,9 @@ export function usePoseDetection() {
       const media = (anguloEsquerdo + anguloDireito) / 2;
       setAngle(media);
 
-      if (anguloEsquerdo >= 170 && anguloDireito >= 170) setStage('baixo');
-      if (anguloEsquerdo <= 100 && anguloDireito <= 100 && stage === 'baixo') {
-        setStage('cima');
+      if (anguloEsquerdo >= 170 && anguloDireito >= 170) stageRef.current = 'baixo';
+      if (anguloEsquerdo <= 100 && anguloDireito <= 100 && stageRef.current === 'baixo') {
+        stageRef.current = 'cima';
         setCounter((prev) => prev + 1);
       }
 
@@ -105,7 +105,7 @@ export function usePoseDetection() {
     }
 
     canvasCtx.restore();
-  }, [exercise, stage]);
+  }, [exercise, stageRef, analisarExercicio]);
 
   const setupCamera = async () => {
     const video = videoRef.current;
@@ -130,7 +130,7 @@ export function usePoseDetection() {
   const start = async () => {
     await setupCamera();
     setCounter(0);
-    setStage('---');
+    stageRef.current = '---';
     setAngle(0);
 
     const pose = new window.Pose({
@@ -172,8 +172,8 @@ export function usePoseDetection() {
   return {
     canvasRef,
     videoRef,
+    stageRef,
     counter,
-    stage,
     angle,
     isRunning,
     exercise,
