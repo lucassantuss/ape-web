@@ -373,7 +373,7 @@ const CriarConta = () => {
                                 >
                                     Aluno
                                 </button>
-                                <buttoneg
+                                <button
                                     type="button"
                                     className={tipoUsuario === "personal" ? "tab active" : "tab"}
                                     onClick={() => {
@@ -381,7 +381,7 @@ const CriarConta = () => {
                                     }}
                                 >
                                     Personal Trainer
-                                </buttoneg>
+                                </button>
                             </div>
 
                             <form onSubmit={handleSubmit}>
