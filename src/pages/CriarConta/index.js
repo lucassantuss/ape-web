@@ -233,7 +233,7 @@ export default function CriarConta() {
                             name="cpf"
                             value={formDataPersonal.cpf}
                             onChange={handleChange}
-                            placeholder="Digite seu CPF"
+                            placeholder="Digite o CPF"
                             maxLength={14}
                             error={errors.cpf}
                         />
@@ -243,7 +243,7 @@ export default function CriarConta() {
                             name="cref"
                             value={formDataPersonal.cref}
                             onChange={handleChange}
-                            placeholder="Digite seu número CREF"
+                            placeholder="Digite o número CREF"
                             maxLength={255}
                             error={errors.cref}
                         />

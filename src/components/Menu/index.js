@@ -55,6 +55,7 @@ export default function Menu() {
                     <ul className="menu-links">
                         {userLogged() ? (
                             <>
+                                <li><Link to="/exercicio" onClick={handleLinkClick}>Exercício</Link></li>
                                 <li><Link to="/relatorio-resultados" onClick={handleLinkClick}>Relatório de Exercícios</Link></li>
                                 <li><Link to="/quem-somos" onClick={handleLinkClick}>Quem Somos</Link></li>
                                 <li><Link to="/faq" onClick={handleLinkClick}>FAQ</Link></li>
