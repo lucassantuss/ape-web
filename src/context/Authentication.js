@@ -32,12 +32,14 @@ const AuthenticationProvider = ({ children }) => {
             // Extrai o token e o ID do usuário da resposta da API.
             const token = response.data.token;
             const idUser = response.data.idUser;
+            const userType = tipoUsuario;
 
             if (token) {
                 // Atualiza o estado do token e salva-o no localStorage para persistência.
                 setToken(token);
                 localStorage.setItem("@AuthToken_APE", token);
                 localStorage.setItem("@IdUser_APE", idUser);
+                localStorage.setItem("@UserType_APE", userType);
 
                 // Define o token no cabeçalho padrão da API para autenticação.
                 api.defaults.headers.authorization = `Bearer ${token}`;
@@ -57,6 +59,7 @@ const AuthenticationProvider = ({ children }) => {
         setToken(null);
         localStorage.removeItem("@AuthToken_APE");
         localStorage.removeItem("@IdUser_APE");
+        localStorage.removeItem("@UserType_APE");
 
         // Remove o token do cabeçalho padrão da API.
         delete api.defaults.headers.authorization;
