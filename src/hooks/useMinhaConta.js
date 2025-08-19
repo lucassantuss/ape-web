@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "../services/api";
 import { formatCPF, validateCPF } from "utils/Validations";
-import useAuthentication from "hooks/useAuthentication";
+import { useAuthentication } from "context/Authentication";
 
 export default function useMinhaConta() {
   const [editando, setEditando] = useState(false);
