@@ -30,10 +30,16 @@ export default function MinhaConta() {
 			<Title titulo="Minha Conta" />
 
 			<div className="minha-conta-grid">
+				{/* Campos comuns */}
 				<div className="minha-conta-box left">
 					<label>Nome:</label>
 					{editando ? (
-						<Input name="nome" value={dadosEditados.nome || ""} onChange={handleChange} />
+						<Input
+							name="nome"
+							value={dadosEditados.nome || ""}
+							onChange={handleChange}
+							error={errors.nome}
+						/>
 					) : (
 						<p>{dadosEditados.nome}</p>
 					)}
@@ -42,7 +48,12 @@ export default function MinhaConta() {
 				<div className="minha-conta-box right">
 					<label>Email:</label>
 					{editando ? (
-						<Input name="email" value={dadosEditados.email || ""} onChange={handleChange} />
+						<Input
+							name="email"
+							value={dadosEditados.email || ""}
+							onChange={handleChange}
+							error={errors.email}
+						/>
 					) : (
 						<p>{dadosEditados.email}</p>
 					)}
@@ -51,7 +62,12 @@ export default function MinhaConta() {
 				<div className="minha-conta-box left">
 					<label>Usuário:</label>
 					{editando ? (
-						<Input name="usuario" value={dadosEditados.usuario || ""} onChange={handleChange} />
+						<Input
+							name="usuario"
+							value={dadosEditados.usuario || ""}
+							onChange={handleChange}
+							error={errors.usuario}
+						/>
 					) : (
 						<p>{dadosEditados.usuario}</p>
 					)}
@@ -60,13 +76,20 @@ export default function MinhaConta() {
 				<div className="minha-conta-box right">
 					<label>CPF:</label>
 					{editando ? (
-						<Input name="cpf" maxLength={14} value={dadosEditados.cpf || ""} onChange={handleChange} />
+						<Input
+							name="cpf"
+							maxLength={14}
+							value={dadosEditados.cpf || ""}
+							onChange={handleChange}
+							error={errors.cpf}
+						/>
 					) : (
 						<p>{dadosEditados.cpf}</p>
 					)}
 				</div>
 
-				{dadosEditados.tipo === 'aluno' && (
+				{/* Campos específicos do Aluno */}
+				{dadosEditados.tipo === 'personal' && (
 					<div className="minha-conta-box left">
 						<label>Personal:</label>
 						{editando ? (
@@ -74,6 +97,7 @@ export default function MinhaConta() {
 								name="personal.nomeCompleto"
 								value={dadosEditados.personal?.nomeCompleto || ""}
 								onChange={handleChange}
+								error={errors.personal}
 							/>
 						) : (
 							<p>{dadosEditados.personal?.nomeCompleto}</p>
@@ -81,12 +105,18 @@ export default function MinhaConta() {
 					</div>
 				)}
 
-				{dadosEditados.tipo === 'personal' && (
+				{/* Campos específicos do Personal */}
+				{dadosEditados.tipo === 'aluno' && (
 					<>
 						<div className="minha-conta-box left">
-							<label>CREF:</label>
+							<label>N° CREF:</label>
 							{editando ? (
-								<Input name="cref" value={dadosEditados.cref || ""} onChange={handleChange} />
+								<Input
+									name="cref"
+									value={dadosEditados.cref || ""}
+									onChange={handleChange}
+									error={errors.cref}
+								/>
 							) : (
 								<p>{dadosEditados.cref}</p>
 							)}
@@ -95,7 +125,12 @@ export default function MinhaConta() {
 						<div className="minha-conta-box right">
 							<label>Estado:</label>
 							{editando ? (
-								<Input name="estado" value={dadosEditados.estado || ""} onChange={handleChange} />
+								<Input
+									name="estado"
+									value={dadosEditados.estado || ""}
+									onChange={handleChange}
+									error={errors.estado}
+								/>
 							) : (
 								<p>{dadosEditados.estado}</p>
 							)}
@@ -104,7 +139,12 @@ export default function MinhaConta() {
 						<div className="minha-conta-box left">
 							<label>Cidade:</label>
 							{editando ? (
-								<Input name="cidade" value={dadosEditados.cidade || ""} onChange={handleChange} />
+								<Input
+									name="cidade"
+									value={dadosEditados.cidade || ""}
+									onChange={handleChange}
+									error={errors.cidade}
+								/>
 							) : (
 								<p>{dadosEditados.cidade}</p>
 							)}

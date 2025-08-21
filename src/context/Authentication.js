@@ -27,8 +27,6 @@ const AuthenticationProvider = ({ children }) => {
                 TipoUsuario: tipoUsuario
             });
 
-            debugger;
-
             // Extrai o token e o ID do usuário da resposta da API.
             const token = response.data.token;
             const idUser = response.data.idUser;

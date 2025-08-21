@@ -6,7 +6,7 @@ export default function Home() {
         <div id="home-page" className="home-page">
             <section id="home-hero" className="home-hero">
                 <div className="hero-content">
-                    <img src="/logo-branca.png" alt="Logo APE" id="home-logo" className="home-logo" />
+                    <img src="/logo-verde.png" alt="Logo APE" id="home-logo" className="home-logo" />
                     <h1 id="home-title" className="home-title">
                         APE - Assistente Pessoal de Exercícios
                     </h1>

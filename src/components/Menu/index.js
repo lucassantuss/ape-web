@@ -57,9 +57,9 @@ export default function Menu() {
                             <>
                                 <li><Link to="/exercicio" onClick={handleLinkClick}>Exercício</Link></li>
                                 <li><Link to="/relatorio-resultados" onClick={handleLinkClick}>Relatório de Exercícios</Link></li>
+                                <li><Link to="/minha-conta" onClick={handleLinkClick}>Minha Conta</Link></li>
                                 <li><Link to="/quem-somos" onClick={handleLinkClick}>Quem Somos</Link></li>
                                 <li><Link to="/faq" onClick={handleLinkClick}>FAQ</Link></li>
-                                <li><Link to="/minha-conta" onClick={handleLinkClick}>Minha Conta</Link></li>
                             </>
                         ) : (
                             <>

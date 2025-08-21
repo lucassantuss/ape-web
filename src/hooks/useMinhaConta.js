@@ -13,9 +13,10 @@ export default function useMinhaConta() {
   const { signOut } = useAuthentication();
 
   const idUser = localStorage.getItem("@IdUser_APE");
-  const tipoUsuario = localStorage.getItem("@UserType_APE");
+  const tipoUsuario = localStorage.getItem("@UserType_APE"); // "aluno" | "personal"
 
-  const endpointBase = tipoUsuario === "personal" ? "/Personal" : "/Aluno";
+  // define base do endpoint conforme o tipo
+  const endpointBase = tipoUsuario?.toLowerCase() === "personal" ? "/Personal" : "/Aluno";
 
   // Buscar dados do usuário
   useEffect(() => {
@@ -28,23 +29,27 @@ export default function useMinhaConta() {
 
       try {
         setLoading(true);
-        const response = await api.get(`${endpointBase}/PesquisarPorId/${idUser}`);
+        const response = await api.get(`${endpointBase}/${idUser}`);
 
         if (response.data) {
           const usuario = response.data;
+
           setDadosEditados({
             tipo: tipoUsuario,
             nome: usuario.nome || "",
             email: usuario.email || "",
             usuario: usuario.usuario || "",
             cpf: usuario.cpf || "",
-            personal: {
-              id: usuario.idPersonal || "",
-              nomeCompleto: usuario.nomePersonal || "",
-            },
-            cref: usuario.cref || "",
-            estado: usuario.estado || "",
-            cidade: usuario.cidade || "",
+            personal:
+              tipoUsuario === "aluno"
+                ? {
+                    id: usuario.idPersonal || "",
+                    nomeCompleto: usuario.nomePersonal || "",
+                  }
+                : null,
+            cref: tipoUsuario === "personal" ? usuario.cref || "" : "",
+            estado: tipoUsuario === "personal" ? usuario.estado || "" : "",
+            cidade: tipoUsuario === "personal" ? usuario.cidade || "" : "",
           });
         }
         setError(null);
@@ -101,16 +106,25 @@ export default function useMinhaConta() {
     try {
       setLoading(true);
 
-      await api.put(`${endpointBase}/${idUser}`, {
+      // Campos comuns
+      const payload = {
+        usuario: dadosEditados.usuario,
         nome: dadosEditados.nome,
         email: dadosEditados.email,
-        usuario: dadosEditados.usuario,
         cpf: dadosEditados.cpf,
-        idPersonal: dadosEditados.personal?.id || null,
-        cref: dadosEditados.cref,
-        estado: dadosEditados.estado,
-        cidade: dadosEditados.cidade,
-      });
+      };
+
+      if (dadosEditados.tipo === "aluno") {
+        payload.idPersonal = dadosEditados.personal?.id || null;
+      }
+
+      if (dadosEditados.tipo === "personal") {
+        payload.cref = dadosEditados.cref;
+        payload.estado = dadosEditados.estado;
+        payload.cidade = dadosEditados.cidade;
+      }
+
+      await api.put(`${endpointBase}/${idUser}`, payload);
 
       alert("Dados atualizados com sucesso!");
       setEditando(false);

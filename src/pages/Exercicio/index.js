@@ -18,7 +18,7 @@ export default function Exercicio() {
   } = usePoseDetection();
 
   return (
-    <div className="container">  
+    <div className="container">
       <InfoBox counter={counter} stage={stageRef.current} angle={angle} />
       <VideoCanvas canvasRef={canvasRef} videoRef={videoRef} />
       <SelectExercicio selectedExercise={exercise} onChange={setExercise} />
