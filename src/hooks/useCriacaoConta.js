@@ -11,6 +11,7 @@ export default function useCriacaoConta() {
     const [errors, setErrors] = useState({});
     const [estados, setEstados] = useState([]);
     const [cidades, setCidades] = useState([]);
+    const [categoriaProf, setCategoriaProf] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [pesquisa, setPesquisa] = useState("");
     const [nomePersonal, setNomePersonal] = useState("");
@@ -40,9 +41,10 @@ export default function useCriacaoConta() {
         confSenha: "",
         email: "",
         cpf: "",
-        cref: "",
         estado: "",
         cidade: "",
+        categoriaProf: "",
+        cref: ""
     });
 
     // Busca estados via API IBGE
@@ -82,8 +84,25 @@ export default function useCriacaoConta() {
         }
     };
 
+    // Popula as categorias profissionais do CREF
+    const fetchCategoriaProf = async () => {
+        try {
+            const categorias = [
+                { value: "G - Graduação em Educação Física", label: "" },
+                { value: "P - Provisório", label: "" },
+                { value: "F - Formação anterior à Lei 9696/98", label: "" },
+            ];
+            debugger;
+            setCategoriaProf(categorias);
+            console.log(categoriaProf);
+        } catch (err) {
+            console.error("Erro ao buscar categorias:", err);
+        }
+    };
+
     useEffect(() => {
         fetchEstados();
+        fetchCategoriaProf();
     }, []);
 
     const handleChange = (e) => {
@@ -243,6 +262,7 @@ export default function useCriacaoConta() {
         errors,
         estados,
         cidades,
+        categoriaProf,
         showModal,
         setShowModal,
         pesquisa,

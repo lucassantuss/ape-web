@@ -20,6 +20,7 @@ export default function CriarConta() {
         errors,
         estados,
         cidades,
+        categoriaProf,
         showModal,
         setShowModal,
         pesquisa,
@@ -238,16 +239,6 @@ export default function CriarConta() {
                             error={errors.cpf}
                         />
 
-                        <Input
-                            label="N° CREF (Conselho Regional de Educação Física)"
-                            name="cref"
-                            value={formDataPersonal.cref}
-                            onChange={handleChange}
-                            placeholder="Digite seu número CREF"
-                            maxLength={255}
-                            error={errors.cref}
-                        />
-
                         <Select
                             label="Estado"
                             name="estado"
@@ -264,6 +255,50 @@ export default function CriarConta() {
                             onChange={handleChange}
                             options={cidades}
                             error={errors.cidade}
+                        />
+
+                        <Select
+                            label="Categoria Profissional"
+                            name="categoriaProf"
+                            value={formDataPersonal.categoriaProf}
+                            onChange={handleChange}
+                            options={categoriaProf}
+                            error={errors.categoriaProf}
+                        />
+
+                        <Input
+                            label="N° CREF (Conselho Regional de Educação Física)"
+                            name="cref"
+                            value={formDataPersonal.cref}
+                            onChange={handleChange}
+                            placeholder="Digite seu número CREF"
+                            maxLength={255}
+                            error={errors.cref}
+                        />
+
+                        <Input
+                            value={formDataPersonal.categoriaProf}
+                            onChange={handleChange}
+                            maxLength={1}
+                            error={errors.categoriaProf}
+                            disabled
+                        />
+
+                        <div className="input-group">
+                            <input value={formDataPersonal.categoriaProf}
+                                onChange={handleChange}
+                                maxLength={1}
+                                error={errors.categoriaProf}
+                                disabled>
+                            </input>
+                        </div>
+
+                        <Input
+                            value={formDataPersonal.estado}
+                            onChange={handleChange}
+                            maxLength={2}
+                            error={errors.estado}
+                            disabled
                         />
 
                         <Button label="Cadastrar Personal" type="submit" />
