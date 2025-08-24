@@ -234,7 +234,7 @@ export default function CriarConta() {
                             name="cpf"
                             value={formDataPersonal.cpf}
                             onChange={handleChange}
-                            placeholder="Digite seu CPF"
+                            placeholder="Digite o CPF"
                             maxLength={14}
                             error={errors.cpf}
                         />

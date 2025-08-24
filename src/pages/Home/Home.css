@@ -1,0 +1,276 @@
+/* Container Geral */
+#home-page {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+  background-color: #fff;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Hero */
+#home-hero {
+  text-align: center;
+  background: none; /* remove fundo verde sólido */
+  color: #333;
+  padding: 2rem 1rem;
+}
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+#home-logo {
+  width: 120px;
+  margin-bottom: 1rem;
+}
+#home-title {
+  font-size: 32px;
+  color: #00994d;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+#home-subtitle {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 2rem;
+  text-align: justify;
+}
+.hero-buttons {
+  margin-top: 1.5rem;
+}
+.hero-buttons .btn-primary,
+.hero-buttons .btn-secondary {
+  padding: 0.8rem 1.5rem;
+  margin: 0.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+}
+.btn-primary {
+  background: #22c55e;
+  color: white;
+}
+.btn-primary:hover {
+  background: #16a34a;
+}
+.btn-secondary {
+  background: white;
+  border: 2px solid #00994d;
+  color: #00994d;
+}
+.btn-secondary:hover {
+  background: #00994d;
+  color: white;
+}
+
+/* Seções */
+#home-about,
+#home-features,
+#home-cta {
+  padding: 2rem 1rem;
+}
+#home-about h2,
+#home-features h2 {
+  color: #00994d;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+#home-about p,
+#home-features p,
+.feature-card p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #666;
+  text-align: justify;
+  margin-bottom: 15px;
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 2rem;
+}
+.feature-card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease-in-out;
+}
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: #00994d;
+}
+.feature-card h3 {
+  color: #00994d;
+  font-size: 20px;
+  margin-bottom: 0.5rem;
+}
+
+/* CTA */
+#home-cta {
+  background: #00994d;
+  color: white;
+  border-radius: 12px;
+  margin: 3rem 0;
+  text-align: center;
+}
+#home-cta p {
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
+.btn-home-cta {
+  background-color: #22c55e;
+  color: white;
+  font-weight: bold;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.2s ease-in-out;
+}
+.btn-home-cta:hover {
+  background-color: #16a34a;
+}
+
+/* ----------------- RESPONSIVIDADE ----------------- */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  #home-page {
+    padding: 15px;
+    max-width: 95%;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr; /* 1 card por linha */
+    gap: 1rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  #home-hero {
+    padding: 1.5rem 1rem;
+  }
+
+  #home-title {
+    font-size: 24px;
+    margin-bottom: 0.8rem;
+  }
+
+  #home-subtitle {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .hero-buttons .btn-primary,
+  .hero-buttons .btn-secondary {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  #home-about,
+  #home-features,
+  #home-cta {
+    padding: 1.5rem 1rem;
+  }
+
+  #home-about h2,
+  #home-features h2,
+  #home-cta h2 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  #home-about p,
+  #home-features p,
+  .feature-card p {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr; /* 1 card por vez */
+    gap: 1rem;
+  }
+
+  .feature-card {
+    padding: 1rem;
+  }
+
+  .feature-card h3 {
+    font-size: 18px;
+  }
+
+  .feature-icon {
+    font-size: 1.8rem;
+  }
+
+  #home-cta {
+    padding: 2rem 1rem;
+    margin: 2rem 0;
+  }
+
+  #home-cta p {
+    font-size: 16px;
+  }
+
+  .btn-home-cta {
+    width: 100%;
+    max-width: 280px;
+    margin: 1rem auto 0;
+    padding: 0.7rem 1.5rem;
+    font-size: 16px;
+  }
+}
+
+/* Smartphones pequenos */
+@media (max-width: 480px) {
+  #home-logo {
+    width: 90px;
+  }
+
+  #home-title {
+    font-size: 20px;
+  }
+
+  #home-subtitle {
+    font-size: 14px;
+  }
+
+  .feature-card h3 {
+    font-size: 16px;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+  }
+
+  #home-cta h2 {
+    font-size: 18px;
+  }
+
+  #home-cta p {
+    font-size: 14px;
+  }
+}
