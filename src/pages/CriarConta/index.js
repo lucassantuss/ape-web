@@ -7,6 +7,7 @@ import Button from "components/Button";
 import Title from "components/Title";
 import Select from "components/Select";
 import useCriacaoConta from "hooks/useCriacaoConta";
+import InputCref from "components/InputCref";
 
 import "./CriarConta.css";
 
@@ -266,39 +267,18 @@ export default function CriarConta() {
                             error={errors.categoriaProf}
                         />
 
-                        <Input
+                        /*IDEIA FUTURA, COMO N TEM API, FAZER WEBSCRAPPING PARA VALIDAR NOME E CREF*/
+
+                        <InputCref
                             label="N° CREF (Conselho Regional de Educação Física)"
                             name="cref"
                             value={formDataPersonal.cref}
                             onChange={handleChange}
                             placeholder="Digite seu número CREF"
-                            maxLength={255}
+                            maxLength={6}
                             error={errors.cref}
-                        />
-
-                        <Input
-                            value={formDataPersonal.categoriaProf}
-                            onChange={handleChange}
-                            maxLength={1}
-                            error={errors.categoriaProf}
-                            disabled
-                        />
-
-                        <div className="input-group">
-                            <input value={formDataPersonal.categoriaProf}
-                                onChange={handleChange}
-                                maxLength={1}
-                                error={errors.categoriaProf}
-                                disabled>
-                            </input>
-                        </div>
-
-                        <Input
-                            value={formDataPersonal.estado}
-                            onChange={handleChange}
-                            maxLength={2}
-                            error={errors.estado}
-                            disabled
+                            categoriaProf={formDataPersonal.categoriaProf}
+                            estado={formDataPersonal.estado}
                         />
 
                         <Button label="Cadastrar Personal" type="submit" />

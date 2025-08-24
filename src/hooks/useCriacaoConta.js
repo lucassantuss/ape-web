@@ -88,9 +88,9 @@ export default function useCriacaoConta() {
     const fetchCategoriaProf = async () => {
         try {
             const categorias = [
-                { value: "G - Graduação em Educação Física", label: "" },
-                { value: "P - Provisório", label: "" },
-                { value: "F - Formação anterior à Lei 9696/98", label: "" },
+                { value: "G", label: "G - Graduação em Educação Física" },
+                { value: "P", label: "P - Provisório" },
+                { value: "F", label: "F - Formação anterior à Lei 9696/98" },
             ];
             debugger;
             setCategoriaProf(categorias);
