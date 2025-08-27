@@ -7,6 +7,8 @@ export default function useMinhaConta() {
   const [editando, setEditando] = useState(false);
   const [showModalExcluir, setShowModalExcluir] = useState(false);
   const [dadosEditados, setDadosEditados] = useState(null);
+  const [estados, setEstados] = useState([]);
+  const [cidades, setCidades] = useState([]);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,6 +19,45 @@ export default function useMinhaConta() {
 
   // define base do endpoint conforme o tipo
   const endpointBase = tipoUsuario?.toLowerCase() === "personal" ? "/Personal" : "/Aluno";
+
+  // Buscar estados via IBGE
+  const fetchEstados = async () => {
+    try {
+      const response = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+      const data = await response.json();
+      const lista = data
+        .map((uf) => ({
+          value: uf.nome,
+          label: uf.nome,
+          id: uf.id,
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
+      setEstados(lista);
+    } catch (err) {
+      console.error("Erro ao buscar estados:", err);
+    }
+  };
+
+  // Buscar cidades do estado selecionado
+  const fetchCidades = async (estadoId) => {
+    try {
+      const response = await fetch(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`
+      );
+      const data = await response.json();
+      const lista = data.map((cidade) => ({
+        value: cidade.nome,
+        label: cidade.nome,
+      }));
+      setCidades(lista);
+    } catch (err) {
+      console.error("Erro ao buscar cidades:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchEstados();
+  }, []);
 
   // Buscar dados do usuário
   useEffect(() => {
@@ -34,6 +75,26 @@ export default function useMinhaConta() {
         if (response.data) {
           const usuario = response.data;
 
+          let estadoSigla = "";
+          let cidadeNome = "";
+
+          if (tipoUsuario === "personal" && usuario.estado) {
+            // procura estado no array do IBGE
+            const estadoObj = estados.find(
+              (uf) => uf.label.toLowerCase() === usuario.estado.toLowerCase());
+
+            if (estadoObj) {
+              estadoSigla = estadoObj.value;
+              // carrega cidades desse estado e já seleciona a correta
+              fetchCidades(estadoObj.id).then(() => {
+                setDadosEditados((prev) => ({
+                  ...prev,
+                  cidade: usuario.cidade || "",
+                }));
+              });
+            }
+          }
+
           setDadosEditados({
             tipo: tipoUsuario,
             nome: usuario.nome || "",
@@ -43,13 +104,13 @@ export default function useMinhaConta() {
             personal:
               tipoUsuario === "aluno"
                 ? {
-                    id: usuario.idPersonal || "",
-                    nomeCompleto: usuario.nomePersonal || "",
-                  }
+                  id: usuario.idPersonal || "",
+                  nomeCompleto: usuario.nomePersonal || "",
+                }
                 : null,
             cref: tipoUsuario === "personal" ? usuario.cref || "" : "",
-            estado: tipoUsuario === "personal" ? usuario.estado || "" : "",
-            cidade: tipoUsuario === "personal" ? usuario.cidade || "" : "",
+            estado: tipoUsuario === "personal" ? estadoSigla : "",
+            cidade: tipoUsuario === "personal" ? cidadeNome : "",
           });
         }
         setError(null);
@@ -61,8 +122,10 @@ export default function useMinhaConta() {
       }
     }
 
-    fetchUsuario();
-  }, [idUser, tipoUsuario, endpointBase]);
+    if (estados.length > 0) {
+      fetchUsuario();
+    }
+  }, [idUser, tipoUsuario, endpointBase, estados]);
 
   // Atualizar os campos conforme o usuário digita
   const handleChange = (e) => {
@@ -73,7 +136,16 @@ export default function useMinhaConta() {
       newValue = formatCPF(newValue);
     }
 
-    if (name.includes(".")) {
+    if (name === "estado") {
+      const estadoObj = estados.find((uf) => uf.value === value);
+      if (estadoObj) fetchCidades(estadoObj.id);
+
+      setDadosEditados((prev) => ({
+        ...prev,
+        estado: value,
+        cidade: "", // reseta cidade quando trocar estado
+      }));
+    } else if (name.includes(".")) {
       const keys = name.split(".");
       setDadosEditados((prev) => ({
         ...prev,
@@ -167,5 +239,7 @@ export default function useMinhaConta() {
     handleExcluirConta,
     loading,
     error,
+    estados,
+    cidades,
   };
 }

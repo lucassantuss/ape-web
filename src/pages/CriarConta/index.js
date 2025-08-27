@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuthentication } from "context/Authentication";
 import Modal from "components/Modal";
 import Input from "components/Input";
@@ -13,7 +13,6 @@ import "./CriarConta.css";
 
 export default function CriarConta() {
     const { userLogged } = useAuthentication();
-    const navigate = useNavigate();
 
     const {
         tipoUsuario,
@@ -156,8 +155,8 @@ export default function CriarConta() {
                             <select
                                 className="selectPersonal"
                                 onChange={handleSelecionado}
-                                defaultValue=""
-                                style={{ margin: "10px 0" }}
+                                value={formDataAluno.idPersonal || ""}
+                                style={{ margin: "0px" }}
                             >
                                 <option value="">Selecione um personal</option>
                                 {personais

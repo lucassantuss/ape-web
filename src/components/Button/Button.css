@@ -26,12 +26,12 @@
 
     .button-group .button-cancel {
         background-color: transparent;
-        color: #00994d;
-        border: 2px solid #00994d;
+        color: red;
+        border: 2px solid red;
     }
 
         .button-group .button-cancel:hover {
-            background-color: #00994d;
+            background-color: red;
             color: white;
         }
 

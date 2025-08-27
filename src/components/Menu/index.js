@@ -6,8 +6,13 @@ import './Menu.css';
 
 export default function Menu() {
     const [menuOpen, setMenuOpen] = useState(false); // Estado para abrir/fechar o menu no modo mobile.
-    const { userLogged, signOut } = useAuthentication(); // Contexto para verificar autenticação e realizar logout.
+    const { signOut } = useAuthentication(); // Contexto para realizar logout.
     const navigate = useNavigate();
+
+    const token = localStorage.getItem("@AuthToken_APE");
+    const tipoUsuario = localStorage.getItem("@UserType_APE"); // "aluno" | "personal"
+
+    const isLogged = !!token;
 
     // Alterna o estado do menu (aberto ou fechado).
     const toggleMenu = () => {
@@ -30,12 +35,12 @@ export default function Menu() {
         <header className="menu-header">
             <nav className="menu-nav">
                 <div className="menu-logo">
-                    {userLogged() ? (
+                    {isLogged ? (
                         <>
-                            <Link to="/exercicio">
+                            <Link to={tipoUsuario === "aluno" ? "/exercicio" : "/relatorio-resultados"}>
                                 <img src="/logo-branca.png" alt="Logo" className="logo-img" />
                             </Link>
-                            <Link to="/exercicio">APE</Link>
+                            <Link to={tipoUsuario === "aluno" ? "/exercicio" : "/relatorio-resultados"}>APE</Link>
                         </>
                     ) : (
                         <>
@@ -53,10 +58,22 @@ export default function Menu() {
 
                 <div className={`menu-items-right ${menuOpen ? "menu-open" : ""}`}>
                     <ul className="menu-links">
-                        {userLogged() ? (
+                        {isLogged ? (
                             <>
-                                <li><Link to="/exercicio" onClick={handleLinkClick}>Exercício</Link></li>
-                                <li><Link to="/relatorio-resultados" onClick={handleLinkClick}>Relatório de Exercícios</Link></li>
+                                {tipoUsuario === "aluno" && (
+                                    <>
+                                        <li><Link to="/exercicio" onClick={handleLinkClick}>Exercício</Link></li>
+                                        <li><Link to="/historico-exercicios" onClick={handleLinkClick}>Histórico</Link></li>
+                                    </>
+                                )}
+
+                                {tipoUsuario === "personal" && (
+                                    <>
+                                        <li><Link to="/alunos" onClick={handleLinkClick}>Alunos</Link></li>
+                                        <li><Link to="/relatorio-resultados" onClick={handleLinkClick}>Relatório</Link></li>
+                                    </>
+                                )}
+
                                 <li><Link to="/minha-conta" onClick={handleLinkClick}>Minha Conta</Link></li>
                                 <li><Link to="/quem-somos" onClick={handleLinkClick}>Quem Somos</Link></li>
                                 <li><Link to="/faq" onClick={handleLinkClick}>FAQ</Link></li>
@@ -70,7 +87,7 @@ export default function Menu() {
                     </ul>
 
                     <div className="menu-login">
-                        {userLogged() ? (
+                        {isLogged ? (
                             <button className="menu-login" onClick={handleLogout}>Sair</button>
                         ) : (
                             <Link to="/login" onClick={handleLinkClick}>Entrar</Link>

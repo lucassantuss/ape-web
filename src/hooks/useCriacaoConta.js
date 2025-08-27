@@ -15,14 +15,7 @@ export default function useCriacaoConta() {
     const [showModal, setShowModal] = useState(false);
     const [pesquisa, setPesquisa] = useState("");
     const [nomePersonal, setNomePersonal] = useState("");
-
-    const personais = [
-        { id: 1, nomeCompleto: "Carlos Silva" },
-        { id: 2, nomeCompleto: "Mariana Costa" },
-        { id: 3, nomeCompleto: "João Moraes" },
-        { id: 4, nomeCompleto: "Amanda Ribeiro" },
-        { id: 5, nomeCompleto: "Pedro Fernandes" },
-    ];
+    const [personais, setPersonais] = useState([]);
 
     const [formDataAluno, setFormDataAluno] = useState({
         nome: "",
@@ -56,7 +49,7 @@ export default function useCriacaoConta() {
             const data = await response.json();
             const lista = data
                 .map((uf) => ({
-                    value: uf.sigla,
+                    value: uf.nome,
                     label: uf.nome,
                     id: uf.id,
                 }))
@@ -92,17 +85,30 @@ export default function useCriacaoConta() {
                 { value: "P", label: "P - Provisório" },
                 { value: "F", label: "F - Formação anterior à Lei 9696/98" },
             ];
-            debugger;
             setCategoriaProf(categorias);
-            console.log(categoriaProf);
         } catch (err) {
             console.error("Erro ao buscar categorias:", err);
+        }
+    };
+
+    // Busca personais via API
+    const fetchPersonais = async () => {
+        try {
+            const response = await api.get("Personal");
+            const lista = response.data.map(p => ({
+                id: p.id,
+                nomeCompleto: p.nome
+            }));
+            setPersonais(lista);
+        } catch (err) {
+            console.error("Erro ao buscar personais:", err);
         }
     };
 
     useEffect(() => {
         fetchEstados();
         fetchCategoriaProf();
+        fetchPersonais();
     }, []);
 
     const handleChange = (e) => {
@@ -135,10 +141,10 @@ export default function useCriacaoConta() {
 
     const handleSelecionado = (event) => {
         const personal = personais.find(
-            (p) => p.id === parseInt(event.target.value)
+            (p) => p.id === event.target.value
         );
         setNomePersonal(personal?.nomeCompleto || "");
-        setFormDataAluno((prev) => ({ ...prev, idPersonal: personal.id }));
+        setFormDataAluno((prev) => ({ ...prev, idPersonal: personal?.id }));
         setShowModal(false);
         setPesquisa("");
     };
@@ -210,7 +216,7 @@ export default function useCriacaoConta() {
                     Senha: formDataAluno.senha,
                     IdPersonal: formDataAluno.idPersonal,
                 };
-                response = await api.post("Aluno/Criar", novoUsuarioDto);
+                response = await api.post("Aluno", novoUsuarioDto);
             } else {
                 novoUsuarioDto = {
                     Nome: formDataPersonal.nome,
@@ -222,7 +228,7 @@ export default function useCriacaoConta() {
                     Estado: formDataPersonal.estado,
                     Cidade: formDataPersonal.cidade,
                 };
-                response = await api.post("Personal/CriarPersonal", novoUsuarioDto);
+                response = await api.post("Personal", novoUsuarioDto);
             }
             if (response.data.resultado) {
                 alert(`Usuário ${tipoUsuario} criado com sucesso!`);

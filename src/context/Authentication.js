@@ -20,11 +20,20 @@ const AuthenticationProvider = ({ children }) => {
     // Função para realizar o login do usuário.
     const signIn = useCallback(async ({ usuario, senha, tipoUsuario }) => {
         try {
+            let endpoint = "";
+            
+            if (tipoUsuario === "aluno") {
+                endpoint = "/login/aluno";
+            } else if (tipoUsuario === "personal") {
+                endpoint = "/login/personal";
+            } else {
+                throw new Error("Tipo de usuário inválido!");
+            }
+            
             // Faz a requisição para a API enviando os dados de login.
-            const response = await api.post("/Login/Entrar", {
-                Usuario: usuario,
-                Senha: senha,
-                TipoUsuario: tipoUsuario
+            const response = await api.post(endpoint, {
+                usuario,
+                senha
             });
 
             // Extrai o token e o ID do usuário da resposta da API.
@@ -42,11 +51,9 @@ const AuthenticationProvider = ({ children }) => {
                 // Define o token no cabeçalho padrão da API para autenticação.
                 api.defaults.headers.authorization = `Bearer ${token}`;
             } else {
-                // Trata a ausência de token na resposta.
                 console.error("Token não encontrado!");
             }
         } catch (error) {
-            // Exibe e lança um erro caso o login falhe.
             throw new Error("Erro no login" + error.message);
         }
     }, []);

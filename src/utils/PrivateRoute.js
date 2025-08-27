@@ -1,4 +1,3 @@
-// utils/PrivateRoute.jsx
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuthentication } from "context/Authentication";
 import { useEffect } from "react";
