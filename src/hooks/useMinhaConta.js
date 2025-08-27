@@ -6,9 +6,13 @@ import { useAuthentication } from "context/Authentication";
 export default function useMinhaConta() {
   const [editando, setEditando] = useState(false);
   const [showModalExcluir, setShowModalExcluir] = useState(false);
+  const [showModalPersonal, setShowModalPersonal] = useState(false);
   const [dadosEditados, setDadosEditados] = useState(null);
   const [estados, setEstados] = useState([]);
   const [cidades, setCidades] = useState([]);
+  const [personais, setPersonais] = useState([]);
+  const [nomePersonal, setNomePersonal] = useState("");
+  const [pesquisa, setPesquisa] = useState("");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -55,8 +59,24 @@ export default function useMinhaConta() {
     }
   };
 
+  // Buscar todos os personais
+  const fetchPersonais = async () => {
+    try {
+      const response = await api.get("/Personal");
+      // Garantir que cada personal tenha { id, nomeCompleto }
+      const lista = response.data.map((p) => ({
+        id: p.id,
+        nomeCompleto: p.nome,
+      }));
+      setPersonais(lista);
+    } catch (err) {
+      console.error("Erro ao buscar personais:", err);
+    }
+  };
+
   useEffect(() => {
     fetchEstados();
+    fetchPersonais();
   }, []);
 
   // Buscar dados do usuário
@@ -74,24 +94,32 @@ export default function useMinhaConta() {
 
         if (response.data) {
           const usuario = response.data;
-
           let estadoSigla = "";
-          let cidadeNome = "";
 
           if (tipoUsuario === "personal" && usuario.estado) {
-            // procura estado no array do IBGE
             const estadoObj = estados.find(
-              (uf) => uf.label.toLowerCase() === usuario.estado.toLowerCase());
+              (uf) => uf.label.toLowerCase() === usuario.estado.toLowerCase()
+            );
 
             if (estadoObj) {
               estadoSigla = estadoObj.value;
-              // carrega cidades desse estado e já seleciona a correta
               fetchCidades(estadoObj.id).then(() => {
                 setDadosEditados((prev) => ({
                   ...prev,
                   cidade: usuario.cidade || "",
                 }));
               });
+            }
+          }
+
+          // Para usuários do tipo ALUNO, buscar personal vinculado
+          let personalSelecionado = null;
+          if (tipoUsuario === "aluno" && usuario.idPersonal) {
+            try {
+              const respPersonal = await api.get(`/Personal/${usuario.idPersonal}`);
+              personalSelecionado = respPersonal.data;
+            } catch (err) {
+              console.warn("Personal vinculado não encontrado:", err);
             }
           }
 
@@ -103,14 +131,13 @@ export default function useMinhaConta() {
             cpf: usuario.cpf || "",
             personal:
               tipoUsuario === "aluno"
-                ? {
-                  id: usuario.idPersonal || "",
-                  nomeCompleto: usuario.nomePersonal || "",
-                }
+                ? personalSelecionado
+                  ? { id: usuario.idPersonal, nomeCompleto: personalSelecionado.nome }
+                  : { id: "", nomeCompleto: "" }
                 : null,
             cref: tipoUsuario === "personal" ? usuario.cref || "" : "",
             estado: tipoUsuario === "personal" ? estadoSigla : "",
-            cidade: tipoUsuario === "personal" ? cidadeNome : "",
+            cidade: tipoUsuario === "personal" ? usuario.cidade || "" : "",
           });
         }
         setError(null);
@@ -159,6 +186,19 @@ export default function useMinhaConta() {
     }
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
+
+  const handleSelecionadoPersonal = (event) => {
+    const personal = personais.find(p => p.id === event.target.value);
+    setNomePersonal(personal?.nomeCompleto || "");
+    setDadosEditados(prev => ({
+      ...prev,
+      personal: { id: personal?.id || "", nomeCompleto: personal?.nomeCompleto || "" }
+    }));
+    setShowModalPersonal(false);
+    setPesquisa("");
+  };
+
+  const handlePesquisaPersonal = (event) => setPesquisa(event.target.value);
 
   // Salvar alterações
   const handleSalvar = async () => {
@@ -232,11 +272,18 @@ export default function useMinhaConta() {
     setEditando,
     showModalExcluir,
     setShowModalExcluir,
+    showModalPersonal,
+    setShowModalPersonal,
     dadosEditados,
     errors,
+    personais,
+    nomePersonal,
+    pesquisa,
     handleChange,
     handleSalvar,
     handleExcluirConta,
+    handleSelecionadoPersonal,
+    handlePesquisaPersonal,
     loading,
     error,
     estados,

@@ -31,8 +31,9 @@ function App() {
             <Route path="/" element={<Home />} /> {/* Página inicial */}
             <Route path="/quem-somos" element={<QuemSomos />} /> {/* Quem Somos */}
             <Route path="/faq" element={<Faq />} /> {/* FAQ */}
-            <Route path="/exercicio" element={<Exercicio />} /> {/* Página de exercícios */}
 
+            <Route path="/exercicio" element={<Exercicio />} /> {/* Página de exercícios */}
+            <Route path="/historico-exercicios" element={<HistoricoExercicio />} /> {/* Página de histórico de exercícios */}
             <Route path="/relatorio-resultados" element={<RelatorioResultados />} /> {/* Página "Relatório de Resultados */}
             <Route path="/minha-conta" element={<MinhaConta />} /> {/* Página "Minha Conta" */}
 

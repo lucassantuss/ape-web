@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { usePoseDetection } from 'hooks/usePoseDetection';
 import VideoCanvas from 'components/VideoCanvas';
 import InfoBox from 'components/InfoBox';
@@ -76,19 +77,71 @@ export default function Exercicio() {
     start
   } = usePoseDetection();
 
+  const [mostrarStatus, setMostrarStatus] = useState(false);
+  const [resultados, setResultados] = useState([]);
+  const [fonteGrande, setFonteGrande] = useState(false);
+
   const exercicioSelecionado = exerciciosInfo[exercise];
+
+  const handleStart = () => {
+    setMostrarStatus(true);
+    start();
+  };
+
+  const handleSalvarResultados = () => {
+    const resultadoAtual = {
+      alunoNome: "Nome do Aluno", // substituir pelo valor real
+      personalId: "ID Personal", // substituir pelo valor real
+      repeticoes: counter,
+      angulo: angle,
+      estagio: stageRef.current,
+      exercicio: exercise,
+    };
+    setResultados(prev => [...prev, resultadoAtual]);
+    alert('Resultados salvos!');
+  };
+
+  const handleLimparResultados = () => {
+    setResultados([]);
+    alert('Resultados atuais limpos!');
+  };
 
   return (
     <div className="container">
-      <InfoBox counter={counter} stage={stageRef.current} angle={angle} />
+      {mostrarStatus && (
+        <InfoBox
+          counter={counter}
+          stage={stageRef.current}
+          angle={angle}
+          fonteGrande={fonteGrande}
+        />
+      )}
+
       <VideoCanvas canvasRef={canvasRef} videoRef={videoRef} />
 
       <SelectExercicio selectedExercise={exercise} onChange={setExercise} />
 
       {!isRunning && (
-        <button className="btn-avaliacao" onClick={start}>
+        <button className="btn-avaliacao" onClick={handleStart}>
           Iniciar Avaliação
         </button>
+      )}
+
+      {mostrarStatus && (
+        <div className="botoes-resultado">
+          <button className="btn-avaliacao" onClick={handleSalvarResultados}>
+            Salvar Resultados
+          </button>
+          <button className="btn-avaliacao" onClick={handleLimparResultados}>
+            Limpar Resultados
+          </button>
+          <button
+            className="btn-avaliacao"
+            onClick={() => setFonteGrande(prev => !prev)}
+          >
+            {fonteGrande ? 'Diminuir Fonte' : 'Aumentar Fonte'}
+          </button>
+        </div>
       )}
 
       {exercicioSelecionado && (

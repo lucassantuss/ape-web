@@ -2,6 +2,7 @@ import useMinhaConta from 'hooks/useMinhaConta';
 import Title from 'components/Title';
 import Input from 'components/Input';
 import Button from 'components/Button';
+import SearchInput from "components/SearchInput";
 import Select from "components/Select";
 import Modal from 'components/Modal';
 import Loading from "components/Loading";
@@ -14,11 +15,18 @@ export default function MinhaConta() {
 		setEditando,
 		showModalExcluir,
 		setShowModalExcluir,
+		showModalPersonal,
+		setShowModalPersonal,
 		dadosEditados,
 		errors,
+		personais,
+		pesquisa,
+		nomePersonal,
 		handleChange,
 		handleSalvar,
 		handleExcluirConta,
+		handleSelecionadoPersonal,
+		handlePesquisaPersonal,
 		loading,
 		error,
 		estados,
@@ -97,14 +105,50 @@ export default function MinhaConta() {
 					<div className="minha-conta-box left">
 						<label>Personal Vinculado:</label>
 						{editando ? (
-							<Input
-								name="personal.nomeCompleto"
-								value={dadosEditados.personal?.nomeCompleto || ""}
-								onChange={handleChange}
-								error={errors.personal}
-							/>
+							<>
+								<SearchInput
+									label=""
+									name="personal"
+									value={dadosEditados.personal?.nomeCompleto || "Nenhum personal vinculado"}
+									onChange={handleChange}
+									placeholder="Pesquise seu personal"
+									maxLength={255}
+									error={errors.personal}
+									onClick={() => setShowModalPersonal(true)}
+									readOnly
+								/>
+
+								<Modal isOpen={showModalPersonal} onClose={() => setShowModalPersonal(false)}>
+									<Input
+										label="Pesquisar Personal"
+										name="personal"
+										value={pesquisa}
+										onChange={handlePesquisaPersonal}
+										placeholder="Digite para buscar personal"
+										maxLength={255}
+										error={errors.personal}
+									/>
+									<select
+										className="selectPersonal"
+										onChange={handleSelecionadoPersonal}
+										value={dadosEditados.personal?.id || ""}
+										style={{ margin: "0px" }}
+									>
+										<option value="">Selecione um personal</option>
+										{personais
+											.filter((p) =>
+												p.nomeCompleto.toLowerCase().includes(pesquisa.toLowerCase())
+											)
+											.map((p) => (
+												<option key={p.id} value={p.id}>
+													{p.nomeCompleto}
+												</option>
+											))}
+									</select>
+								</Modal>
+							</>
 						) : (
-							<p>{dadosEditados.personal?.nomeCompleto}</p>
+							<p>{dadosEditados.personal?.nomeCompleto || "Nenhum personal vinculado"}</p>
 						)}
 					</div>
 				)}
