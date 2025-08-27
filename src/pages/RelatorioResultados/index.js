@@ -69,7 +69,7 @@ const RelatorioResultados = () => {
                         <div className="modal-botoes">
                             <Button label={`Salvar`} onClick={salvarObservacao} />
                             <br />
-                            <Button label={`Cancelar`} onClick={() => setModalAberto(false)} />
+                            <Button label={`Cancelar`} onClick={() => setModalAberto(false)} cancel />
                         </div>
                     </div>
                 </div>

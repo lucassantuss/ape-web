@@ -6,7 +6,13 @@ import { useAuthentication } from "context/Authentication";
 export default function useMinhaConta() {
   const [editando, setEditando] = useState(false);
   const [showModalExcluir, setShowModalExcluir] = useState(false);
+  const [showModalPersonal, setShowModalPersonal] = useState(false);
   const [dadosEditados, setDadosEditados] = useState(null);
+  const [estados, setEstados] = useState([]);
+  const [cidades, setCidades] = useState([]);
+  const [personais, setPersonais] = useState([]);
+  const [nomePersonal, setNomePersonal] = useState("");
+  const [pesquisa, setPesquisa] = useState("");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,6 +23,61 @@ export default function useMinhaConta() {
 
   // define base do endpoint conforme o tipo
   const endpointBase = tipoUsuario?.toLowerCase() === "personal" ? "/Personal" : "/Aluno";
+
+  // Buscar estados via IBGE
+  const fetchEstados = async () => {
+    try {
+      const response = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+      const data = await response.json();
+      const lista = data
+        .map((uf) => ({
+          value: uf.nome,
+          label: uf.nome,
+          id: uf.id,
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
+      setEstados(lista);
+    } catch (err) {
+      console.error("Erro ao buscar estados:", err);
+    }
+  };
+
+  // Buscar cidades do estado selecionado
+  const fetchCidades = async (estadoId) => {
+    try {
+      const response = await fetch(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`
+      );
+      const data = await response.json();
+      const lista = data.map((cidade) => ({
+        value: cidade.nome,
+        label: cidade.nome,
+      }));
+      setCidades(lista);
+    } catch (err) {
+      console.error("Erro ao buscar cidades:", err);
+    }
+  };
+
+  // Buscar todos os personais
+  const fetchPersonais = async () => {
+    try {
+      const response = await api.get("/Personal");
+      // Garantir que cada personal tenha { id, nomeCompleto }
+      const lista = response.data.map((p) => ({
+        id: p.id,
+        nomeCompleto: p.nome,
+      }));
+      setPersonais(lista);
+    } catch (err) {
+      console.error("Erro ao buscar personais:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchEstados();
+    fetchPersonais();
+  }, []);
 
   // Buscar dados do usuário
   useEffect(() => {
@@ -33,6 +94,34 @@ export default function useMinhaConta() {
 
         if (response.data) {
           const usuario = response.data;
+          let estadoSigla = "";
+
+          if (tipoUsuario === "personal" && usuario.estado) {
+            const estadoObj = estados.find(
+              (uf) => uf.label.toLowerCase() === usuario.estado.toLowerCase()
+            );
+
+            if (estadoObj) {
+              estadoSigla = estadoObj.value;
+              fetchCidades(estadoObj.id).then(() => {
+                setDadosEditados((prev) => ({
+                  ...prev,
+                  cidade: usuario.cidade || "",
+                }));
+              });
+            }
+          }
+
+          // Para usuários do tipo ALUNO, buscar personal vinculado
+          let personalSelecionado = null;
+          if (tipoUsuario === "aluno" && usuario.idPersonal) {
+            try {
+              const respPersonal = await api.get(`/Personal/${usuario.idPersonal}`);
+              personalSelecionado = respPersonal.data;
+            } catch (err) {
+              console.warn("Personal vinculado não encontrado:", err);
+            }
+          }
 
           setDadosEditados({
             tipo: tipoUsuario,
@@ -42,13 +131,12 @@ export default function useMinhaConta() {
             cpf: usuario.cpf || "",
             personal:
               tipoUsuario === "aluno"
-                ? {
-                    id: usuario.idPersonal || "",
-                    nomeCompleto: usuario.nomePersonal || "",
-                  }
+                ? personalSelecionado
+                  ? { id: usuario.idPersonal, nomeCompleto: personalSelecionado.nome }
+                  : { id: "", nomeCompleto: "" }
                 : null,
             cref: tipoUsuario === "personal" ? usuario.cref || "" : "",
-            estado: tipoUsuario === "personal" ? usuario.estado || "" : "",
+            estado: tipoUsuario === "personal" ? estadoSigla : "",
             cidade: tipoUsuario === "personal" ? usuario.cidade || "" : "",
           });
         }
@@ -61,8 +149,10 @@ export default function useMinhaConta() {
       }
     }
 
-    fetchUsuario();
-  }, [idUser, tipoUsuario, endpointBase]);
+    if (estados.length > 0) {
+      fetchUsuario();
+    }
+  }, [idUser, tipoUsuario, endpointBase, estados]);
 
   // Atualizar os campos conforme o usuário digita
   const handleChange = (e) => {
@@ -73,7 +163,16 @@ export default function useMinhaConta() {
       newValue = formatCPF(newValue);
     }
 
-    if (name.includes(".")) {
+    if (name === "estado") {
+      const estadoObj = estados.find((uf) => uf.value === value);
+      if (estadoObj) fetchCidades(estadoObj.id);
+
+      setDadosEditados((prev) => ({
+        ...prev,
+        estado: value,
+        cidade: "", // reseta cidade quando trocar estado
+      }));
+    } else if (name.includes(".")) {
       const keys = name.split(".");
       setDadosEditados((prev) => ({
         ...prev,
@@ -87,6 +186,19 @@ export default function useMinhaConta() {
     }
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
+
+  const handleSelecionadoPersonal = (event) => {
+    const personal = personais.find(p => p.id === event.target.value);
+    setNomePersonal(personal?.nomeCompleto || "");
+    setDadosEditados(prev => ({
+      ...prev,
+      personal: { id: personal?.id || "", nomeCompleto: personal?.nomeCompleto || "" }
+    }));
+    setShowModalPersonal(false);
+    setPesquisa("");
+  };
+
+  const handlePesquisaPersonal = (event) => setPesquisa(event.target.value);
 
   // Salvar alterações
   const handleSalvar = async () => {
@@ -160,12 +272,21 @@ export default function useMinhaConta() {
     setEditando,
     showModalExcluir,
     setShowModalExcluir,
+    showModalPersonal,
+    setShowModalPersonal,
     dadosEditados,
     errors,
+    personais,
+    nomePersonal,
+    pesquisa,
     handleChange,
     handleSalvar,
     handleExcluirConta,
+    handleSelecionadoPersonal,
+    handlePesquisaPersonal,
     loading,
     error,
+    estados,
+    cidades,
   };
 }

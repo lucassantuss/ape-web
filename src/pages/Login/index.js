@@ -22,7 +22,6 @@ export default function Login() {
                 else if (tipoUsuario === "personal")
                     window.location.href = "/minha-conta";
             } catch (error) {
-                console.log(error);
                 alert("Login e/ou senha inválidos!");
             }
         },

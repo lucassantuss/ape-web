@@ -2,7 +2,10 @@ import useMinhaConta from 'hooks/useMinhaConta';
 import Title from 'components/Title';
 import Input from 'components/Input';
 import Button from 'components/Button';
+import SearchInput from "components/SearchInput";
+import Select from "components/Select";
 import Modal from 'components/Modal';
+import Loading from "components/Loading";
 
 import './MinhaConta.css';
 
@@ -12,16 +15,25 @@ export default function MinhaConta() {
 		setEditando,
 		showModalExcluir,
 		setShowModalExcluir,
+		showModalPersonal,
+		setShowModalPersonal,
 		dadosEditados,
 		errors,
+		personais,
+		pesquisa,
+		nomePersonal,
 		handleChange,
 		handleSalvar,
 		handleExcluirConta,
+		handleSelecionadoPersonal,
+		handlePesquisaPersonal,
 		loading,
 		error,
+		estados,
+		cidades,
 	} = useMinhaConta();
 
-	if (loading) return <p>Carregando dados...</p>;
+	if (loading) return <Loading />;
 	if (error) return <p>Erro ao carregar dados: {error.message}</p>;
 	if (!dadosEditados) return <p>Usuário não encontrado.</p>;
 
@@ -89,24 +101,60 @@ export default function MinhaConta() {
 				</div>
 
 				{/* Campos específicos do Aluno */}
-				{dadosEditados.tipo === 'personal' && (
+				{dadosEditados.tipo === 'aluno' && (
 					<div className="minha-conta-box left">
-						<label>Personal:</label>
+						<label>Personal Vinculado:</label>
 						{editando ? (
-							<Input
-								name="personal.nomeCompleto"
-								value={dadosEditados.personal?.nomeCompleto || ""}
-								onChange={handleChange}
-								error={errors.personal}
-							/>
+							<>
+								<SearchInput
+									label=""
+									name="personal"
+									value={dadosEditados.personal?.nomeCompleto || "Nenhum personal vinculado"}
+									onChange={handleChange}
+									placeholder="Pesquise seu personal"
+									maxLength={255}
+									error={errors.personal}
+									onClick={() => setShowModalPersonal(true)}
+									readOnly
+								/>
+
+								<Modal isOpen={showModalPersonal} onClose={() => setShowModalPersonal(false)}>
+									<Input
+										label="Pesquisar Personal"
+										name="personal"
+										value={pesquisa}
+										onChange={handlePesquisaPersonal}
+										placeholder="Digite para buscar personal"
+										maxLength={255}
+										error={errors.personal}
+									/>
+									<select
+										className="selectPersonal"
+										onChange={handleSelecionadoPersonal}
+										value={dadosEditados.personal?.id || ""}
+										style={{ margin: "0px" }}
+									>
+										<option value="">Selecione um personal</option>
+										{personais
+											.filter((p) =>
+												p.nomeCompleto.toLowerCase().includes(pesquisa.toLowerCase())
+											)
+											.map((p) => (
+												<option key={p.id} value={p.id}>
+													{p.nomeCompleto}
+												</option>
+											))}
+									</select>
+								</Modal>
+							</>
 						) : (
-							<p>{dadosEditados.personal?.nomeCompleto}</p>
+							<p>{dadosEditados.personal?.nomeCompleto || "Nenhum personal vinculado"}</p>
 						)}
 					</div>
 				)}
 
-				{/* Campos específicos do Personal */}
-				{dadosEditados.tipo === 'aluno' && (
+				{/* Campos específicos do PERSONAL */}
+				{dadosEditados.tipo === "personal" && (
 					<>
 						<div className="minha-conta-box left">
 							<label>N° CREF:</label>
@@ -125,10 +173,12 @@ export default function MinhaConta() {
 						<div className="minha-conta-box right">
 							<label>Estado:</label>
 							{editando ? (
-								<Input
+								<Select
+									label=""
 									name="estado"
 									value={dadosEditados.estado || ""}
 									onChange={handleChange}
+									options={estados}
 									error={errors.estado}
 								/>
 							) : (
@@ -139,10 +189,12 @@ export default function MinhaConta() {
 						<div className="minha-conta-box left">
 							<label>Cidade:</label>
 							{editando ? (
-								<Input
+								<Select
+									label=""
 									name="cidade"
 									value={dadosEditados.cidade || ""}
 									onChange={handleChange}
+									options={cidades}
 									error={errors.cidade}
 								/>
 							) : (
@@ -155,12 +207,19 @@ export default function MinhaConta() {
 
 			<div className="minha-conta-botoes">
 				{editando ? (
-					<Button label="Salvar Alterações" onClick={handleSalvar} />
+					<>
+						<Button label="Salvar Alterações" onClick={handleSalvar} />
+						<br />
+						<Button label="Cancelar" onClick={() => setEditando(false)} cancel />
+					</>
 				) : (
-					<Button label="Alterar Dados" onClick={() => setEditando(true)} />
+					<>
+						<Button label="Alterar Dados" onClick={() => setEditando(true)} />
+						<br />
+						<Button label="Excluir Conta" onClick={() => setShowModalExcluir(true)} cancel />
+					</>
 				)}
-				<br />
-				<Button label="Excluir Conta" onClick={() => setShowModalExcluir(true)} />
+
 			</div>
 
 			<Modal isOpen={showModalExcluir} onClose={() => setShowModalExcluir(false)}>
@@ -169,7 +228,7 @@ export default function MinhaConta() {
 				<div className="minha-conta-modal-botoes">
 					<Button label="Confirmar Exclusão" onClick={handleExcluirConta} />
 					<br />
-					<Button label="Cancelar" onClick={() => setShowModalExcluir(false)} />
+					<Button label="Cancelar" onClick={() => setShowModalExcluir(false)} cancel />
 				</div>
 			</Modal>
 		</div>
