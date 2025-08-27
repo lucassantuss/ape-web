@@ -267,8 +267,6 @@ export default function CriarConta() {
                             error={errors.categoriaProf}
                         />
 
-                        /*IDEIA FUTURA, COMO N TEM API, FAZER WEBSCRAPPING PARA VALIDAR NOME E CREF*/
-
                         <InputCref
                             label="N° CREF (Conselho Regional de Educação Física)"
                             name="cref"

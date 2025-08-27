@@ -212,17 +212,18 @@ export default function useCriacaoConta() {
                 };
                 response = await api.post("Aluno/Criar", novoUsuarioDto);
             } else {
+                var crefCompleto = formDataPersonal.cref + '-' + formDataPersonal.categoriaProf + '/' + formDataPersonal.estado
                 novoUsuarioDto = {
                     Nome: formDataPersonal.nome,
                     Usuario: formDataPersonal.usuario,
                     Senha: formDataPersonal.senha,
                     Email: formDataPersonal.email,
                     CPF: formDataPersonal.cpf,
-                    CREF: formDataPersonal.cref,
+                    CREF: crefCompleto,
                     Estado: formDataPersonal.estado,
                     Cidade: formDataPersonal.cidade,
                 };
-                response = await api.post("Personal/CriarPersonal", novoUsuarioDto);
+                response = await api.post("Personal/Criar", novoUsuarioDto);
             }
             if (response.data.resultado) {
                 alert(`Usuário ${tipoUsuario} criado com sucesso!`);
