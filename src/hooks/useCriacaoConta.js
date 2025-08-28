@@ -217,7 +217,7 @@ export default function useCriacaoConta() {
                     Senha: formDataAluno.senha,
                     IdPersonal: formDataAluno.idPersonal
                 };
-                response = await api.post("Aluno/Criar", novoUsuarioDto);
+                response = await api.post("Aluno", novoUsuarioDto);
             } else {
                 var crefCompleto = formDataPersonal.cref + '-' + formDataPersonal.categoriaProf + '/' + formDataPersonal.estado
                 novoUsuarioDto = {
