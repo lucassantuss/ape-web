@@ -94,7 +94,7 @@ export default function useCriacaoConta() {
     // Busca personais via API
     const fetchPersonais = async () => {
         try {
-            const response = await api.get("Personal/Listar");
+            const response = await api.get("Personal");
             const lista = response.data.map(p => ({
                 id: p.id,
                 nomeCompleto: p.nome
@@ -106,7 +106,6 @@ export default function useCriacaoConta() {
     };
 
     useEffect(() => {
-        console.log("useEffect rodou");
         fetchEstados();
         fetchCategoriaProf();
         fetchPersonais();
@@ -232,7 +231,7 @@ export default function useCriacaoConta() {
                     Estado: formDataPersonal.estado,
                     Cidade: formDataPersonal.cidade
                 };
-                response = await api.post("Personal/Criar", novoUsuarioDto);
+                response = await api.post("Personal", novoUsuarioDto);
             }
             if (response.data.resultado) {
                 alert(`Usuário ${tipoUsuario} criado com sucesso!`);

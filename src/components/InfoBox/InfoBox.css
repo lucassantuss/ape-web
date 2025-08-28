@@ -8,13 +8,13 @@
   text-align: center;
   width: 100%;
   max-width: 400px;
-  font-size: 1.1rem;
+  font-size: 2rem;
   word-wrap: break-word;
 }
 
 @media (max-width: 480px) {
   .info-box {
-    font-size: 1rem;
+    font-size: 2rem;
     padding: 0.75rem;
   }
 }

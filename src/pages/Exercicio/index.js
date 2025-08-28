@@ -79,7 +79,6 @@ export default function Exercicio() {
 
   const [mostrarStatus, setMostrarStatus] = useState(false);
   const [resultados, setResultados] = useState([]);
-  const [fonteGrande, setFonteGrande] = useState(false);
 
   const exercicioSelecionado = exerciciosInfo[exercise];
 
@@ -113,7 +112,6 @@ export default function Exercicio() {
           counter={counter}
           stage={stageRef.current}
           angle={angle}
-          fonteGrande={fonteGrande}
         />
       )}
 
@@ -134,12 +132,6 @@ export default function Exercicio() {
           </button>
           <button className="btn-avaliacao" onClick={handleLimparResultados}>
             Limpar Resultados
-          </button>
-          <button
-            className="btn-avaliacao"
-            onClick={() => setFonteGrande(prev => !prev)}
-          >
-            {fonteGrande ? 'Diminuir Fonte' : 'Aumentar Fonte'}
           </button>
         </div>
       )}
