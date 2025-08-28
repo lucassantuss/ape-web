@@ -205,20 +205,20 @@ export default function useCriacaoConta() {
         e.preventDefault();
         if (!validateForm()) return;
 
+        let novoUsuarioDto;
+        let response;
         try {
-            debugger;
-            let novoUsuarioDto;
-            let response;
             if (tipoUsuario === "aluno") {
                 novoUsuarioDto = {
+                    Id: '',
                     Usuario: formDataAluno.usuario,
                     Nome: formDataAluno.nome,
                     Email: formDataAluno.email,
                     CPF: formDataAluno.cpf,
                     Senha: formDataAluno.senha,
-                    IdPersonal: formDataAluno.idPersonal,
+                    IdPersonal: formDataAluno.idPersonal
                 };
-                response = await api.post("Aluno", novoUsuarioDto);
+                response = await api.post("Aluno/Criar", novoUsuarioDto);
             } else {
                 var crefCompleto = formDataPersonal.cref + '-' + formDataPersonal.categoriaProf + '/' + formDataPersonal.estado
                 novoUsuarioDto = {
@@ -262,7 +262,7 @@ export default function useCriacaoConta() {
                 navigate("/login");
             }
         } catch (error) {
-            alert("Erro ao criar usuário. Tente novamente.");
+            alert(error.response.data.mensagem);
         }
     };
 
