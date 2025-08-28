@@ -49,7 +49,7 @@ export default function useCriacaoConta() {
             const data = await response.json();
             const lista = data
                 .map((uf) => ({
-                    value: uf.nome,
+                    value: uf.sigla,
                     label: uf.nome,
                     id: uf.id,
                 }))
@@ -94,7 +94,7 @@ export default function useCriacaoConta() {
     // Busca personais via API
     const fetchPersonais = async () => {
         try {
-            const response = await api.get("Personal");
+            const response = await api.get("Personal/Listar");
             const lista = response.data.map(p => ({
                 id: p.id,
                 nomeCompleto: p.nome
@@ -106,6 +106,7 @@ export default function useCriacaoConta() {
     };
 
     useEffect(() => {
+        console.log("useEffect rodou");
         fetchEstados();
         fetchCategoriaProf();
         fetchPersonais();
@@ -205,6 +206,7 @@ export default function useCriacaoConta() {
         if (!validateForm()) return;
 
         try {
+            debugger;
             let novoUsuarioDto;
             let response;
             if (tipoUsuario === "aluno") {
@@ -220,14 +222,15 @@ export default function useCriacaoConta() {
             } else {
                 var crefCompleto = formDataPersonal.cref + '-' + formDataPersonal.categoriaProf + '/' + formDataPersonal.estado
                 novoUsuarioDto = {
+                    Id: '',
                     Nome: formDataPersonal.nome,
                     Usuario: formDataPersonal.usuario,
-                    Senha: formDataPersonal.senha,
                     Email: formDataPersonal.email,
+                    Senha: formDataPersonal.senha,
                     CPF: formDataPersonal.cpf,
                     CREF: crefCompleto,
                     Estado: formDataPersonal.estado,
-                    Cidade: formDataPersonal.cidade,
+                    Cidade: formDataPersonal.cidade
                 };
                 response = await api.post("Personal/Criar", novoUsuarioDto);
             }
