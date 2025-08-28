@@ -128,10 +128,9 @@ export function usePoseDetection() {
   };
 
   const start = async () => {
+
     await setupCamera();
-    setCounter(0);
-    stageRef.current = '---';
-    setAngle(0);
+    reset();
 
     const pose = new window.Pose({
       locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
@@ -163,6 +162,12 @@ export function usePoseDetection() {
     setIsRunning(false);
   };
 
+  const reset = () => {
+    setCounter(0);
+    setAngle(0);
+    stageRef.current = '---';
+  };
+
   useEffect(() => {
     return () => {
       stop(); // cleanup
@@ -179,6 +184,7 @@ export function usePoseDetection() {
     exercise,
     setExercise,
     start,
-    stop
+    stop,
+    reset
   };
 }

@@ -12,12 +12,12 @@ export default function SelectExercicio({ selectedExercise, onChange }) {
       >
         <option value="roscaDireta">Rosca Direta</option>
         <option value="meioAgachamento">Meio Agachamento</option>
-        <option value="supinoReto">Supino Reto no Banco</option>
-        <option value="tricepsCorda">Tríceps Corda na Polia Alta</option>
-        <option value="cadeiraFlexora">Cadeira Flexora</option>
-        <option value="levantamentoTerra">Levantamento Terra</option>
-        <option value="agachamentoBulgaro">Agachamento Búlgaro com Halteres</option>
-        <option value="agachamentoSumo">Agachamento Sumô com Halteres</option>
+        <option value="supinoReto">(Não implementado ainda) Supino Reto no Banco</option>
+        <option value="tricepsCorda">(Não implementado ainda) Tríceps Corda na Polia Alta</option>
+        <option value="cadeiraFlexora">(Não implementado ainda) Cadeira Flexora</option>
+        <option value="levantamentoTerra">(Não implementado ainda) Levantamento Terra</option>
+        <option value="agachamentoBulgaro">(Não implementado ainda) Agachamento Búlgaro com Halteres</option>
+        <option value="agachamentoSumo">(Não implementado ainda) Agachamento Sumô com Halteres</option>
       </select>
     </div>
   );

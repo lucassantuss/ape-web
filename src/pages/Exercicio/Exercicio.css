@@ -55,22 +55,17 @@
   line-height: 1.5;
 }
 
-.exercicio-imagens {
+.exercicio-videos {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-  width: 100%;
-  max-width: 700px;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
 }
 
-.exercicio-imagens img {
-  width: 45%;
-  max-width: 250px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 153, 77, 0.3);
-  object-fit: cover;
+.exercicio-videos video {
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 /* Responsividade */
