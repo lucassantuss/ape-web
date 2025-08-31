@@ -16,6 +16,10 @@ export function usePoseDetection() {
     const rafRef = useRef(null);
     const stageRef = useRef('---');
 
+    const pontoVisivel = (landmarks, index) => {
+        return landmarks[index] && landmarks[index].visibility > 0.5;
+    };
+
     const calcularAngulo = (a, b, c) => {
         const radians = Math.atan2(c[1] - b[1], c[0] - b[0]) - Math.atan2(a[1] - b[1], a[0] - b[0]);
         let angulo = Math.abs(radians * 180.0 / Math.PI);
@@ -38,6 +42,12 @@ export function usePoseDetection() {
         let anguloDireito = 0;
 
         if (exercise === 'roscaDireta') {
+            if (!pontoVisivel(landmarks, lmk.LEFT_SHOULDER) ||
+                !pontoVisivel(landmarks, lmk.LEFT_ELBOW) ||
+                !pontoVisivel(landmarks, lmk.LEFT_WRIST)) {
+                return; // não calcula se pontos não estiverem visíveis
+            }
+
             const ls = valorPoseLandmark(landmarks, lmk.LEFT_SHOULDER);
             const le = valorPoseLandmark(landmarks, lmk.LEFT_ELBOW);
             const lw = valorPoseLandmark(landmarks, lmk.LEFT_WRIST);
@@ -61,6 +71,15 @@ export function usePoseDetection() {
         }
 
         if (exercise === 'meioAgachamento') {
+            if (!pontoVisivel(landmarks, lmk.LEFT_HIP) ||
+                !pontoVisivel(landmarks, lmk.LEFT_KNEE) ||
+                !pontoVisivel(landmarks, lmk.LEFT_ANKLE) ||
+                !pontoVisivel(landmarks, lmk.RIGHT_HIP) ||
+                !pontoVisivel(landmarks, lmk.RIGHT_KNEE) ||
+                !pontoVisivel(landmarks, lmk.RIGHT_ANKLE)) {
+                return; // não calcula se pontos não estiverem visíveis
+            }
+
             const lh = valorPoseLandmark(landmarks, lmk.LEFT_HIP);
             const lk = valorPoseLandmark(landmarks, lmk.LEFT_KNEE);
             const la = valorPoseLandmark(landmarks, lmk.LEFT_ANKLE);
@@ -134,7 +153,7 @@ export function usePoseDetection() {
         reset();
 
         const pose = new window.Pose({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
         });
 
         pose.setOptions({
@@ -183,11 +202,11 @@ export function usePoseDetection() {
         angle,
         isRunning,
         exercise,
+        showModal,
+        setShowModal,
         setExercise,
         start,
         stop,
         reset,
-        setShowModal,
-        showModal
     };
 }

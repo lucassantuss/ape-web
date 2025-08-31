@@ -18,9 +18,9 @@ export default function Login() {
             try {
                 await signIn({ usuario: usuario, senha: senha, tipoUsuario: tipoUsuario });
                 if (tipoUsuario == "aluno")
-                    window.location.href = "/minha-conta";
+                    window.location.href = "/exercicio";
                 else if (tipoUsuario === "personal")
-                    window.location.href = "/minha-conta";
+                    window.location.href = "/historico-exercicios";
             } catch (error) {
                 alert("Login e/ou senha inválidos!");
             }

@@ -49,7 +49,8 @@
   font-size: 1.3rem;
 }
 
-.exercicio-descricao p {
+.exercicio-descricao p,
+.exercicio-descricao ul li {
   font-size: 1rem;
   color: #333;
   line-height: 1.5;

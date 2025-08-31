@@ -91,11 +91,11 @@ export default function Exercicio() {
         angle,
         isRunning,
         exercise,
+        showModal,
+        setShowModal,
         setExercise,
         start,
         reset,
-        setShowModal,
-        showModal
     } = usePoseDetection();
 
     const [mostrarStatus, setMostrarStatus] = useState(false);
@@ -161,7 +161,7 @@ export default function Exercicio() {
                 <div style={{ textAlign: "center" }}>
                     <label style={{ color: "#00994d", fontSize: "100px", fontWeight: "bold" }}>{contador}</label>
                 </div>
-                
+
             </Modal>
 
             <VideoCanvas canvasRef={canvasRef} videoRef={videoRef} />
@@ -211,6 +211,17 @@ export default function Exercicio() {
                     )}
                 </>
             )}
+
+            {/* <div className="exercicio-descricao">
+                <h3>Histórico</h3>
+                <ul>
+                    {logs.map((log, idx) => (
+                        <li key={idx}>
+                            [{log.hora}] {log.status} - Rep {log.repeticao}
+                        </li>
+                    ))}
+                </ul>
+            </div> */}
         </div>
     );
 }
