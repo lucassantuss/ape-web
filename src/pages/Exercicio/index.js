@@ -26,7 +26,7 @@ const exerciciosInfo = {
             "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-low-bar-squat-front.mp4"
         ]
     },
-    supinoReto: {
+    supinoRetoBanco: {
         nome: "Supino Reto no Banco",
         descricao: "Trabalha o peitoral, ombros e tríceps. Execute deitado no banco, empurrando a barra para cima e controlando na descida.",
         execucao: "https://musclewiki.com/pt-br/exercise/barbell/male/chest/barbell-bench-press",

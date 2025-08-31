@@ -19,20 +19,21 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     // Landmarks
     const lmks = {
-        'LEFT_SHOULDER': 11,
-        // 'RIGHT_SHOULDER': 12,
-        'LEFT_ELBOW': 13,
-        // 'RIGHT_ELBOW': 14,
-        'LEFT_WRIST': 15,
-        // 'RIGHT_WRIST': 16,
-        'LEFT_HIP': 24,
+        // Membros superiores
+        'RIGHT_SHOULDER': 11,
+        'LEFT_SHOULDER': 12,
+        'RIGHT_ELBOW': 13,
+        'LEFT_ELBOW': 14,
+        'RIGHT_WRIST': 15,
+        'LEFT_WRIST': 16,
+
+        // Membros inferiores
         'RIGHT_HIP': 23,
-        'LEFT_KNEE': 26,
+        'LEFT_HIP': 24,
         'RIGHT_KNEE': 25,
-        'LEFT_ANKLE': 28,
+        'LEFT_KNEE': 26,
         'RIGHT_ANKLE': 27,
-        // todo analisar o numero dos pontos certinho depois
-        // adicionar outros conforme necessário
+        'LEFT_ANKLE': 28
     };
 
     const exercicios = {
@@ -50,7 +51,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angulo > 145) stageRef.current = 'baixo';
                 if (angulo < 30 && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
-                    setCounter(prev => prev + 1);
+                    incrementarContador(setCounter, stop, handleSalvarResultados);
                 }
 
                 return angulo;
@@ -76,7 +77,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= 170 && angDir >= 170) stageRef.current = 'baixo';
                 if (angEsq <= 100 && angDir <= 100 && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
-                    setCounter(prev => prev + 1);
+                    incrementarContador(setCounter, stop, handleSalvarResultados);
                 }
 
                 return { angEsq, angDir, media };
@@ -92,6 +93,90 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 canvasCtx.fillText(`${angulos.angDir.toFixed(2)}°`, rKnee.x * canvasElement.width + 10, rKnee.y * canvasElement.height - 10);
             }
         },
+
+        supinoRetoBanco: {
+            pontos: ['LEFT_SHOULDER', 'LEFT_ELBOW', 'LEFT_WRIST', 'RIGHT_SHOULDER', 'RIGHT_ELBOW', 'RIGHT_WRIST'],
+            calcular: (landmarks, stageRef, setCounter) => {
+                const [ls, le, lw, rs, re, rw] = [12, 14, 16, 11, 13, 15].map(i => [landmarks[i].x, landmarks[i].y]);
+                const angEsq = calcularAngulo(ls, le, lw);
+                const angDir = calcularAngulo(rs, re, rw);
+                const media = (angEsq + angDir) / 2;
+
+                if (angEsq >= 90 && angDir >= 90) stageRef.current = 'baixo';
+                if (angEsq <= 0 && angDir <= 0 && stageRef.current === 'baixo') {
+                    stageRef.current = 'cima';
+                    incrementarContador(setCounter, stop, handleSalvarResultados);
+                }
+
+                return { angEsq, angDir, media };
+            },
+            desenhar: (canvasCtx, canvasElement, landmarks, angulos) => {
+                canvasCtx.font = '40px Arial';
+                canvasCtx.fillStyle = '#00FF00';
+
+                const lElbow = landmarks[14];
+                canvasCtx.fillText(`${angulos.angEsq.toFixed(2)}°`, lElbow.x * canvasElement.width + 10, lElbow.y * canvasElement.height - 10);
+
+                const rElbow = landmarks[13];
+                canvasCtx.fillText(`${angulos.angDir.toFixed(2)}°`, rElbow.x * canvasElement.width + 10, rElbow.y * canvasElement.height - 10);
+            }
+        },
+
+        tricepsCordaPoliaAlta: {
+            pontos: ['LEFT_WRIST', 'LEFT_ELBOW', 'LEFT_SHOULDER', 'RIGHT_WRIST', 'RIGHT_ELBOW', 'RIGHT_SHOULDER'],
+            calcular: (landmarks, stageRef, setCounter) => {
+                const [lw, le, ls, rw, re, rs] = [15, 13, 11, 16, 14, 12].map(i => [landmarks[i].x, landmarks[i].y]);
+                const angEsq = calcularAngulo(ls, le, lw);
+                const angDir = calcularAngulo(rs, re, rw);
+                const media = (angEsq + angDir) / 2;
+
+                if (angEsq <= 160 && angDir <= 160) stageRef.current = 'cima';
+                if (angEsq >= 175 && angDir >= 175 && stageRef.current === 'cima') {
+                    stageRef.current = 'baixo';
+                    incrementarContador(setCounter, stop, handleSalvarResultados);
+                }
+
+                return { angEsq, angDir, media };
+            },
+            desenhar: (canvasCtx, canvasElement, landmarks, angulos) => {
+                canvasCtx.font = '40px Arial';
+                canvasCtx.fillStyle = '#FFD700';
+
+                const lElbow = landmarks[13];
+                canvasCtx.fillText(`${angulos.angEsq.toFixed(2)}°`, lElbow.x * canvasElement.width + 10, lElbow.y * canvasElement.height - 10);
+
+                const rElbow = landmarks[14];
+                canvasCtx.fillText(`${angulos.angDir.toFixed(2)}°`, rElbow.x * canvasElement.width + 10, rElbow.y * canvasElement.height - 10);
+            }
+        },
+
+        cadeiraFlexora: {
+            pontos: ['LEFT_HIP', 'LEFT_KNEE', 'LEFT_ANKLE', 'RIGHT_HIP', 'RIGHT_KNEE', 'RIGHT_ANKLE'],
+            calcular: (landmarks, stageRef, setCounter) => {
+                const [lh, lk, la, rh, rk, ra] = [23, 25, 27, 24, 26, 28].map(i => [landmarks[i].x, landmarks[i].y]);
+                const angEsq = calcularAngulo(lh, lk, la);
+                const angDir = calcularAngulo(rh, rk, ra);
+                const media = (angEsq + angDir) / 2;
+
+                if (angEsq >= 170 && angDir >= 170) stageRef.current = 'estendido';
+                if (angEsq <= 90 && angDir <= 90 && stageRef.current === 'estendido') {
+                    stageRef.current = 'flexionado';
+                    incrementarContador(setCounter, stop, handleSalvarResultados);
+                }
+
+                return { angEsq, angDir, media };
+            },
+            desenhar: (canvasCtx, canvasElement, landmarks, angulos) => {
+                canvasCtx.font = '40px Arial';
+                canvasCtx.fillStyle = '#FF4500';
+
+                const lKnee = landmarks[25];
+                canvasCtx.fillText(`${angulos.angEsq.toFixed(2)}°`, lKnee.x * canvasElement.width + 10, lKnee.y * canvasElement.height - 10);
+
+                const rKnee = landmarks[26];
+                canvasCtx.fillText(`${angulos.angDir.toFixed(2)}°`, rKnee.x * canvasElement.width + 10, rKnee.y * canvasElement.height - 10);
+            }
+        }
 
         // Adicionar novos exercícios abaixo no mesmo padrão...
     };
@@ -151,6 +236,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     const start = async () => {
         await setupCamera();
+
+        iniciarTimer();
+
         reset();
 
         const pose = new window.Pose({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}` });
@@ -180,19 +268,18 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     };
 
     const handleStart = () => {
-        setShowModal(true);
-        setContador(5);
-        iniciarTimer();
+        start();
     };
 
     const iniciarTimer = () => {
+        setShowModal(true);
+        setContador(5);
         let timer = setInterval(() => {
             setContador(prev => {
                 if (prev <= 1) {
                     clearInterval(timer);
                     setShowModal(false);
                     setMostrarStatus(true);
-                    start();
                     return 0;
                 }
                 return prev - 1;
@@ -220,6 +307,18 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         setResultados([]);
         alert('Resultados atuais limpos!');
     };
+
+    const incrementarContador = (setCounter, stop, handleSalvarResultados) => {
+        setCounter(prev => {
+            const novoValor = prev + 1;
+            if (novoValor === 10) {
+                stop();
+                handleSalvarResultados();
+            }
+            return novoValor;
+        });
+    };
+
 
     useEffect(() => {
         return () => stop();
