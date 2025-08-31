@@ -1,190 +1,194 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { Pose } from "@mediapipe/pose";
 
 export function usePoseDetection() {
-  const canvasRef = useRef(null);
-  const videoRef = useRef(null);
+    const canvasRef = useRef(null);
+    const videoRef = useRef(null);
 
-  const [counter, setCounter] = useState(0);
-  const [angle, setAngle] = useState(0);
+    const [counter, setCounter] = useState(0);
+    const [angle, setAngle] = useState(0);
 
-  const [isRunning, setIsRunning] = useState(false);
-  const [exercise, setExercise] = useState('roscaDireta');
+    const [isRunning, setIsRunning] = useState(false);
+    const [exercise, setExercise] = useState('roscaDireta');
 
-  const poseRef = useRef(null);
-  const rafRef = useRef(null);
-  const stageRef = useRef('---');
+    const [showModal, setShowModal] = useState(false);
 
-  const calcularAngulo = (a, b, c) => {
-    const radians = Math.atan2(c[1] - b[1], c[0] - b[0]) - Math.atan2(a[1] - b[1], a[0] - b[0]);
-    let angulo = Math.abs(radians * 180.0 / Math.PI);
-    return angulo > 180 ? 360 - angulo : angulo;
-  };
+    const poseRef = useRef(null);
+    const rafRef = useRef(null);
+    const stageRef = useRef('---');
 
-  const valorPoseLandmark = (landmarks, index) => {
-    if (!landmarks || landmarks.length <= index) return [0, 0];
-    return [landmarks[index].x, landmarks[index].y];
-  };
-
-  const analisarExercicio = (landmarks, canvasCtx, canvasElement) => {
-    const lmk = {
-      LEFT_SHOULDER: 11, LEFT_ELBOW: 13, LEFT_WRIST: 15,
-      LEFT_HIP: 24, LEFT_KNEE: 26, LEFT_ANKLE: 28,
-      RIGHT_HIP: 23, RIGHT_KNEE: 25, RIGHT_ANKLE: 27
+    const calcularAngulo = (a, b, c) => {
+        const radians = Math.atan2(c[1] - b[1], c[0] - b[0]) - Math.atan2(a[1] - b[1], a[0] - b[0]);
+        let angulo = Math.abs(radians * 180.0 / Math.PI);
+        return angulo > 180 ? 360 - angulo : angulo;
     };
 
-    let anguloEsquerdo = 0;
-    let anguloDireito = 0;
+    const valorPoseLandmark = (landmarks, index) => {
+        if (!landmarks || landmarks.length <= index) return [0, 0];
+        return [landmarks[index].x, landmarks[index].y];
+    };
 
-    if (exercise === 'roscaDireta') {
-      const ls = valorPoseLandmark(landmarks, lmk.LEFT_SHOULDER);
-      const le = valorPoseLandmark(landmarks, lmk.LEFT_ELBOW);
-      const lw = valorPoseLandmark(landmarks, lmk.LEFT_WRIST);
+    const analisarExercicio = (landmarks, canvasCtx, canvasElement) => {
+        const lmk = {
+            LEFT_SHOULDER: 11, LEFT_ELBOW: 13, LEFT_WRIST: 15,
+            LEFT_HIP: 24, LEFT_KNEE: 26, LEFT_ANKLE: 28,
+            RIGHT_HIP: 23, RIGHT_KNEE: 25, RIGHT_ANKLE: 27
+        };
 
-      anguloEsquerdo = calcularAngulo(ls, le, lw);
-      setAngle(anguloEsquerdo);
+        let anguloEsquerdo = 0;
+        let anguloDireito = 0;
 
-      if (anguloEsquerdo > 145) stageRef.current = 'baixo';
-      if (anguloEsquerdo < 30 && stageRef.current === 'baixo') {
-        stageRef.current = 'cima';
-        setCounter((prev) => prev + 1);
-      }
+        if (exercise === 'roscaDireta') {
+            const ls = valorPoseLandmark(landmarks, lmk.LEFT_SHOULDER);
+            const le = valorPoseLandmark(landmarks, lmk.LEFT_ELBOW);
+            const lw = valorPoseLandmark(landmarks, lmk.LEFT_WRIST);
 
-      const elbow = landmarks[lmk.LEFT_ELBOW];
-      const x = elbow.x * canvasElement.width + 10;
-      const y = elbow.y * canvasElement.height - 10;
+            anguloEsquerdo = calcularAngulo(ls, le, lw);
+            setAngle(anguloEsquerdo);
 
-      canvasCtx.font = '40px Arial';
-      canvasCtx.fillStyle = '#00FF00';
-      canvasCtx.fillText(`${anguloEsquerdo.toFixed(2)}°`, x, y);
-    }
+            if (anguloEsquerdo > 145) stageRef.current = 'baixo';
+            if (anguloEsquerdo < 30 && stageRef.current === 'baixo') {
+                stageRef.current = 'cima';
+                setCounter((prev) => prev + 1);
+            }
 
-    if (exercise === 'meioAgachamento') {
-      const lh = valorPoseLandmark(landmarks, lmk.LEFT_HIP);
-      const lk = valorPoseLandmark(landmarks, lmk.LEFT_KNEE);
-      const la = valorPoseLandmark(landmarks, lmk.LEFT_ANKLE);
+            const elbow = landmarks[lmk.LEFT_ELBOW];
+            const x = elbow.x * canvasElement.width + 10;
+            const y = elbow.y * canvasElement.height - 10;
 
-      const rh = valorPoseLandmark(landmarks, lmk.RIGHT_HIP);
-      const rk = valorPoseLandmark(landmarks, lmk.RIGHT_KNEE);
-      const ra = valorPoseLandmark(landmarks, lmk.RIGHT_ANKLE);
+            canvasCtx.font = '40px Arial';
+            canvasCtx.fillStyle = '#00FF00';
+            canvasCtx.fillText(`${anguloEsquerdo.toFixed(2)}°`, x, y);
+        }
 
-      anguloEsquerdo = calcularAngulo(lh, lk, la);
-      anguloDireito = calcularAngulo(rh, rk, ra);
+        if (exercise === 'meioAgachamento') {
+            const lh = valorPoseLandmark(landmarks, lmk.LEFT_HIP);
+            const lk = valorPoseLandmark(landmarks, lmk.LEFT_KNEE);
+            const la = valorPoseLandmark(landmarks, lmk.LEFT_ANKLE);
 
-      const media = (anguloEsquerdo + anguloDireito) / 2;
-      setAngle(media);
+            const rh = valorPoseLandmark(landmarks, lmk.RIGHT_HIP);
+            const rk = valorPoseLandmark(landmarks, lmk.RIGHT_KNEE);
+            const ra = valorPoseLandmark(landmarks, lmk.RIGHT_ANKLE);
 
-      if (anguloEsquerdo >= 170 && anguloDireito >= 170) stageRef.current = 'baixo';
-      if (anguloEsquerdo <= 100 && anguloDireito <= 100 && stageRef.current === 'baixo') {
-        stageRef.current = 'cima';
-        setCounter((prev) => prev + 1);
-      }
+            anguloEsquerdo = calcularAngulo(lh, lk, la);
+            anguloDireito = calcularAngulo(rh, rk, ra);
 
-      canvasCtx.font = '40px Arial';
-      canvasCtx.fillStyle = '#00FF00';
+            const media = (anguloEsquerdo + anguloDireito) / 2;
+            setAngle(media);
 
-      const lKnee = landmarks[lmk.LEFT_KNEE];
-      canvasCtx.fillText(`${anguloEsquerdo.toFixed(2)}°`, lKnee.x * canvasElement.width + 10, lKnee.y * canvasElement.height - 10);
+            if (anguloEsquerdo >= 170 && anguloDireito >= 170) stageRef.current = 'baixo';
+            if (anguloEsquerdo <= 100 && anguloDireito <= 100 && stageRef.current === 'baixo') {
+                stageRef.current = 'cima';
+                setCounter((prev) => prev + 1);
+            }
 
-      const rKnee = landmarks[lmk.RIGHT_KNEE];
-      canvasCtx.fillText(`${anguloDireito.toFixed(2)}°`, rKnee.x * canvasElement.width + 10, rKnee.y * canvasElement.height - 10);
-    }
-  };
+            canvasCtx.font = '40px Arial';
+            canvasCtx.fillStyle = '#00FF00';
 
-  const onResults = useCallback((results) => {
-    const canvasElement = canvasRef.current;
-    const canvasCtx = canvasElement.getContext('2d');
+            const lKnee = landmarks[lmk.LEFT_KNEE];
+            canvasCtx.fillText(`${anguloEsquerdo.toFixed(2)}°`, lKnee.x * canvasElement.width + 10, lKnee.y * canvasElement.height - 10);
 
-    canvasCtx.save();
-    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+            const rKnee = landmarks[lmk.RIGHT_KNEE];
+            canvasCtx.fillText(`${anguloDireito.toFixed(2)}°`, rKnee.x * canvasElement.width + 10, rKnee.y * canvasElement.height - 10);
+        }
+    };
 
-    if (results.poseLandmarks) {
-      window.drawConnectors(canvasCtx, results.poseLandmarks, window.POSE_CONNECTIONS, { color: '#0051ff', lineWidth: 4 });
-      window.drawLandmarks(canvasCtx, results.poseLandmarks, { color: '#FF0000', lineWidth: 4 });
-      analisarExercicio(results.poseLandmarks, canvasCtx, canvasElement);
-    }
+    const onResults = useCallback((results) => {
+        const canvasElement = canvasRef.current;
+        const canvasCtx = canvasElement.getContext('2d');
 
-    canvasCtx.restore();
-  }, [exercise, stageRef, analisarExercicio]);
+        canvasCtx.save();
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
-  const setupCamera = async () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
+        if (results.poseLandmarks) {
+            window.drawConnectors(canvasCtx, results.poseLandmarks, window.POSE_CONNECTIONS, { color: '#0051ff', lineWidth: 4 });
+            window.drawLandmarks(canvasCtx, results.poseLandmarks, { color: '#FF0000', lineWidth: 4 });
+            analisarExercicio(results.poseLandmarks, canvasCtx, canvasElement);
+        }
 
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: 'user',
-        width: { ideal: window.innerWidth },
-        height: { ideal: window.innerHeight }
-      },
-      audio: false
-    });
+        canvasCtx.restore();
+    }, [exercise, stageRef, analisarExercicio]);
 
-    video.srcObject = stream;
-    await video.play().catch(console.error);
+    const setupCamera = async () => {
+        const video = videoRef.current;
+        const canvas = canvasRef.current;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  };
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: 'user',
+                width: { ideal: window.innerWidth },
+                height: { ideal: window.innerHeight }
+            },
+            audio: false
+        });
 
-  const start = async () => {
+        video.srcObject = stream;
+        await video.play().catch(console.error);
 
-    await setupCamera();
-    reset();
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    };
 
-    const pose = new window.Pose({
+    const start = async () => {
+        await setupCamera();
+        reset();
+
+        const pose = new window.Pose({
       locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
-    });
+        });
 
-    pose.setOptions({
-      modelComplexity: 1,
-      smoothLandmarks: true,
-      minDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5
-    });
+        pose.setOptions({
+            modelComplexity: 1,
+            smoothLandmarks: true,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        });
 
-    pose.onResults(onResults);
-    poseRef.current = pose;
+        pose.onResults(onResults);
+        poseRef.current = pose;
 
-    const detect = async () => {
-      await pose.send({ image: videoRef.current });
-      rafRef.current = requestAnimationFrame(detect);
+        const detect = async () => {
+            await pose.send({ image: videoRef.current });
+            rafRef.current = requestAnimationFrame(detect);
+        };
+
+        detect();
+        setIsRunning(true);
     };
 
-    detect();
-    setIsRunning(true);
-  };
-
-  const stop = () => {
-    cancelAnimationFrame(rafRef.current);
-    poseRef.current?.close();
-    poseRef.current = null;
-    setIsRunning(false);
-  };
-
-  const reset = () => {
-    setCounter(0);
-    setAngle(0);
-    stageRef.current = '---';
-  };
-
-  useEffect(() => {
-    return () => {
-      stop(); // cleanup
+    const stop = () => {
+        cancelAnimationFrame(rafRef.current);
+        poseRef.current?.close();
+        poseRef.current = null;
+        setIsRunning(false);
     };
-  }, []);
 
-  return {
-    canvasRef,
-    videoRef,
-    stageRef,
-    counter,
-    angle,
-    isRunning,
-    exercise,
-    setExercise,
-    start,
-    stop,
-    reset
-  };
+    const reset = () => {
+        setCounter(0);
+        setAngle(0);
+        stageRef.current = '---';
+    };
+
+    useEffect(() => {
+        return () => {
+            stop(); // cleanup
+        };
+    }, []);
+
+    return {
+        canvasRef,
+        videoRef,
+        stageRef,
+        counter,
+        angle,
+        isRunning,
+        exercise,
+        setExercise,
+        start,
+        stop,
+        reset,
+        setShowModal,
+        showModal
+    };
 }
