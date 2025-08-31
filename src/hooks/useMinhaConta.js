@@ -18,11 +18,19 @@ export default function useMinhaConta() {
     const [error, setError] = useState(null);
     const { signOut } = useAuthentication();
 
+    const [showModalInfo, setShowModalInfo] = useState(false);
+    const [modalInfoMessage, setModalInfoMessage] = useState("");
+
     const idUser = localStorage.getItem("@IdUser_APE");
     const tipoUsuario = localStorage.getItem("@UserType_APE"); // "aluno" | "personal"
 
     // define base do endpoint conforme o tipo
     const endpointBase = tipoUsuario?.toLowerCase() === "personal" ? "/Personal" : "/Aluno";
+
+    const exibirModalInfo = (mensagem) => {
+        setModalInfoMessage(mensagem);
+        setShowModalInfo(true);
+    };
 
     // Buscar estados via IBGE
     const fetchEstados = async () => {
@@ -243,11 +251,11 @@ export default function useMinhaConta() {
 
             await api.put(`${endpointBase}/${idUser}`, payload);
 
-            alert("Dados atualizados com sucesso!");
+            exibirModalInfo("Dados atualizados com sucesso!");
             setEditando(false);
         } catch (err) {
             console.error("Erro ao salvar alterações:", err);
-            alert("Não foi possível salvar as alterações. Tente novamente.");
+            exibirModalInfo("Não foi possível salvar as alterações. Tente novamente.");
         } finally {
             setLoading(false);
         }
@@ -268,7 +276,7 @@ export default function useMinhaConta() {
             window.location.href = "/";
         } catch (err) {
             console.error("Erro ao excluir conta:", err);
-            alert("Não foi possível excluir a conta. Tente novamente.");
+            exibirModalInfo("Não foi possível excluir a conta. Tente novamente.");
         }
     };
 
@@ -284,6 +292,9 @@ export default function useMinhaConta() {
         personais,
         nomePersonal,
         pesquisa,
+        modalInfoMessage,
+        showModalInfo,
+        setShowModalInfo,
         handleChange,
         handleSalvar,
         handleExcluirConta,

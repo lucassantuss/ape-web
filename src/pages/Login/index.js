@@ -1,36 +1,23 @@
-import { useCallback, useEffect, useState } from "react";
-import { useAuthentication } from "context/Authentication";
 import { Link } from "react-router-dom";
-
+import Modal from "components/Modal";
+import Input from "components/Input";
+import Button from "components/Button";
+import useLogin from "hooks/useLogin";
 import './Login.css';
 
 export default function Login() {
-
-    const { signIn } = useAuthentication();
-
-    const [usuario, setUsuario] = useState("");
-    const [senha, setSenha] = useState("");
-    const [tipoUsuario, setTipoUsuario] = useState("aluno");
-
-    const handleSubmit = useCallback(
-        async (event) => {
-            event.preventDefault();
-            try {
-                await signIn({ usuario: usuario, senha: senha, tipoUsuario: tipoUsuario });
-                if (tipoUsuario == "aluno")
-                    window.location.href = "/exercicio";
-                else if (tipoUsuario === "personal")
-                    window.location.href = "/historico-exercicios";
-            } catch (error) {
-                alert("Login e/ou senha inválidos!");
-            }
-        },
-        [usuario, senha, tipoUsuario, signIn]
-    );
-
-    useEffect(() => {
-        localStorage.removeItem("@AuthToken_APE");
-    }, []);
+    const {
+        usuario,
+        setUsuario,
+        senha,
+        setSenha,
+        tipoUsuario,
+        setTipoUsuario,
+        handleSubmit,
+        showModalInfo,
+        setShowModalInfo,
+        modalInfoMessage
+    } = useLogin();
 
     return (
         <div className="login-container">
@@ -46,19 +33,14 @@ export default function Login() {
                         <button
                             type="button"
                             className={tipoUsuario === "aluno" ? "tab active" : "tab"}
-                            onClick={() => {
-                                setTipoUsuario("aluno");
-                            }}
-
+                            onClick={() => setTipoUsuario("aluno")}
                         >
                             Aluno
                         </button>
                         <button
                             type="button"
                             className={tipoUsuario === "personal" ? "tab active" : "tab"}
-                            onClick={() => {
-                                setTipoUsuario("personal");
-                            }}
+                            onClick={() => setTipoUsuario("personal")}
                         >
                             Personal Trainer
                         </button>
@@ -66,21 +48,23 @@ export default function Login() {
 
                     <div className="login-input-group">
                         <label htmlFor="user">Usuário</label>
-                        <input
+                        <Input
                             type="text"
                             id="user"
                             placeholder="Digite o usuário"
-                            onChange={(event) => setUsuario(event.target.value)}
+                            value={usuario}
+                            onChange={e => setUsuario(e.target.value)}
                             required
                         />
                     </div>
                     <div className="login-input-group">
                         <label htmlFor="password">Senha</label>
-                        <input
+                        <Input
                             type="password"
                             id="password"
                             placeholder="Digite a senha"
-                            onChange={(event) => setSenha(event.target.value)}
+                            value={senha}
+                            onChange={e => setSenha(e.target.value)}
                             required
                         />
                     </div>
@@ -89,6 +73,14 @@ export default function Login() {
 
                 <Link to="/criar-conta" className="login-create-account">Criar conta</Link>
             </div>
+
+            <Modal isOpen={showModalInfo} onClose={() => setShowModalInfo(false)}>
+                <h3>Erro!</h3>
+                <p>{modalInfoMessage}</p>
+                <div className="minha-conta-modal-botoes">
+                    <Button label="OK" onClick={() => setShowModalInfo(false)} />
+                </div>
+            </Modal>
         </div>
     );
 }

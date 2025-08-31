@@ -84,68 +84,13 @@ const exerciciosInfo = {
 
 export default function Exercicio() {
     const {
-        canvasRef,
-        videoRef,
-        counter,
-        stageRef,
-        angle,
-        isRunning,
-        exercise,
-        showModal,
-        setShowModal,
-        setExercise,
-        start,
-        reset,
+        canvasRef, videoRef, counter, angle, isRunning,
+        exercise, setExercise, showModal, setShowModal,
+        contador, mostrarStatus, resultados, stageRef,
+        handleStart, handleSalvarResultados, handleLimparResultados
     } = usePoseDetection();
 
-    const [mostrarStatus, setMostrarStatus] = useState(false);
-    const [resultados, setResultados] = useState([]);
-    const [contador, setContador] = useState();
-
     const exercicioSelecionado = exerciciosInfo[exercise];
-
-    const handleStart = () => {
-        setShowModal(true);
-        setContador(5);
-        iniciarTimer();
-    };
-
-    const iniciarTimer = () => {
-        let timer = setInterval(() => {
-            setContador(prev => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    setShowModal(false);
-                    setMostrarStatus(true);
-                    start();
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        // garante limpeza se o componente desmontar
-        return () => clearInterval(timer);
-    };
-
-    const handleSalvarResultados = () => {
-        const resultadoAtual = {
-            alunoNome: "Nome do Aluno", // substituir pelo valor real
-            personalId: "ID Personal", // substituir pelo valor real
-            repeticoes: counter,
-            angulo: angle,
-            estagio: stageRef.current,
-            exercicio: exercise,
-        };
-        setResultados(prev => [...prev, resultadoAtual]);
-        alert('Resultados salvos!');
-    };
-
-    const handleLimparResultados = () => {
-        reset();
-        setResultados([]);
-        alert('Resultados atuais limpos!');
-    };
 
     return (
         <div className="container">

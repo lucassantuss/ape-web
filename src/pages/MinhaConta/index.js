@@ -22,6 +22,9 @@ export default function MinhaConta() {
 		personais,
 		pesquisa,
 		nomePersonal,
+		modalInfoMessage,
+        showModalInfo,
+        setShowModalInfo,
 		handleChange,
 		handleSalvar,
 		handleExcluirConta,
@@ -229,6 +232,14 @@ export default function MinhaConta() {
 					<Button label="Confirmar Exclusão" onClick={handleExcluirConta} />
 					<br />
 					<Button label="Cancelar" onClick={() => setShowModalExcluir(false)} cancel />
+				</div>
+			</Modal>
+
+			<Modal isOpen={showModalInfo} onClose={() => setShowModalInfo(false)}>
+				<h3>Informação</h3>
+				<p>{modalInfoMessage}</p>
+				<div className="minha-conta-modal-botoes">
+					<Button label="OK" onClick={() => setShowModalInfo(false)} />
 				</div>
 			</Modal>
 		</div>
