@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Pose } from "@mediapipe/pose";
 
 export function usePoseDetection() {
     const canvasRef = useRef(null);
