@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import { useAuthentication } from "context/Authentication";
 import Modal from "components/Modal";
 import Input from "components/Input";
@@ -13,6 +14,7 @@ import "./CriarConta.css";
 
 export default function CriarConta() {
     const { userLogged } = useAuthentication();
+    const navigate = useNavigate();
 
     const {
         tipoUsuario,
@@ -26,6 +28,11 @@ export default function CriarConta() {
         pesquisa,
         nomePersonal,
         personais,
+        modalInfoTitle,
+        modalInfoMessage,
+        showModalInfo,
+        setShowModalInfo,
+        redirectOnClose,
         formDataAluno,
         formDataPersonal,
         handleChange,
@@ -131,7 +138,7 @@ export default function CriarConta() {
                         />
 
                         <SearchInput
-                            label="Personal Trainer"
+                            label={"Personal Vinculado:"}
                             name="personal"
                             value={nomePersonal}
                             onChange={handleChange}
@@ -281,6 +288,27 @@ export default function CriarConta() {
                         <Button label="Cadastrar Personal" type="submit" />
                     </>
                 )}
+
+                <Modal isOpen={showModalInfo} onClose={() => {
+                    setShowModalInfo(false);
+                    if (redirectOnClose) {
+                        navigate("/login");
+                    }
+                }}>
+                    <h3>{modalInfoTitle}</h3>
+                    <p>{modalInfoMessage}</p>
+                    <div className="minha-conta-modal-botoes">
+                        <Button
+                            label="OK"
+                            onClick={() => {
+                                setShowModalInfo(false);
+                                if (redirectOnClose) {
+                                    navigate("/login");
+                                }
+                            }}
+                        />
+                    </div>
+                </Modal>
             </form>
         </div>
     );

@@ -6,10 +6,13 @@ import SearchInput from "components/SearchInput";
 import Select from "components/Select";
 import Modal from 'components/Modal';
 import Loading from "components/Loading";
+import { useAuthentication } from "context/Authentication";
 
 import './MinhaConta.css';
 
 export default function MinhaConta() {
+	const { signOut } = useAuthentication();
+
 	const {
 		editando,
 		setEditando,
@@ -22,9 +25,11 @@ export default function MinhaConta() {
 		personais,
 		pesquisa,
 		nomePersonal,
+		redirectOnClose,
+		modalInfoTitle,
 		modalInfoMessage,
-        showModalInfo,
-        setShowModalInfo,
+		showModalInfo,
+		setShowModalInfo,
 		handleChange,
 		handleSalvar,
 		handleExcluirConta,
@@ -37,8 +42,8 @@ export default function MinhaConta() {
 	} = useMinhaConta();
 
 	if (loading) return <Loading />;
-	if (error) return <p>Erro ao carregar dados: {error.message}</p>;
-	if (!dadosEditados) return <p>Usuário não encontrado.</p>;
+	if (error) return <Title titulo={"Erro ao carregar dados: " + error.message} />;
+	if (!dadosEditados) return <Title titulo="Usuário não encontrado." />;
 
 	return (
 		<div className="minha-conta-container">
@@ -159,20 +164,6 @@ export default function MinhaConta() {
 				{/* Campos específicos do PERSONAL */}
 				{dadosEditados.tipo === "personal" && (
 					<>
-						<div className="minha-conta-box left">
-							<label>N° CREF:</label>
-							{editando ? (
-								<Input
-									name="cref"
-									value={dadosEditados.cref || ""}
-									onChange={handleChange}
-									error={errors.cref}
-								/>
-							) : (
-								<p>{dadosEditados.cref}</p>
-							)}
-						</div>
-
 						<div className="minha-conta-box right">
 							<label>Estado:</label>
 							{editando ? (
@@ -202,6 +193,20 @@ export default function MinhaConta() {
 								/>
 							) : (
 								<p>{dadosEditados.cidade}</p>
+							)}
+						</div>
+
+						<div className="minha-conta-box left">
+							<label>N° CREF:</label>
+							{editando ? (
+								<Input
+									name="cref"
+									value={dadosEditados.cref || ""}
+									onChange={handleChange}
+									error={errors.cref}
+								/>
+							) : (
+								<p>{dadosEditados.cref}</p>
 							)}
 						</div>
 					</>
@@ -235,11 +240,26 @@ export default function MinhaConta() {
 				</div>
 			</Modal>
 
-			<Modal isOpen={showModalInfo} onClose={() => setShowModalInfo(false)}>
-				<h3>Informação</h3>
+			<Modal isOpen={showModalInfo} onClose={() => {
+				setShowModalInfo(false);
+				if (redirectOnClose) {
+					window.location.href = "/";
+					signOut();
+				}
+			}}>
+				<h3>{modalInfoTitle}</h3>
 				<p>{modalInfoMessage}</p>
 				<div className="minha-conta-modal-botoes">
-					<Button label="OK" onClick={() => setShowModalInfo(false)} />
+					<Button
+						label="OK"
+						onClick={() => {
+							setShowModalInfo(false);
+							if (redirectOnClose) {
+								window.location.href = "/";
+								signOut();
+							}
+						}}
+					/>
 				</div>
 			</Modal>
 		</div>

@@ -40,18 +40,13 @@ export default function Home() {
                     </div>
                     <div id="feature-2" className="feature-card">
                         <span className="feature-icon">📊</span>
-                        <h3>Relatórios Detalhados</h3>
+                        <h3>Histórico de Exercícios</h3>
                         <p>Acompanhe repetições, observações e desempenho ao longo do tempo.</p>
                     </div>
                     <div id="feature-3" className="feature-card">
                         <span className="feature-icon">🔒</span>
                         <h3>Privacidade Garantida</h3>
                         <p>Não armazenamos vídeos ou imagens, apenas dados essenciais para feedback em tempo real.</p>
-                    </div>
-                    <div id="feature-4" className="feature-card">
-                        <span className="feature-icon">🎯</span>
-                        <h3>Treinos Personalizados</h3>
-                        <p>Configure exercícios, metas e avaliações de forma individualizada para cada aluno, garantindo resultados mais precisos e eficientes.</p>
                     </div>
                 </div>
             </section>

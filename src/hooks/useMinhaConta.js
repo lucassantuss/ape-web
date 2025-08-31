@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../services/api";
 import { formatCPF, validateCPF } from "utils/Validations";
-import { useAuthentication } from "context/Authentication";
 
 export default function useMinhaConta() {
     const [editando, setEditando] = useState(false);
@@ -16,10 +15,11 @@ export default function useMinhaConta() {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { signOut } = useAuthentication();
-
-    const [showModalInfo, setShowModalInfo] = useState(false);
+    
+    const [modalInfoTitle, setModalInfoTitle] = useState("");
     const [modalInfoMessage, setModalInfoMessage] = useState("");
+    const [showModalInfo, setShowModalInfo] = useState(false);
+    const [redirectOnClose, setRedirectOnClose] = useState(false);
 
     const idUser = localStorage.getItem("@IdUser_APE");
     const tipoUsuario = localStorage.getItem("@UserType_APE"); // "aluno" | "personal"
@@ -27,7 +27,8 @@ export default function useMinhaConta() {
     // define base do endpoint conforme o tipo
     const endpointBase = tipoUsuario?.toLowerCase() === "personal" ? "/Personal" : "/Aluno";
 
-    const exibirModalInfo = (mensagem) => {
+    const exibirModalInfo = (titulo, mensagem) => {
+        setModalInfoTitle(titulo);
         setModalInfoMessage(mensagem);
         setShowModalInfo(true);
     };
@@ -251,11 +252,11 @@ export default function useMinhaConta() {
 
             await api.put(`${endpointBase}/${idUser}`, payload);
 
-            exibirModalInfo("Dados atualizados com sucesso!");
+            exibirModalInfo("Sucesso", "Dados atualizados com sucesso!");
             setEditando(false);
         } catch (err) {
             console.error("Erro ao salvar alterações:", err);
-            exibirModalInfo("Não foi possível salvar as alterações. Tente novamente.");
+            exibirModalInfo("Erro", "Não foi possível salvar as alterações. Tente novamente.");
         } finally {
             setLoading(false);
         }
@@ -272,11 +273,11 @@ export default function useMinhaConta() {
 
             await api.delete(`${endpointBase}/${idUser}`);
 
-            signOut();
-            window.location.href = "/";
+            exibirModalInfo("Sucesso", "Conta excluída com sucesso!");
+            setRedirectOnClose(true);
         } catch (err) {
             console.error("Erro ao excluir conta:", err);
-            exibirModalInfo("Não foi possível excluir a conta. Tente novamente.");
+            exibirModalInfo("Erro", "Não foi possível excluir a conta. Tente novamente.");
         }
     };
 
@@ -292,6 +293,8 @@ export default function useMinhaConta() {
         personais,
         nomePersonal,
         pesquisa,
+        redirectOnClose,
+        modalInfoTitle,
         modalInfoMessage,
         showModalInfo,
         setShowModalInfo,

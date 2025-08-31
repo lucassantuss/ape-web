@@ -88,12 +88,18 @@
   margin-bottom: 15px;
 }
 
-/* Features Grid */
 .features-grid {
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(2, 1fr);
   margin-top: 2rem;
+  justify-items: center;
+}
+.features-grid > :nth-child(-n+2) {
+  justify-self: start;
+}
+.features-grid > :nth-child(odd):last-child {
+  justify-self: center;
 }
 .feature-card {
   background: #f9f9f9;

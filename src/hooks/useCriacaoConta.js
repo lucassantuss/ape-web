@@ -17,6 +17,11 @@ export default function useCriacaoConta() {
     const [nomePersonal, setNomePersonal] = useState("");
     const [personais, setPersonais] = useState([]);
 
+    const [modalInfoTitle, setModalInfoTitle] = useState("");
+    const [modalInfoMessage, setModalInfoMessage] = useState("");
+    const [showModalInfo, setShowModalInfo] = useState(false);
+    const [redirectOnClose, setRedirectOnClose] = useState(false);
+
     const [formDataAluno, setFormDataAluno] = useState({
         nome: "",
         usuario: "",
@@ -39,6 +44,12 @@ export default function useCriacaoConta() {
         categoriaProf: "",
         cref: ""
     });
+
+    const exibirModalInfo = (titulo, mensagem) => {
+        setModalInfoTitle(titulo);
+        setModalInfoMessage(mensagem);
+        setShowModalInfo(true);
+    };
 
     // Busca estados via API IBGE
     const fetchEstados = async () => {
@@ -233,9 +244,12 @@ export default function useCriacaoConta() {
                 };
                 response = await api.post("Personal", novoUsuarioDto);
             }
-            if (response.data.resultado) {
-                alert(`Usuário ${tipoUsuario} criado com sucesso!`);
 
+            if (response.data.resultado) {
+                exibirModalInfo("Sucesso", `Usuário ${tipoUsuario} criado com sucesso!`);
+                setRedirectOnClose(true);
+
+                // limpa os formulários
                 setFormDataAluno({
                     nome: "",
                     usuario: "",
@@ -257,11 +271,9 @@ export default function useCriacaoConta() {
                     estado: "",
                     cidade: "",
                 });
-
-                navigate("/login");
             }
         } catch (error) {
-            alert(error.response.data.mensagem);
+            exibirModalInfo("Erro", error.response?.data?.mensagem || "Não foi possível criar a conta.");
         }
     };
 
@@ -277,6 +289,11 @@ export default function useCriacaoConta() {
         pesquisa,
         nomePersonal,
         personais,
+        modalInfoTitle,
+        modalInfoMessage,
+        showModalInfo,
+        redirectOnClose,
+        setShowModalInfo,
         formDataAluno,
         formDataPersonal,
         handleChange,
