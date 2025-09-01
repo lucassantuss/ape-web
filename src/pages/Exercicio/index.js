@@ -133,9 +133,9 @@ export default function Exercicio() {
 
             {mostrarStatus && (
                 <div className="botoes-resultado">
-                    <button className="btn-avaliacao" onClick={handleSalvarResultados}>
-                        Salvar Resultados
-                    </button>
+                    {/*<button className="btn-avaliacao" onClick={handleSalvarResultados}>*/}
+                    {/*    Salvar Resultados*/}
+                    {/*</button>*/}
                     <button className="btn-avaliacao" onClick={handleLimparResultados}>
                         Limpar Resultados
                     </button>
