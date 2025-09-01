@@ -115,6 +115,9 @@ export default function Exercicio() {
                     titulo={mensagemAcao}
                     titulo2={mensagemSucesso}
                 />
+                <button className="btn-avaliacao" href='/historico-exercicios'>
+                    Consultar Histórico
+                </button>
             </Modal>
 
             <VideoCanvas canvasRef={canvasRef} videoRef={videoRef} />

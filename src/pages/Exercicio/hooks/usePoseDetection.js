@@ -326,20 +326,20 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 const erros = errosRef.current;
                 const sucesso = ((10 - erros) / 10) * 100;
                 setMensagemSucesso(`Taxa de sucesso: ${sucesso}%`);
+                setShowModalFinal(true);
 
                 // reset pro próximo treino
                 errosRef.current = 0;
                 acertosRef.current = 0;
             }
-            setShowModalFinal(true);
             return novoValor;
         });
     };
 
 
     const validarExecucao = (angulo, { min, max }) => {
-        // Tolerância de 10° pra cima/baixo
-        const dentroRange = angulo >= (min - 10) && angulo <= (max + 10);
+        const tolerancia = 10;
+        const dentroRange = angulo >= (min - tolerancia) && angulo <= (max + tolerancia);
         if (dentroRange) {
             acertosRef.current += 1;
         } else {
