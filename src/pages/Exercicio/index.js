@@ -87,7 +87,8 @@ export default function Exercicio() {
         canvasRef, videoRef, counter, angle, isRunning,
         exercise, setExercise, showModal, setShowModal,
         contador, mostrarStatus, resultados, stageRef,
-        handleStart, handleSalvarResultados, handleLimparResultados
+        handleStart, handleSalvarResultados, handleLimparResultados,
+        showModalFinal, setShowModalFinal, mensagemSucesso, mensagemAcao
     } = usePoseDetection();
 
     const exercicioSelecionado = exerciciosInfo[exercise];
@@ -107,6 +108,13 @@ export default function Exercicio() {
                     <label style={{ color: "#00994d", fontSize: "100px", fontWeight: "bold" }}>{contador}</label>
                 </div>
 
+            </Modal>
+
+            <Modal isOpen={showModalFinal} onClose={() => setShowModalFinal(false)}>
+                <Title
+                    titulo={mensagemAcao}
+                    titulo2={mensagemSucesso}
+                />
             </Modal>
 
             <VideoCanvas canvasRef={canvasRef} videoRef={videoRef} />

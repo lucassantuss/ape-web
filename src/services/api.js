@@ -5,7 +5,7 @@ const api = axios.create({
   baseURL: '/api',
   // baseURL: "https://ape-api.azurewebsites.net", // Ambiente de Produção
   // baseURL: "https://ape-dev.azurewebsites.net", // Ambiente de Desenvolvimento
-  //baseURL: "http://localhost:5000" // Local
+  baseURL: "http://localhost:5000" // Local
 });
 
 export default api;
