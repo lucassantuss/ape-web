@@ -6,6 +6,8 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const poseRef = useRef(null);
     const rafRef = useRef(null);
     const stageRef = useRef('---');
+    const acertosRef = useRef(0);
+    const errosRef = useRef(0);
 
     const [counter, setCounter] = useState(0);
     const [angle, setAngle] = useState(0);
@@ -13,9 +15,12 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const [isRunning, setIsRunning] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
+    const [showModalFinal, setShowModalFinal] = useState(false);
     const [contador, setContador] = useState(0);
     const [mostrarStatus, setMostrarStatus] = useState(false);
     const [resultados, setResultados] = useState([]);
+    const [mensagemAcao, setMensagemAcao] = useState("");
+    const [mensagemSucesso, setMensagemSucesso] = useState("");
 
     // Landmarks
     const lmks = {
@@ -44,6 +49,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         // }
         roscaDireta: {
             pontos: ['LEFT_SHOULDER', 'LEFT_ELBOW', 'LEFT_WRIST'],
+            limites: { min: 30, max: 145 },
             calcular: (landmarks, stageRef, setCounter) => {
                 const [ls, le, lw] = [11, 13, 15].map(i => [landmarks[i].x, landmarks[i].y]);
                 let angulo = calcularAngulo(ls, le, lw);
@@ -51,6 +57,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angulo > 145) stageRef.current = 'baixo';
                 if (angulo < 30 && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
+                    validarExecucao(angulo, exercicios.roscaDireta.limites);
                     incrementarContador(setCounter, stop, handleSalvarResultados);
                 }
 
@@ -299,13 +306,14 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             exercicio: exercise,
         };
         setResultados(prev => [...prev, resultadoAtual]);
-        alert('Resultados salvos!');
+        setMensagemAcao('Resultados salvos!');
     };
 
     const handleLimparResultados = () => {
         reset();
         setResultados([]);
-        alert('Resultados atuais limpos!');
+        setMensagemAcao('Resultados atuais limpos!');
+        setShowModalFinal(true);
     };
 
     const incrementarContador = (setCounter, stop, handleSalvarResultados) => {
@@ -314,9 +322,29 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             if (novoValor === 10) {
                 stop();
                 handleSalvarResultados();
+
+                const erros = errosRef.current;
+                const sucesso = ((10 - erros) / 10) * 100;
+                setMensagemSucesso(`Taxa de sucesso: ${sucesso}%`);
+
+                // reset pro próximo treino
+                errosRef.current = 0;
+                acertosRef.current = 0;
             }
+            setShowModalFinal(true);
             return novoValor;
         });
+    };
+
+
+    const validarExecucao = (angulo, { min, max }) => {
+        // Tolerância de 10° pra cima/baixo
+        const dentroRange = angulo >= (min - 10) && angulo <= (max + 10);
+        if (dentroRange) {
+            acertosRef.current += 1;
+        } else {
+            errosRef.current += 1;
+        }
     };
 
 
@@ -334,6 +362,10 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         setExercise,
         showModal,
         setShowModal,
+        showModalFinal,
+        setShowModalFinal,
+        mensagemSucesso,
+        mensagemAcao,
         contador,
         mostrarStatus,
         resultados,
