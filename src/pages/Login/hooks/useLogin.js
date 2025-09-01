@@ -25,7 +25,7 @@ export default function useLogin() {
                 if (tipoUsuario === "aluno") {
                     window.location.href = "/exercicio";
                 } else if (tipoUsuario === "personal") {
-                    window.location.href = "/historico-exercicios";
+                    window.location.href = "/relatorio-resultados";
                 }
             } catch (error) {
                 exibirModalInfo("Login e/ou senha inválidos!");

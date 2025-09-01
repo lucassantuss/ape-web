@@ -14,9 +14,10 @@ import Rodape from "components/Rodape"; // Componente do rodapé
 import PrivateRoute from "utils/PrivateRoute"; // Gerenciamento de rotas privadas
 
 import './App.css';
-import QuemSomos from "pages/QuemSomos";
+import Alunos from "pages/Alunos";
 import Exercicio from "pages/Exercicio";
 import Faq from "pages/Faq";
+import QuemSomos from "pages/QuemSomos";
 import RelatorioResultados from "pages/RelatorioResultados";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
             <Route path="/quem-somos" element={<QuemSomos />} /> {/* Quem Somos */}
             <Route path="/faq" element={<Faq />} /> {/* FAQ */}
 
+            <Route path="/alunos" element={<Alunos />} /> {/* Página de Aluno Vinculados */}
             <Route path="/exercicio" element={<Exercicio />} /> {/* Página de exercícios */}
             <Route path="/historico-exercicios" element={<HistoricoExercicio />} /> {/* Página de histórico de exercícios */}
             <Route path="/relatorio-resultados" element={<RelatorioResultados />} /> {/* Página "Relatório de Resultados */}
@@ -54,9 +56,8 @@ function App() {
 
           {/* Rotas protegidas PERSONAL */}
           <Route element={<PrivateRoute allowedTypes={["personal", "administrador"]} />}> {/* Permissão necessária: ADMINISTRADOR ou CLIENTE */}
-            <Route path="/alunos" element={<MinhaConta />} /> {/* Página de Aluno Vinculados */}
+            <Route path="/alunos" element={<Alunos />} /> {/* Página de Aluno Vinculados */}
             <Route path="/relatorio-resultados" element={<RelatorioResultados />} /> {/* Página "Relatório de Resultados */}
-            <Route path="/alunos-detalhes" element={<MinhaConta />} /> {/* Página "Aluno Detalhes" */}
           </Route>
 
           {/* Rota para páginas não encontradas */}

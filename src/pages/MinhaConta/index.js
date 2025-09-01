@@ -216,14 +216,12 @@ export default function MinhaConta() {
 			<div className="minha-conta-botoes">
 				{editando ? (
 					<>
-						<Button label="Salvar Alterações" onClick={handleSalvar} />
-						<br />
 						<Button label="Cancelar" onClick={() => setEditando(false)} cancel />
+						<Button label="Salvar Alterações" onClick={handleSalvar} />
 					</>
 				) : (
 					<>
 						<Button label="Alterar Dados" onClick={() => setEditando(true)} />
-						<br />
 						<Button label="Excluir Conta" onClick={() => setShowModalExcluir(true)} cancel />
 					</>
 				)}
@@ -234,9 +232,8 @@ export default function MinhaConta() {
 				<h3>Confirmar Exclusão</h3>
 				<p>Tem certeza que deseja excluir sua conta? Essa ação é irreversível.</p>
 				<div className="minha-conta-modal-botoes">
-					<Button label="Confirmar Exclusão" onClick={handleExcluirConta} />
-					<br />
 					<Button label="Cancelar" onClick={() => setShowModalExcluir(false)} cancel />
+					<Button label="Confirmar Exclusão" onClick={handleExcluirConta} />
 				</div>
 			</Modal>
 

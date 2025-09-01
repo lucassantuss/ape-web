@@ -1,0 +1,67 @@
+.alunos-container {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.alunos-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px; 
+}
+
+.aluno-card {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 250px;
+    background-color: #f9f9f9;
+    text-align: center;
+    box-sizing: border-box;
+    transition: transform 0.2s;
+}
+
+.aluno-card:hover {
+    transform: translateY(-5px);
+}
+
+.botao-remover {
+    margin-top: 0.5rem;
+}
+
+.alunos-modal-botoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.alunos-modal-botoes button {
+    margin-top: 0.5rem;
+}
+
+.mensagem-aviso {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    color: #856404;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .aluno-card {
+        width: 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    .aluno-card {
+        width: 90%;
+    }
+}

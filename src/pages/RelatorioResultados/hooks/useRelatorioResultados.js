@@ -1,70 +1,84 @@
 import { useState, useEffect } from 'react';
-
-const mockAlunos = [
-    { value: '1', label: 'Lucas Andrade' },
-    { value: '2', label: 'Fernanda Lima' }
-];
-
-const mockResultadosPorAluno = {
-    '1': [
-        {
-            exercicio: 'Rosca Direta',
-            dataHora: '2025-08-01T10:30:00',
-            repeticoes: 12,
-            observacaoAluno: 'Execução perfeita.',
-            observacaoPersonal: ''
-        },
-        {
-            exercicio: 'Meio-Agachamento',
-            dataHora: '2025-07-30T09:00:00',
-            repeticoes: 15,
-            observacaoAluno: 'Alinhamento corrigido.',
-            observacaoPersonal: 'Bom progresso.'
-        }
-    ],
-    '2': [
-        {
-            exercicio: 'Meio-Agachamento',
-            dataHora: '2025-07-29T08:15:00',
-            repeticoes: 20,
-            observacaoAluno: 'Boa resistência.',
-            observacaoPersonal: ''
-        }
-    ]
-};
+import api from 'services/api';
 
 export default function useRelatorioResultados() {
+    const [alunos, setAlunos] = useState([]);
     const [alunoSelecionado, setAlunoSelecionado] = useState('');
     const [resultados, setResultados] = useState([]);
     const [modalAberto, setModalAberto] = useState(false);
     const [textoObservacao, setTextoObservacao] = useState('');
-    const [indiceSelecionado, setIndiceSelecionado] = useState(null);
+    const [idExercicioSelecionado, setIdExercicioSelecionado] = useState(null);
 
+    const idPersonal = localStorage.getItem('@IdUser_APE');
+
+    // Buscar alunos do personal
     useEffect(() => {
-        if (alunoSelecionado) {
-            const resultadosMock = mockResultadosPorAluno[alunoSelecionado] || [];
-            setResultados(resultadosMock);
-        } else {
-            setResultados([]);
+        async function fetchAlunos() {
+            try {
+                const response = await api.get(`/Personal/${idPersonal}/alunos`);
+                const listaAlunos = response.data.map((aluno) => ({
+                    value: aluno.id,
+                    label: aluno.nome
+                }));
+                setAlunos(listaAlunos);
+            } catch (error) {
+                console.error('Erro ao carregar alunos:', error);
+            }
         }
+
+        if (idPersonal) {
+            fetchAlunos();
+        }
+    }, [idPersonal]);
+
+    // Buscar treinos do aluno selecionado
+    useEffect(() => {
+        async function fetchResultados() {
+            if (!alunoSelecionado) {
+                setResultados([]);
+                return;
+            }
+
+            try {
+                const response = await api.get(`/Exercicio/listByIdUser/${alunoSelecionado}`);
+                setResultados(response.data);
+            } catch (error) {
+                console.error('Erro ao carregar resultados:', error);
+            }
+        }
+
+        fetchResultados();
     }, [alunoSelecionado]);
 
-    const abrirModal = (index) => {
-        setIndiceSelecionado(index);
-        setTextoObservacao(resultados[index]?.observacaoPersonal || '');
+    const abrirModal = (idExercicio) => {
+        setIdExercicioSelecionado(idExercicio);
+        setTextoObservacao('');
         setModalAberto(true);
     };
 
-    const salvarObservacao = () => {
-        if (indiceSelecionado !== null) {
-            const novosResultados = [...resultados];
-            novosResultados[indiceSelecionado].observacaoPersonal = textoObservacao;
-            setResultados(novosResultados);
+    const salvarObservacao = async () => {
+        try {
+            await api.put(
+                `/Exercicio/adicionarObservacaoPersonal/${idExercicioSelecionado}`,
+                JSON.stringify(textoObservacao),
+                { headers: { 'Content-Type': 'application/json' } }
+            );
+
+            setModalAberto(false);
+            setTextoObservacao('');
+
+            // Atualiza histórico após salvar
+            if (alunoSelecionado) {
+                const response = await api.get(`/Exercicio/listByIdUser/${alunoSelecionado}`);
+                setResultados(response.data);
+            }
+        } catch (error) {
+            console.error('Erro ao salvar observação do personal:', error);
         }
-        setModalAberto(false);
     };
 
     return {
+        alunos,
         alunoSelecionado,
         setAlunoSelecionado,
         resultados,
