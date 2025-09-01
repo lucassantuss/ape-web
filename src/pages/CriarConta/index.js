@@ -1,14 +1,13 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthentication } from "context/Authentication";
-import Modal from "components/Modal";
-import Input from "components/Input";
-import SearchInput from "components/SearchInput";
 import Button from "components/Button";
-import Title from "components/Title";
-import Select from "components/Select";
-import useCriacaoConta from "hooks/useCriacaoConta";
+import Input from "components/Input";
 import InputCref from "components/InputCref";
+import Modal from "components/Modal";
+import SearchInput from "components/SearchInput";
+import Select from "components/Select";
+import Title from "components/Title";
+import useCriacaoConta from "pages/CriarConta/hooks/useCriacaoConta";
 
 import "./CriarConta.css";
 
@@ -43,7 +42,7 @@ export default function CriarConta() {
 
     if (userLogged()) {
         return (
-            <Link to="/parcerias">
+            <Link to="/">
                 <Title
                     titulo="Você já está logado!"
                     titulo2="Para criar uma nova conta é necessário estar deslogado"

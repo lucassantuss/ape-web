@@ -1,8 +1,9 @@
-import Title from 'components/Title';
-import Select from 'components/Select';
 import Button from 'components/Button';
+import Select from 'components/Select';
 import TextArea from 'components/TextArea';
-import useRelatorioResultados from 'hooks/useRelatorioResultados';
+import Title from 'components/Title';
+import useRelatorioResultados from 'pages/RelatorioResultados/hooks/useRelatorioResultados';
+
 import './RelatorioResultados.css';
 
 const RelatorioResultados = () => {

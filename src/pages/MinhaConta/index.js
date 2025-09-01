@@ -1,12 +1,12 @@
-import useMinhaConta from 'hooks/useMinhaConta';
-import Title from 'components/Title';
-import Input from 'components/Input';
+import { useAuthentication } from "context/Authentication";
 import Button from 'components/Button';
-import SearchInput from "components/SearchInput";
-import Select from "components/Select";
+import Input from 'components/Input';
 import Modal from 'components/Modal';
 import Loading from "components/Loading";
-import { useAuthentication } from "context/Authentication";
+import SearchInput from "components/SearchInput";
+import Select from "components/Select";
+import Title from 'components/Title';
+import useMinhaConta from 'pages/MinhaConta/hooks/useMinhaConta';
 
 import './MinhaConta.css';
 

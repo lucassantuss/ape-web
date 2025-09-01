@@ -1,7 +1,8 @@
-import Title from "components/Title";
 import Button from "components/Button";
 import TextArea from "components/TextArea";
-import useHistoricoExercicio from "hooks/useHistoricoExercicio";
+import Title from "components/Title";
+import useHistoricoExercicio from "pages/HistoricoExercicio/hooks/useHistoricoExercicio";
+
 import "./HistoricoExercicio.css";
 
 export default function HistoricoExercicio() {
