@@ -1,10 +1,11 @@
-import { usePoseDetection } from 'pages/Exercicio/hooks/usePoseDetection';
-import VideoCanvas from 'components/VideoCanvas';
 import InfoBox from 'components/InfoBox';
-import SelectExercicio from 'components/SelectExercicio';
-import './Exercicio.css';
 import Modal from 'components/Modal';
+import SelectExercicio from 'components/SelectExercicio';
 import Title from 'components/Title';
+import VideoCanvas from 'components/VideoCanvas';
+import { usePoseDetection } from 'pages/Exercicio/hooks/usePoseDetection';
+
+import './Exercicio.css';
 
 const exerciciosInfo = {
     roscaDireta: {
@@ -34,7 +35,7 @@ const exerciciosInfo = {
             "https://media.musclewiki.com/media/uploads/videos/branded/male-barbell-bench-press-side_KciuhbB.mp4"
         ]
     },
-    tricepsCorda: {
+    tricepsCordaPoliaAlta: {
         nome: "Tríceps Corda na Polia Alta",
         descricao: "Focado nos tríceps. Estenda os braços para baixo separando a corda no final do movimento, mantendo os cotovelos fixos.",
         execucao: "https://musclewiki.com/pt-br/exercise/cables/male/triceps/cable-rope-overhead-tricep-extension",
