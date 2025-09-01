@@ -1,4 +1,4 @@
-import useMinhaConta from 'hooks/useMinhaConta';
+import useMinhaConta from 'pages/MinhaConta/hooks/useMinhaConta';
 import Title from 'components/Title';
 import Input from 'components/Input';
 import Button from 'components/Button';

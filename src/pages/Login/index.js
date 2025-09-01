@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Modal from "components/Modal";
 import Input from "components/Input";
 import Button from "components/Button";
-import useLogin from "hooks/useLogin";
+import useLogin from "pages/Login/hooks/useLogin";
 import './Login.css';
 
 export default function Login() {

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { usePoseDetection } from 'hooks/usePoseDetection';
+import { usePoseDetection } from 'pages/Exercicio/hooks/usePoseDetection';
 import VideoCanvas from 'components/VideoCanvas';
 import InfoBox from 'components/InfoBox';
 import SelectExercicio from 'components/SelectExercicio';

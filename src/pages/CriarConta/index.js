@@ -7,7 +7,7 @@ import SearchInput from "components/SearchInput";
 import Button from "components/Button";
 import Title from "components/Title";
 import Select from "components/Select";
-import useCriacaoConta from "hooks/useCriacaoConta";
+import useCriacaoConta from "pages/CriarConta/hooks/useCriacaoConta";
 import InputCref from "components/InputCref";
 
 import "./CriarConta.css";

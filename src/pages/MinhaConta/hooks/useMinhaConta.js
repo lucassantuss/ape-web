@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import api from "../services/api";
+import api from "../../../services/api";
 import { formatCPF, validateCPF } from "utils/Validations";
 
 export default function useMinhaConta() {
