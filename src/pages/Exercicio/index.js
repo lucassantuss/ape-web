@@ -115,6 +115,9 @@ export default function Exercicio() {
                     titulo={mensagemAcao}
                     titulo2={mensagemSucesso}
                 />
+                <button className="btn-avaliacao" href='/historico-exercicios'>
+                    Consultar Histórico
+                </button>
             </Modal>
 
             <VideoCanvas canvasRef={canvasRef} videoRef={videoRef} />
@@ -130,9 +133,9 @@ export default function Exercicio() {
 
             {mostrarStatus && (
                 <div className="botoes-resultado">
-                    <button className="btn-avaliacao" onClick={handleSalvarResultados}>
-                        Salvar Resultados
-                    </button>
+                    {/*<button className="btn-avaliacao" onClick={handleSalvarResultados}>*/}
+                    {/*    Salvar Resultados*/}
+                    {/*</button>*/}
                     <button className="btn-avaliacao" onClick={handleLimparResultados}>
                         Limpar Resultados
                     </button>
