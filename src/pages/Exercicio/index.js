@@ -110,7 +110,7 @@ export default function Exercicio() {
 
             </Modal>
 
-            <Modal isOpen={showModalFinal} onClose={() => setShowModalFinal(true)}>
+            <Modal isOpen={showModalFinal} onClose={() => setShowModalFinal(false)}>
                 <Title
                     titulo={mensagemAcao}
                     titulo2={mensagemSucesso}
