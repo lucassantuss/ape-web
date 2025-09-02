@@ -3,6 +3,7 @@ import api from "services/api";
 
 import { formatCPF, validateCPF } from 'utils/Validations';
 import { useNavigate } from "react-router-dom";
+import useModalInfo from "components/ModalInfo/hooks/useModalInfo";
 
 export default function useCriacaoConta() {
     const navigate = useNavigate();
@@ -17,9 +18,15 @@ export default function useCriacaoConta() {
     const [nomePersonal, setNomePersonal] = useState("");
     const [personais, setPersonais] = useState([]);
 
-    const [modalInfoTitle, setModalInfoTitle] = useState("");
-    const [modalInfoMessage, setModalInfoMessage] = useState("");
-    const [showModalInfo, setShowModalInfo] = useState(false);
+    const {
+        showModalInfo,
+        modalInfoTitle,
+        modalInfoMessage,
+        exibirModalInfo,
+        fecharModalInfo,
+    } = useModalInfo();
+
+    const [aceiteTermos, setAceiteTermos] = useState(false);
     const [redirectOnClose, setRedirectOnClose] = useState(false);
 
     const [formDataAluno, setFormDataAluno] = useState({
@@ -44,12 +51,6 @@ export default function useCriacaoConta() {
         categoriaProf: "",
         cref: ""
     });
-
-    const exibirModalInfo = (titulo, mensagem) => {
-        setModalInfoTitle(titulo);
-        setModalInfoMessage(mensagem);
-        setShowModalInfo(true);
-    };
 
     // Busca estados via API IBGE
     const fetchEstados = async () => {
@@ -278,8 +279,15 @@ export default function useCriacaoConta() {
     };
 
     return {
+        showModalInfo,
+        modalInfoTitle,
+        modalInfoMessage,
+        exibirModalInfo,
+        fecharModalInfo,
         tipoUsuario,
         setTipoUsuario,
+        aceiteTermos,
+        setAceiteTermos,
         errors,
         estados,
         cidades,
@@ -289,11 +297,7 @@ export default function useCriacaoConta() {
         pesquisa,
         nomePersonal,
         personais,
-        modalInfoTitle,
-        modalInfoMessage,
-        showModalInfo,
         redirectOnClose,
-        setShowModalInfo,
         formDataAluno,
         formDataPersonal,
         handleChange,

@@ -4,6 +4,7 @@ import Button from "components/Button";
 import Input from "components/Input";
 import InputCref from "components/InputCref";
 import Modal from "components/Modal";
+import ModalInfo from "components/ModalInfo";
 import SearchInput from "components/SearchInput";
 import Select from "components/Select";
 import Title from "components/Title";
@@ -16,8 +17,15 @@ export default function CriarConta() {
     const navigate = useNavigate();
 
     const {
+        showModalInfo,
+        modalInfoTitle,
+        modalInfoMessage,
+        exibirModalInfo,
+        fecharModalInfo,
         tipoUsuario,
         setTipoUsuario,
+        aceiteTermos,
+        setAceiteTermos,
         errors,
         estados,
         cidades,
@@ -27,10 +35,6 @@ export default function CriarConta() {
         pesquisa,
         nomePersonal,
         personais,
-        modalInfoTitle,
-        modalInfoMessage,
-        showModalInfo,
-        setShowModalInfo,
         redirectOnClose,
         formDataAluno,
         formDataPersonal,
@@ -177,6 +181,27 @@ export default function CriarConta() {
                             </select>
                         </Modal>
 
+                        <div className="termos-container">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={aceiteTermos}
+                                    onChange={(e) => setAceiteTermos(e.target.checked)}
+                                />
+                                Eu li e aceito os{" "}
+                                <span
+                                    className="link-termos"
+                                >
+                                    Termos de Uso e Política de Privacidade
+                                </span>
+                            </label>
+                            {errors.aceiteTermos && (
+                                <p className="error-message">{errors.aceiteTermos}</p>
+                            )}
+                        </div>
+
+                        <br></br>
+
                         <Button label="Cadastrar Aluno" type="submit" />
                     </>
                 )}
@@ -284,30 +309,42 @@ export default function CriarConta() {
                             estado={formDataPersonal.estado}
                         />
 
+                        <div className="termos-container">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={aceiteTermos}
+                                    onChange={(e) => setAceiteTermos(e.target.checked)}
+                                />
+                                Eu li e aceito os{" "}
+                                <span
+                                    className="link-termos"
+                                >
+                                    Termos de Uso e Política de Privacidade
+                                </span>
+                            </label>
+                            {errors.aceiteTermos && (
+                                <p className="error-message">{errors.aceiteTermos}</p>
+                            )}
+                        </div>
+
+                        <br></br>
+
                         <Button label="Cadastrar Personal" type="submit" />
                     </>
                 )}
 
-                <Modal isOpen={showModalInfo} onClose={() => {
-                    setShowModalInfo(false);
-                    if (redirectOnClose) {
-                        navigate("/login");
-                    }
-                }}>
-                    <h3>{modalInfoTitle}</h3>
-                    <p>{modalInfoMessage}</p>
-                    <div className="minha-conta-modal-botoes">
-                        <Button
-                            label="OK"
-                            onClick={() => {
-                                setShowModalInfo(false);
-                                if (redirectOnClose) {
-                                    navigate("/login");
-                                }
-                            }}
-                        />
-                    </div>
-                </Modal>
+                <ModalInfo
+                    isOpen={showModalInfo}
+                    onClose={() => {
+                        fecharModalInfo();
+                        if (redirectOnClose) {
+                            navigate("/login");
+                        }
+                    }}
+                    title={modalInfoTitle}
+                    message={modalInfoMessage}
+                />
             </form>
         </div>
     );

@@ -23,7 +23,6 @@ export default function useModalInfo() {
 
     return {
         showModalInfo,
-        setShowModalInfo,
         modalInfoTitle,
         modalInfoMessage,
         exibirModalInfo,

@@ -41,3 +41,26 @@
     color: red;
 }
 
+.termos-container {
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+.termos-container input {
+    margin-right: 8px;
+}
+
+.link-termos {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.conteudo-termos {
+    max-height: 300px;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px;
+    text-align: justify;
+}
