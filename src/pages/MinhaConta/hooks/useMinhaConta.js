@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useModalInfo from 'components/ModalInfo/hooks/useModalInfo';
 import api from "../../../services/api";
 import { formatCPF, validateCPF } from "utils/Validations";
 
@@ -16,9 +17,14 @@ export default function useMinhaConta() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     
-    const [modalInfoTitle, setModalInfoTitle] = useState("");
-    const [modalInfoMessage, setModalInfoMessage] = useState("");
-    const [showModalInfo, setShowModalInfo] = useState(false);
+    const {
+        showModalInfo,
+        modalInfoTitle,
+        modalInfoMessage,
+        exibirModalInfo,
+        fecharModalInfo,
+    } = useModalInfo();
+
     const [redirectOnClose, setRedirectOnClose] = useState(false);
 
     const idUser = localStorage.getItem("@IdUser_APE");
@@ -26,12 +32,6 @@ export default function useMinhaConta() {
 
     // define base do endpoint conforme o tipo
     const endpointBase = tipoUsuario?.toLowerCase() === "personal" ? "/Personal" : "/Aluno";
-
-    const exibirModalInfo = (titulo, mensagem) => {
-        setModalInfoTitle(titulo);
-        setModalInfoMessage(mensagem);
-        setShowModalInfo(true);
-    };
 
     // Buscar estados via IBGE
     const fetchEstados = async () => {
@@ -294,10 +294,10 @@ export default function useMinhaConta() {
         nomePersonal,
         pesquisa,
         redirectOnClose,
+        showModalInfo,
         modalInfoTitle,
         modalInfoMessage,
-        showModalInfo,
-        setShowModalInfo,
+        fecharModalInfo,
         handleChange,
         handleSalvar,
         handleExcluirConta,

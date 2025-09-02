@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import Button from "components/Button";
 import Input from "components/Input";
-import Modal from "components/Modal";
+import ModalInfo from "components/ModalInfo";
 import useLogin from "pages/Login/hooks/useLogin";
 
 import './Login.css';
@@ -16,8 +15,9 @@ export default function Login() {
         setTipoUsuario,
         handleSubmit,
         showModalInfo,
-        setShowModalInfo,
-        modalInfoMessage
+        modalInfoTitle,
+        modalInfoMessage,
+        fecharModalInfo,
     } = useLogin();
 
     return (
@@ -75,13 +75,12 @@ export default function Login() {
                 <Link to="/criar-conta" className="login-create-account">Criar conta</Link>
             </div>
 
-            <Modal isOpen={showModalInfo} onClose={() => setShowModalInfo(false)}>
-                <h3>Erro!</h3>
-                <p>{modalInfoMessage}</p>
-                <div className="minha-conta-modal-botoes">
-                    <Button label="OK" onClick={() => setShowModalInfo(false)} />
-                </div>
-            </Modal>
+            <ModalInfo
+                isOpen={showModalInfo}
+                onClose={fecharModalInfo}
+                title={modalInfoTitle}
+                message={modalInfoMessage}
+            />
         </div>
     );
 }

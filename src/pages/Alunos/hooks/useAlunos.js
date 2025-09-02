@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
+import useModalInfo from 'components/ModalInfo/hooks/useModalInfo';
 import api from 'services/api';
 
 export default function useAlunos() {
     const [alunos, setAlunos] = useState([]);
     const [modalAberto, setModalAberto] = useState(false);
     const [alunoSelecionadoParaRemocao, setAlunoSelecionadoParaRemocao] = useState(null);
+
+    const {
+        showModalInfo,
+        modalInfoTitle,
+        modalInfoMessage,
+        exibirModalInfo,
+        fecharModalInfo,
+    } = useModalInfo();
 
     const idPersonal = localStorage.getItem('@IdUser_APE');
 
@@ -16,6 +25,7 @@ export default function useAlunos() {
                 setAlunos(response.data);
             } catch (error) {
                 console.error('Erro ao carregar alunos:', error);
+                exibirModalInfo("Erro", "Erro ao carregar alunos.");
             }
         }
 
@@ -31,13 +41,16 @@ export default function useAlunos() {
         if (!alunoSelecionadoParaRemocao) return;
 
         try {
-            await api.delete(`/Personal/removerAluno/${alunoSelecionadoParaRemocao.id}`);
-            // Atualiza a lista de alunos após remoção
+            // Desvincular o personal
+            await api.put(`/Aluno/${alunoSelecionadoParaRemocao.id}/remover-personal`);
             setAlunos(alunos.filter(a => a.id !== alunoSelecionadoParaRemocao.id));
+
             setModalAberto(false);
             setAlunoSelecionadoParaRemocao(null);
+            exibirModalInfo("Sucesso", "Aluno desvinculado com sucesso!");
         } catch (error) {
-            console.error('Erro ao remover aluno:', error);
+            console.error('Erro ao desvincular aluno do personal:', error);
+            exibirModalInfo("Erro", "Não foi possível desvincular o aluno. Tente novamente.");
         }
     };
 
@@ -47,6 +60,10 @@ export default function useAlunos() {
         setModalAberto,
         alunoSelecionadoParaRemocao,
         abrirModal,
-        confirmarRemocao
+        confirmarRemocao,
+        showModalInfo,
+        modalInfoTitle,
+        modalInfoMessage,
+        fecharModalInfo,
     };
 }
