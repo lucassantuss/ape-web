@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useAuthentication } from "context/Authentication";
+import useModalInfo from "components/ModalInfo/hooks/useModalInfo";
 
 export default function useLogin() {
     const { signIn } = useAuthentication();
@@ -8,13 +9,13 @@ export default function useLogin() {
     const [senha, setSenha] = useState("");
     const [tipoUsuario, setTipoUsuario] = useState("aluno");
 
-    const [showModalInfo, setShowModalInfo] = useState(false);
-    const [modalInfoMessage, setModalInfoMessage] = useState("");
-
-    const exibirModalInfo = (mensagem) => {
-        setModalInfoMessage(mensagem);
-        setShowModalInfo(true);
-    };
+    const {
+        showModalInfo,
+        modalInfoTitle,
+        modalInfoMessage,
+        exibirModalInfo,
+        fecharModalInfo,
+    } = useModalInfo();
 
     const handleSubmit = useCallback(
         async (event) => {
@@ -28,7 +29,7 @@ export default function useLogin() {
                     window.location.href = "/relatorio-resultados";
                 }
             } catch (error) {
-                exibirModalInfo("Login e/ou senha inválidos!");
+                exibirModalInfo("Erro", "Login e/ou senha inválidos!");
             }
         },
         [usuario, senha, tipoUsuario, signIn]
@@ -47,7 +48,8 @@ export default function useLogin() {
         setTipoUsuario,
         handleSubmit,
         showModalInfo,
-        setShowModalInfo,
+        modalInfoTitle,
         modalInfoMessage,
+        fecharModalInfo,
     };
 }

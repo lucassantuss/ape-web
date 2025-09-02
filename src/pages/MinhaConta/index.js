@@ -2,6 +2,7 @@ import { useAuthentication } from "context/Authentication";
 import Button from 'components/Button';
 import Input from 'components/Input';
 import Modal from 'components/Modal';
+import ModalInfo from "components/ModalInfo";
 import Loading from "components/Loading";
 import SearchInput from "components/SearchInput";
 import Select from "components/Select";
@@ -29,7 +30,7 @@ export default function MinhaConta() {
 		modalInfoTitle,
 		modalInfoMessage,
 		showModalInfo,
-		setShowModalInfo,
+		fecharModalInfo,
 		handleChange,
 		handleSalvar,
 		handleExcluirConta,
@@ -237,28 +238,18 @@ export default function MinhaConta() {
 				</div>
 			</Modal>
 
-			<Modal isOpen={showModalInfo} onClose={() => {
-				setShowModalInfo(false);
-				if (redirectOnClose) {
-					window.location.href = "/";
-					signOut();
-				}
-			}}>
-				<h3>{modalInfoTitle}</h3>
-				<p>{modalInfoMessage}</p>
-				<div className="minha-conta-modal-botoes">
-					<Button
-						label="OK"
-						onClick={() => {
-							setShowModalInfo(false);
-							if (redirectOnClose) {
-								window.location.href = "/";
-								signOut();
-							}
-						}}
-					/>
-				</div>
-			</Modal>
+			<ModalInfo
+				isOpen={showModalInfo}
+				onClose={() => {
+					fecharModalInfo();
+					if (redirectOnClose) {
+						window.location.href = "/";
+						signOut();
+					}
+				}}
+				title={modalInfoTitle}
+				message={modalInfoMessage}
+			/>
 		</div>
 	);
 }
