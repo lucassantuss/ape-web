@@ -5,9 +5,9 @@
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.6);
-    display: contents;
-/*    align-items: center;
-    justify-content: center;*/
+    display: flex; /* flexbox pra centralizar */
+    align-items: center; /* centro vertical */
+    justify-content: center; /* centro horizontal */
     z-index: 1000;
 }
 
@@ -18,7 +18,12 @@
     position: relative;
     width: 90%;
     max-width: 500px;
+    display: flex; /* garante que filhos fiquem em coluna */
+    flex-direction: column;
+    align-items: center; /* centraliza conteúdo horizontal */
+    gap: 1rem; /* espaço entre os itens */
 }
+
 
 .modal-close {
     position: absolute;
