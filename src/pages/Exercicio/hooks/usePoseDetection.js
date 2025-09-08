@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import api from "services/api";
 
 export function usePoseDetection(initialExercise = 'roscaDireta') {
     const canvasRef = useRef(null);
@@ -13,6 +14,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const [angle, setAngle] = useState(0);
     const [exercise, setExercise] = useState(initialExercise);
     const [isRunning, setIsRunning] = useState(false);
+    const startTimeRef = useRef(null);
 
     const [showModal, setShowModal] = useState(false);
     const [showModalFinal, setShowModalFinal] = useState(false);
@@ -241,9 +243,21 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         canvas.height = window.innerHeight;
     };
 
+    const calcularPorcentagemAcertos = (repeticoes, erros) => {
+        const total = Number(repeticoes) || 0;
+        const e = Number(erros) || 0;
+        const acertos = Math.max(0, total - e);
+
+        if (total === 0) return "0.00";
+
+        const perc = (acertos / total) * 100;
+        return perc.toFixed(2);
+    };
+
     const start = async () => {
         await setupCamera();
 
+        startTimeRef.current = Date.now();
         iniciarTimer();
 
         reset();
@@ -296,17 +310,46 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         return () => clearInterval(timer);
     };
 
-    const handleSalvarResultados = () => {
-        const resultadoAtual = {
-            alunoNome: "Nome do Aluno", // substituir pelo valor real
-            personalId: "ID Personal", // substituir pelo valor real
-            repeticoes: counter,
-            angulo: angle,
-            estagio: stageRef.current,
-            exercicio: exercise,
+    const handleSalvarResultados = async () => {
+        const idUser = localStorage.getItem("@IdUser_APE");
+
+        let tempoExecutado = "00:00:00";
+        if (startTimeRef.current) {
+            const diffMs = Date.now() - startTimeRef.current;
+            const totalSec = Math.floor(diffMs / 1000);
+            const hours = String(Math.floor(totalSec / 3600)).padStart(2, "0");
+            const minutes = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
+            const seconds = String(totalSec % 60).padStart(2, "0");
+            tempoExecutado = `${hours}:${minutes}:${seconds}`;
+        }
+
+        const porcentagemAcertos = calcularPorcentagemAcertos(counter, errosRef.current);
+
+        const dto = {
+            nome: exercise,
+            // quantidadeRepeticoes: counter.toString(),
+            quantidadeRepeticoes: '10',
+            // porcentagemAcertos,
+            porcentagemAcertos: '100,00',
+            tempoExecutado,
+            observacoesAluno: "",
+            observacoesPersonal: "",
+            idAluno: idUser,
         };
-        setResultados(prev => [...prev, resultadoAtual]);
-        setMensagemAcao('Resultados salvos!');
+
+        try {
+            const response = await api.post("/Exercicio/salvarResultados", dto);
+
+            if (response.status === 200) {
+                setMensagemAcao("Resultados salvos com sucesso!");
+                setShowModalFinal(true);
+            } else {
+                setMensagemAcao("Falha ao salvar resultados!");
+            }
+        } catch (error) {
+            console.error("Erro ao salvar resultados:", error);
+            setMensagemAcao("Erro de conexão com o servidor!");
+        }
     };
 
     const handleLimparResultados = () => {
