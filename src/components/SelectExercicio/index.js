@@ -15,9 +15,9 @@ export default function SelectExercicio({ selectedExercise, onChange }) {
         <option value="supinoRetoBanco">Supino Reto no Banco</option>
         <option value="tricepsCordaPoliaAlta">Tríceps Corda na Polia Alta</option>
         <option value="cadeiraFlexora">Cadeira Flexora</option>
-        <option value="levantamentoTerra">(Não implementado ainda) Levantamento Terra</option>
-        <option value="agachamentoBulgaro">(Não implementado ainda) Agachamento Búlgaro com Halteres</option>
-        <option value="agachamentoSumo">(Não implementado ainda) Agachamento Sumô com Halteres</option>
+        {/* <option value="levantamentoTerra">(Não implementado ainda) Levantamento Terra</option> */}
+        {/* <option value="agachamentoBulgaro">(Não implementado ainda) Agachamento Búlgaro com Halteres</option> */}
+        {/* <option value="agachamentoSumo">(Não implementado ainda) Agachamento Sumô com Halteres</option> */}
       </select>
     </div>
   );

@@ -4,6 +4,7 @@ import SelectExercicio from 'components/SelectExercicio';
 import Title from 'components/Title';
 import VideoCanvas from 'components/VideoCanvas';
 import { usePoseDetection } from 'pages/Exercicio/hooks/usePoseDetection';
+import { Link } from 'react-router-dom';
 
 import './Exercicio.css';
 
@@ -115,9 +116,7 @@ export default function Exercicio() {
                     titulo={mensagemAcao}
                     titulo2={mensagemSucesso}
                 />
-                <button className="btn-avaliacao" href='/historico-exercicios'>
-                    Consultar Histórico
-                </button>
+                <Link to="/historico-exercicios" className="btn-avaliacao">Consultar Histórico</Link>
             </Modal>
 
             <VideoCanvas canvasRef={canvasRef} videoRef={videoRef} />

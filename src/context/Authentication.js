@@ -17,11 +17,19 @@ const AuthenticationProvider = ({ children }) => {
         return null; // Retorna null caso não exista um token salvo.
     });
 
+    const [userType, setUserType] = useState(() => {
+        return localStorage.getItem("@UserType_APE") || null;
+    });
+
+    const [idUser, setIdUser] = useState(() => {
+        return localStorage.getItem("@IdUser_APE") || null;
+    });
+
     // Função para realizar o login do usuário.
     const signIn = useCallback(async ({ usuario, senha, tipoUsuario }) => {
         try {
             let endpoint = "";
-            
+
             if (tipoUsuario === "aluno") {
                 endpoint = "/login/aluno";
             } else if (tipoUsuario === "personal") {
@@ -29,7 +37,7 @@ const AuthenticationProvider = ({ children }) => {
             } else {
                 throw new Error("Tipo de usuário inválido!");
             }
-            
+
             // Faz a requisição para a API enviando os dados de login.
             const response = await api.post(endpoint, {
                 usuario,
@@ -44,6 +52,9 @@ const AuthenticationProvider = ({ children }) => {
             if (token) {
                 // Atualiza o estado do token e salva-o no localStorage para persistência.
                 setToken(token);
+                setIdUser(idUser);
+                setUserType(userType);
+
                 localStorage.setItem("@AuthToken_APE", token);
                 localStorage.setItem("@IdUser_APE", idUser);
                 localStorage.setItem("@UserType_APE", userType);
@@ -62,6 +73,9 @@ const AuthenticationProvider = ({ children }) => {
     const signOut = useCallback(() => {
         // Limpa o token do estado e remove os dados do localStorage.
         setToken(null);
+        setIdUser(null);
+        setUserType(null);
+
         localStorage.removeItem("@AuthToken_APE");
         localStorage.removeItem("@IdUser_APE");
         localStorage.removeItem("@UserType_APE");
@@ -76,19 +90,24 @@ const AuthenticationProvider = ({ children }) => {
         return !!localStorage.getItem("@AuthToken_APE");
     }, []);
 
-    // Verifica automaticamente o token ao carregar a aplicação.
+    // Verifica automaticamente ao carregar a aplicação.
     useEffect(() => {
         const savedToken = localStorage.getItem("@AuthToken_APE");
+        const savedIdUser = localStorage.getItem("@IdUser_APE");
+        const savedUserType = localStorage.getItem("@UserType_APE");
+
         if (savedToken) {
             // Restaura o token no cabeçalho da API e no estado do componente.
             api.defaults.headers.authorization = `Bearer ${savedToken}`;
             setToken(savedToken);
+            setIdUser(savedIdUser);
+            setUserType(savedUserType);
         }
     }, []);
 
     // Provedor do contexto de autenticação que disponibiliza os valores e funções para os componentes filhos.
     return (
-        <AuthenticationContext.Provider value={{ token, signIn, signOut, userLogged }}>
+        <AuthenticationContext.Provider value={{ token, idUser, userType, signIn, signOut, userLogged }}>
             {children}
         </AuthenticationContext.Provider>
     );
