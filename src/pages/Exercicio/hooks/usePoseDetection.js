@@ -347,7 +347,6 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 setMensagemAcao("Falha ao salvar resultados!");
             }
         } catch (error) {
-            console.error("Erro ao salvar resultados:", error);
             setMensagemAcao("Erro de conexão com o servidor!");
         }
     };

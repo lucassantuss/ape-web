@@ -150,9 +150,11 @@ export default function useMinhaConta() {
                                     ? { id: usuario.idPersonal, nomeCompleto: personalSelecionado.nome }
                                     : { id: "", nomeCompleto: "" }
                                 : null,
-                        cref: tipoUsuario === "personal" ? usuario.cref || "" : "",
                         estado: tipoUsuario === "personal" ? estadoSigla : "",
                         cidade: tipoUsuario === "personal" ? usuario.cidade || "" : "",
+                        numeroCREF: tipoUsuario === "personal" ? usuario.numeroCREF || "" : "",
+                        categoriaCREF: tipoUsuario === "personal" ? usuario.categoriaCREF || "" : "",
+                        siglaCREF: tipoUsuario === "personal" ? usuario.siglaCREF || "" : "",
                     });
                 }
                 setError(null);
@@ -246,9 +248,11 @@ export default function useMinhaConta() {
             }
 
             if (dadosEditados.tipo === "personal") {
-                payload.cref = dadosEditados.cref;
                 payload.estado = dadosEditados.estado;
                 payload.cidade = dadosEditados.cidade;
+                payload.numeroCREF = dadosEditados.numeroCREF;
+                payload.categoriaCREF = dadosEditados.categoriaCREF;
+                payload.siglaCREF = dadosEditados.siglaCREF;
             }
 
             await api.put(`${endpointBase}/${idUser}`, payload);

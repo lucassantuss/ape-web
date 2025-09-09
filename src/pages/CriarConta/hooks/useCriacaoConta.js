@@ -48,8 +48,9 @@ export default function useCriacaoConta() {
         cpf: "",
         estado: "",
         cidade: "",
-        categoriaProf: "",
-        cref: ""
+        numeroCref: "",
+        categoriaCref: "",
+        siglaCref: "",
     });
 
     // Busca estados via API IBGE
@@ -230,8 +231,7 @@ export default function useCriacaoConta() {
                     IdPersonal: formDataAluno.idPersonal
                 };
                 response = await api.post("Aluno", novoUsuarioDto);
-            } else {
-                var crefCompleto = formDataPersonal.cref + '-' + formDataPersonal.categoriaProf + '/' + formDataPersonal.estado
+            } else {               
                 novoUsuarioDto = {
                     Id: '',
                     Nome: formDataPersonal.nome,
@@ -239,9 +239,11 @@ export default function useCriacaoConta() {
                     Email: formDataPersonal.email,
                     Senha: formDataPersonal.senha,
                     CPF: formDataPersonal.cpf,
-                    CREF: crefCompleto,
                     Estado: formDataPersonal.estado,
-                    Cidade: formDataPersonal.cidade
+                    Cidade: formDataPersonal.cidade,
+                    NumeroCREF: formDataPersonal.numeroCref,
+                    CategoriaCREF: formDataPersonal.categoriaCref,
+                    SiglaCREF: formDataPersonal.estado,
                 };
                 response = await api.post("Personal", novoUsuarioDto);
             }
@@ -268,9 +270,11 @@ export default function useCriacaoConta() {
                     confSenha: "",
                     email: "",
                     cpf: "",
-                    cref: "",
                     estado: "",
                     cidade: "",
+                    numeroCref: "",
+                    categoriaCref: "",
+                    siglaCref: "",
                 });
             }
         } catch (error) {

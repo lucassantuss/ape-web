@@ -202,12 +202,12 @@ export default function MinhaConta() {
 							{editando ? (
 								<Input
 									name="cref"
-									value={dadosEditados.cref || ""}
+									value={dadosEditados.numeroCREF || ""}
 									onChange={handleChange}
 									error={errors.cref}
 								/>
 							) : (
-								<p>{dadosEditados.cref}</p>
+								<p>{dadosEditados.numeroCREF}</p>
 							)}
 						</div>
 					</>
