@@ -19,9 +19,13 @@ export default function MinhaConta() {
 		setEditando,
 		showModalExcluir,
 		setShowModalExcluir,
+		showModalPersonal,
+		setShowModalPersonal,
 		dadosEditados,
 		errors,
 		personais,
+		pesquisa,
+		nomePersonal,
 		redirectOnClose,
 		modalInfoTitle,
 		modalInfoMessage,
@@ -31,6 +35,7 @@ export default function MinhaConta() {
 		handleSalvar,
 		handleExcluirConta,
 		handleSelecionadoPersonal,
+		handlePesquisaPersonal,
 		loading,
 		error,
 		estados,
@@ -110,18 +115,46 @@ export default function MinhaConta() {
 						<label>Personal Vinculado:</label>
 						{editando ? (
 							<>
-								<Select
+								<SearchInput
 									label=""
 									name="personal"
-									value={dadosEditados.personal?.id || ""}
-									onChange={(e) => handleSelecionadoPersonal(e)}
-									options={[
-										{ value: "", label: "Selecione um personal" },
-										...personais.map((p) => ({ value: p.id, label: p.nomeCompleto })),
-									]}
+									value={dadosEditados.personal?.nomeCompleto || "Nenhum personal vinculado"}
+									onChange={handleChange}
+									placeholder="Pesquise seu personal"
+									maxLength={255}
 									error={errors.personal}
+									onClick={() => setShowModalPersonal(true)}
+									readOnly
 								/>
 
+								<Modal isOpen={showModalPersonal} onClose={() => setShowModalPersonal(false)}>
+									<Input
+										label="Pesquisar Personal"
+										name="personal"
+										value={pesquisa}
+										onChange={handlePesquisaPersonal}
+										placeholder="Digite para buscar personal"
+										maxLength={255}
+										error={errors.personal}
+									/>
+									<select
+										className="selectPersonal"
+										onChange={handleSelecionadoPersonal}
+										value={dadosEditados.personal?.id || ""}
+										style={{ margin: "0px" }}
+									>
+										<option value="">Selecione um personal</option>
+										{personais
+											.filter((p) =>
+												p.nomeCompleto.toLowerCase().includes(pesquisa.toLowerCase())
+											)
+											.map((p) => (
+												<option key={p.id} value={p.id}>
+													{p.nomeCompleto}
+												</option>
+											))}
+									</select>
+								</Modal>
 							</>
 						) : (
 							<p>{dadosEditados.personal?.nomeCompleto || "Nenhum personal vinculado"}</p>

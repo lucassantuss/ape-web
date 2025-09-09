@@ -1,3 +1,4 @@
+import useModalInfo from "components/ModalInfo/hooks/useModalInfo";
 import { useState, useEffect } from "react";
 import api from "services/api";
 
@@ -7,6 +8,17 @@ export default function useHistoricoExercicio() {
   const [observacaoSelecionada, setObservacaoSelecionada] = useState("");
   const [idExercicioSelecionado, setIdExercicioSelecionado] = useState(null);
 
+  const [modalRemocaoAberto, setModalRemocaoAberto] = useState(false);
+  const [treinoSelecionadoParaRemocao, setTreinoSelecionadoParaRemocao] = useState(null);
+
+  const {
+    showModalInfo,
+    modalInfoTitle,
+    modalInfoMessage,
+    exibirModalInfo,
+    fecharModalInfo,
+  } = useModalInfo();
+
   const idUser = localStorage.getItem("@IdUser_APE");
 
   useEffect(() => {
@@ -14,8 +26,8 @@ export default function useHistoricoExercicio() {
       try {
         const response = await api.get(`/Exercicio/listByIdUser/${idUser}`);
         setHistorico(response.data);
-      } catch (error) {
-        console.error("Erro ao carregar histórico:", error);
+      } catch {
+        exibirModalInfo("Erro", "Erro ao carregar histórico.");
       }
     }
 
@@ -46,8 +58,31 @@ export default function useHistoricoExercicio() {
       // Atualizar histórico após adicionar observação
       const response = await api.get(`/Exercicio/listByIdUser/${idUser}`);
       setHistorico(response.data);
+
+      exibirModalInfo("Sucesso", "Observação adicionada com sucesso!");
+    } catch {
+      exibirModalInfo("Erro", "Não foi possível salvar a observação.");
+    }
+  };
+
+  const abrirModalRemocao = (treino) => {
+    setTreinoSelecionadoParaRemocao(treino);
+    setModalRemocaoAberto(true);
+  };
+
+  const confirmarRemocao = async () => {
+    if (!treinoSelecionadoParaRemocao) return;
+
+    try {
+      await api.delete(`/Exercicio/${treinoSelecionadoParaRemocao.id}`);
+      setHistorico(historico.filter(t => t.id !== treinoSelecionadoParaRemocao.id));
+
+      setModalRemocaoAberto(false);
+      setTreinoSelecionadoParaRemocao(null);
+
+      exibirModalInfo("Sucesso", "Treino excluído com sucesso!");
     } catch (error) {
-      console.error("Erro ao salvar observação:", error);
+      exibirModalInfo("Erro", "Não foi possível excluir o treino. Tente novamente.");
     }
   };
 
@@ -60,5 +95,14 @@ export default function useHistoricoExercicio() {
     abrirModal,
     fecharModal,
     salvarObservacao,
+    treinoSelecionadoParaRemocao,
+    abrirModalRemocao,
+    confirmarRemocao,
+    modalRemocaoAberto,
+    setModalRemocaoAberto,
+    showModalInfo,
+    modalInfoTitle,
+    modalInfoMessage,
+    fecharModalInfo,
   };
 }

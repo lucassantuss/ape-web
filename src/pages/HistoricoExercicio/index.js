@@ -5,6 +5,7 @@ import Title from "components/Title";
 import useHistoricoExercicio from "pages/HistoricoExercicio/hooks/useHistoricoExercicio";
 
 import "./HistoricoExercicio.css";
+import ModalInfo from "components/ModalInfo";
 
 export default function HistoricoExercicio() {
   const {
@@ -16,6 +17,15 @@ export default function HistoricoExercicio() {
     abrirModal,
     fecharModal,
     salvarObservacao,
+    treinoSelecionadoParaRemocao,
+    abrirModalRemocao,
+    confirmarRemocao,
+    modalRemocaoAberto,
+    setModalRemocaoAberto,
+    showModalInfo,
+    modalInfoTitle,
+    modalInfoMessage,
+    fecharModalInfo,
   } = useHistoricoExercicio();
 
   return (
@@ -45,6 +55,13 @@ export default function HistoricoExercicio() {
                   className="botao-observacao"
                   onClick={() => abrirModal(item.id)}
                 />
+                <br />
+                <Button
+                  label="Excluir Treino"
+                  className="botao-remover"
+                  onClick={() => abrirModalRemocao(item)}
+                  cancel
+                />
               </div>
             ))}
           </div>
@@ -68,6 +85,27 @@ export default function HistoricoExercicio() {
           </div>
         </Modal>
       )}
+
+      {modalRemocaoAberto && (
+        <Modal isOpen={modalRemocaoAberto} onClose={() => setModalRemocaoAberto(false)}>
+          <h3>Confirmar Exclusão</h3>
+          <p>
+            Tem certeza que deseja <strong>excluir</strong> o treino{" "}
+            <strong>{treinoSelecionadoParaRemocao?.nome}</strong> da sua lista?
+          </p>
+          <div className="modal-botoes">
+            <Button label="Cancelar" onClick={() => setModalRemocaoAberto(false)} cancel />
+            <Button label="Confirmar Exclusão" onClick={confirmarRemocao} />
+          </div>
+        </Modal>
+      )}
+
+      <ModalInfo
+        isOpen={showModalInfo}
+        onClose={fecharModalInfo}
+        title={modalInfoTitle}
+        message={modalInfoMessage}
+      />
     </div>
   );
 }

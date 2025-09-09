@@ -14,6 +14,10 @@ export default function useMinhaConta() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const [showModalPersonal, setShowModalPersonal] = useState(false);
+    const [nomePersonal, setNomePersonal] = useState("");
+    const [pesquisa, setPesquisa] = useState("");
+
     const {
         showModalInfo,
         modalInfoTitle,
@@ -200,11 +204,16 @@ export default function useMinhaConta() {
 
     const handleSelecionadoPersonal = (event) => {
         const personal = personais.find(p => p.id === event.target.value);
+        setNomePersonal(personal?.nomeCompleto || "");
         setDadosEditados(prev => ({
             ...prev,
             personal: { id: personal?.id || "", nomeCompleto: personal?.nomeCompleto || "" }
         }));
+        setShowModalPersonal(false);
+        setPesquisa("");
     };
+
+    const handlePesquisaPersonal = (event) => setPesquisa(event.target.value);
 
     // Salvar alterações
     const handleSalvar = async () => {
@@ -278,9 +287,13 @@ export default function useMinhaConta() {
         setEditando,
         showModalExcluir,
         setShowModalExcluir,
+        showModalPersonal,
+        setShowModalPersonal,
         dadosEditados,
         errors,
         personais,
+        nomePersonal,
+        pesquisa,
         redirectOnClose,
         showModalInfo,
         modalInfoTitle,
@@ -290,6 +303,7 @@ export default function useMinhaConta() {
         handleSalvar,
         handleExcluirConta,
         handleSelecionadoPersonal,
+        handlePesquisaPersonal,
         loading,
         error,
         estados,
