@@ -49,7 +49,6 @@ export default function useAlunos() {
             setAlunoSelecionadoParaRemocao(null);
             exibirModalInfo("Sucesso", "Aluno desvinculado com sucesso!");
         } catch (error) {
-            console.error('Erro ao desvincular aluno do personal:', error);
             exibirModalInfo("Erro", "Não foi possível desvincular o aluno. Tente novamente.");
         }
     };

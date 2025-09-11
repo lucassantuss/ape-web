@@ -3,13 +3,13 @@ import './InputCref.css';
 const InputCref = ({
     label,
     name,
-    value,
     onChange,
     placeholder,
     type = "text",
     maxLength,
     error,
-    categoriaProf,
+    numeroCref,
+    categoriaCref,
     estado
 }) => {
     return (
@@ -17,21 +17,21 @@ const InputCref = ({
             <label>{label}</label>
             <div className="input-cref-row">
                 <input
-                    className="input-cref cref"
+                    className="input-cref numeroCref"
                     id={name}
                     type={type}
                     name={name}
-                    value={value}
+                    value={numeroCref}
                     onChange={onChange}
                     placeholder={placeholder}
                     maxLength={maxLength}
                 />
 
                 <input
-                    className="input-cref categoria"
-                    id="inputCategoriaProf"
-                    name="inputCategoriaProf"
-                    value={categoriaProf}
+                    className="input-cref categoriaCref"
+                    id="inputCategoriaCref"
+                    name="inputCategoriaCref"
+                    value={categoriaCref}
                     maxLength={1}
                     disabled
                 />

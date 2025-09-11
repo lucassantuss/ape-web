@@ -29,7 +29,7 @@ export default function CriarConta() {
         errors,
         estados,
         cidades,
-        categoriaProf,
+        categoriaCref,
         showModal,
         setShowModal,
         pesquisa,
@@ -294,22 +294,22 @@ export default function CriarConta() {
 
                         <Select
                             label="Categoria Profissional"
-                            name="categoriaProf"
-                            value={formDataPersonal.categoriaProf}
+                            name="categoriaCref"
+                            value={formDataPersonal.categoriaCref}
                             onChange={handleChange}
-                            options={categoriaProf}
-                            error={errors.categoriaProf}
+                            options={categoriaCref}
+                            error={errors.categoriaCref}
                         />
 
                         <InputCref
                             label="N° CREF (Conselho Regional de Educação Física)"
-                            name="cref"
-                            value={formDataPersonal.cref}
+                            name="numeroCref"
                             onChange={handleChange}
                             placeholder="Digite seu número CREF"
                             maxLength={6}
                             error={errors.cref}
-                            categoriaProf={formDataPersonal.categoriaProf}
+                            numeroCref={formDataPersonal.numeroCref}
+                            categoriaCref={formDataPersonal.categoriaCref}
                             estado={formDataPersonal.estado}
                         />
 

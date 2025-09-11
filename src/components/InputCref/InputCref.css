@@ -12,7 +12,7 @@
 
 .input-cref-row {
     display: flex;
-    gap: 0.5rem; /* espaço entre os inputs */
+    gap: 0.5rem;
 }
 
 .input-cref {
@@ -26,18 +26,15 @@
     touch-action: none;
 }
 
-    /* CREF ocupa mais espaço */
-    .input-cref.cref {
+    .input-cref.numeroCref {
         flex: 5;
     }
 
-    /* Categoria ocupa pouco espaço */
-    .input-cref.categoria {
+    .input-cref.categoriaCref {
         flex: 1;
         text-align: center;
     }
 
-    /* Estado ocupa pouco espaço */
     .input-cref.estado {
         flex: 1;
         text-align: center;

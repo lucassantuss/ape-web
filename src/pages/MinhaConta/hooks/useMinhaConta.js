@@ -9,6 +9,7 @@ export default function useMinhaConta() {
     const [dadosEditados, setDadosEditados] = useState(null);
     const [estados, setEstados] = useState([]);
     const [cidades, setCidades] = useState([]);
+    const [categoriaCref, setCategoriaCref] = useState([]);
     const [personais, setPersonais] = useState([]);
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(true);
@@ -69,6 +70,20 @@ export default function useMinhaConta() {
         }
     };
 
+    // Popula as categorias profissionais do CREF
+    const fetchCategoriaCref = async () => {
+        try {
+            const categorias = [
+                { value: "G", label: "G - Graduação em Educação Física" },
+                { value: "P", label: "P - Provisório" },
+                { value: "F", label: "F - Formação anterior à Lei 9696/98" },
+            ];
+            setCategoriaCref(categorias);
+        } catch (err) {
+            exibirModalInfo("Erro", "Erro ao buscar as categorias");
+        }
+    };
+
     // Buscar todos os personais
     const fetchPersonais = async () => {
         try {
@@ -85,6 +100,7 @@ export default function useMinhaConta() {
     };
 
     useEffect(() => {
+        fetchCategoriaCref();
         fetchEstados();
         fetchPersonais();
     }, []);
@@ -150,7 +166,7 @@ export default function useMinhaConta() {
                                     ? { id: usuario.idPersonal, nomeCompleto: personalSelecionado.nome }
                                     : { id: "", nomeCompleto: "" }
                                 : null,
-                        estado: tipoUsuario === "personal" ? estadoSigla : "",
+                        estado: tipoUsuario === "personal" ? usuario.estado : "",
                         cidade: tipoUsuario === "personal" ? usuario.cidade || "" : "",
                         numeroCref: tipoUsuario === "personal" ? usuario.numeroCref || "" : "",
                         categoriaCref: tipoUsuario === "personal" ? usuario.categoriaCref || "" : "",
@@ -260,7 +276,6 @@ export default function useMinhaConta() {
             exibirModalInfo("Sucesso", "Dados atualizados com sucesso!");
             setEditando(false);
         } catch (err) {
-            console.error("Erro ao salvar alterações:", err);
             exibirModalInfo("Erro", "Não foi possível salvar as alterações. Tente novamente.");
         } finally {
             setLoading(false);
@@ -281,7 +296,6 @@ export default function useMinhaConta() {
             exibirModalInfo("Sucesso", "Conta excluída com sucesso!");
             setRedirectOnClose(true);
         } catch (err) {
-            console.error("Erro ao excluir conta:", err);
             exibirModalInfo("Erro", "Não foi possível excluir a conta. Tente novamente.");
         }
     };
@@ -297,6 +311,7 @@ export default function useMinhaConta() {
         errors,
         personais,
         nomePersonal,
+        categoriaCref,
         pesquisa,
         redirectOnClose,
         showModalInfo,

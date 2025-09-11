@@ -2,17 +2,14 @@ import { useState, useEffect } from "react";
 import api from "services/api";
 
 import { formatCPF, validateCPF } from 'utils/Validations';
-import { useNavigate } from "react-router-dom";
 import useModalInfo from "components/ModalInfo/hooks/useModalInfo";
 
 export default function useCriacaoConta() {
-    const navigate = useNavigate();
-
     const [tipoUsuario, setTipoUsuario] = useState("aluno");
     const [errors, setErrors] = useState({});
     const [estados, setEstados] = useState([]);
     const [cidades, setCidades] = useState([]);
-    const [categoriaProf, setCategoriaProf] = useState([]);
+    const [categoriaCref, setCategoriaCref] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [pesquisa, setPesquisa] = useState("");
     const [nomePersonal, setNomePersonal] = useState("");
@@ -69,7 +66,7 @@ export default function useCriacaoConta() {
                 .sort((a, b) => a.label.localeCompare(b.label));
             setEstados(lista);
         } catch (err) {
-            console.error("Erro ao buscar estados:", err);
+            exibirModalInfo("Erro", "Erro ao buscar os estados");
         }
     };
 
@@ -81,26 +78,26 @@ export default function useCriacaoConta() {
             );
             const data = await response.json();
             const lista = data.map((cidade) => ({
-                value: cidade.nome,
+                value: cidade.sigla,
                 label: cidade.nome,
             }));
             setCidades(lista);
         } catch (err) {
-            console.error("Erro ao buscar cidades:", err);
+            exibirModalInfo("Erro", "Erro ao buscar as cidades");
         }
     };
 
     // Popula as categorias profissionais do CREF
-    const fetchCategoriaProf = async () => {
+    const fetchCategoriaCref = async () => {
         try {
             const categorias = [
                 { value: "G", label: "G - Graduação em Educação Física" },
                 { value: "P", label: "P - Provisório" },
                 { value: "F", label: "F - Formação anterior à Lei 9696/98" },
             ];
-            setCategoriaProf(categorias);
+            setCategoriaCref(categorias);
         } catch (err) {
-            console.error("Erro ao buscar categorias:", err);
+            exibirModalInfo("Erro", "Erro ao buscar as categorias");
         }
     };
 
@@ -114,13 +111,13 @@ export default function useCriacaoConta() {
             }));
             setPersonais(lista);
         } catch (err) {
-            console.error("Erro ao buscar personais:", err);
+            exibirModalInfo("Erro", "Erro ao buscar os personais");
         }
     };
 
     useEffect(() => {
         fetchEstados();
-        fetchCategoriaProf();
+        fetchCategoriaCref();
         fetchPersonais();
     }, []);
 
@@ -201,9 +198,9 @@ export default function useCriacaoConta() {
         }
         if (
             tipoUsuario === "personal" &&
-            (!formData.cref || !formData.estado || !formData.cidade)
+            (!formData.numeroCref || !formData.estado || !formData.cidade)
         ) {
-            if (!formData.cref) newErrors.cref = "Campo obrigatório";
+            if (!formData.numeroCref) newErrors.numeroCref = "Campo obrigatório";
             if (!formData.estado) newErrors.estado = "Campo obrigatório";
             if (!formData.cidade) newErrors.cidade = "Campo obrigatório";
             isValid = false;
@@ -231,7 +228,7 @@ export default function useCriacaoConta() {
                     IdPersonal: formDataAluno.idPersonal
                 };
                 response = await api.post("Aluno", novoUsuarioDto);
-            } else {               
+            } else {
                 novoUsuarioDto = {
                     Id: '',
                     Nome: formDataPersonal.nome,
@@ -241,9 +238,9 @@ export default function useCriacaoConta() {
                     CPF: formDataPersonal.cpf,
                     Estado: formDataPersonal.estado,
                     Cidade: formDataPersonal.cidade,
-                    NumeroCREF: formDataPersonal.numeroCref,
-                    CategoriaCREF: formDataPersonal.categoriaCref,
-                    SiglaCREF: formDataPersonal.estado,
+                    NumeroCref: formDataPersonal.numeroCref,
+                    CategoriaCref: formDataPersonal.categoriaCref,
+                    SiglaCref: formDataPersonal.estado,
                 };
                 response = await api.post("Personal", novoUsuarioDto);
             }
@@ -295,7 +292,7 @@ export default function useCriacaoConta() {
         errors,
         estados,
         cidades,
-        categoriaProf,
+        categoriaCref,
         showModal,
         setShowModal,
         pesquisa,
