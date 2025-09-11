@@ -182,18 +182,22 @@ export default function CriarConta() {
                         </Modal>
 
                         <div className="termos-container">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={aceiteTermos}
-                                    onChange={(e) => setAceiteTermos(e.target.checked)}
-                                />
+                            <input
+                                id="aceiteTermos"
+                                type="checkbox"
+                                checked={aceiteTermos}
+                                onChange={(e) => setAceiteTermos(e.target.checked)}
+                            />
+                            <label htmlFor="aceiteTermos">
                                 Eu li e aceito os{" "}
-                                <span
+                                <a
+                                    href="/docs/termos_uso.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="link-termos"
                                 >
                                     Termos de Uso e Política de Privacidade
-                                </span>
+                                </a>
                             </label>
                             {errors.aceiteTermos && (
                                 <p className="error-message">{errors.aceiteTermos}</p>
@@ -310,18 +314,22 @@ export default function CriarConta() {
                         />
 
                         <div className="termos-container">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={aceiteTermos}
-                                    onChange={(e) => setAceiteTermos(e.target.checked)}
-                                />
+                            <input
+                                id="aceiteTermos"
+                                type="checkbox"
+                                checked={aceiteTermos}
+                                onChange={(e) => setAceiteTermos(e.target.checked)}
+                            />
+                            <label htmlFor="aceiteTermos">
                                 Eu li e aceito os{" "}
-                                <span
+                                <a
+                                    href="/docs/termos_uso.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="link-termos"
                                 >
                                     Termos de Uso e Política de Privacidade
-                                </span>
+                                </a>
                             </label>
                             {errors.aceiteTermos && (
                                 <p className="error-message">{errors.aceiteTermos}</p>

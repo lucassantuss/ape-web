@@ -198,16 +198,44 @@ export default function MinhaConta() {
 						</div>
 
 						<div className="minha-conta-box left">
+							<label>Categoria Profissional CREF:</label>
+							{editando ? (
+								<Input
+									name="categoriaCref"
+									value={dadosEditados.categoriaCref || ""}
+									onChange={handleChange}
+									error={errors.categoriaCref}
+								/>
+							) : (
+								<p>{dadosEditados.categoriaCref}</p>
+							)}
+						</div>
+
+						<div className="minha-conta-box right">
 							<label>N° CREF:</label>
 							{editando ? (
 								<Input
-									name="cref"
-									value={dadosEditados.numeroCREF || ""}
+									name="numeroCref"
+									value={dadosEditados.numeroCref || ""}
 									onChange={handleChange}
-									error={errors.cref}
+									error={errors.numeroCref}
 								/>
 							) : (
-								<p>{dadosEditados.numeroCREF}</p>
+								<p>{dadosEditados.numeroCref}</p>
+							)}
+						</div>
+
+						<div className="minha-conta-box left">
+							<label>Sigla CREF:</label>
+							{editando ? (
+								<Input
+									name="siglaCref"
+									value={dadosEditados.siglaCref || ""}
+									onChange={handleChange}
+									error={errors.siglaCref}
+								/>
+							) : (
+								<p>{dadosEditados.siglaCref}</p>
 							)}
 						</div>
 					</>
