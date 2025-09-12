@@ -42,14 +42,14 @@ export default function useMinhaConta() {
             const data = await response.json();
             const lista = data
                 .map((uf) => ({
-                    value: uf.nome,
+                    value: uf.sigla,
                     label: uf.nome,
                     id: uf.id,
                 }))
                 .sort((a, b) => a.label.localeCompare(b.label));
             setEstados(lista);
         } catch (err) {
-            console.error("Erro ao buscar estados:", err);
+            exibirModalInfo("Erro", "Erro ao buscar os estados");
         }
     };
 
@@ -66,7 +66,7 @@ export default function useMinhaConta() {
             }));
             setCidades(lista);
         } catch (err) {
-            console.error("Erro ao buscar cidades:", err);
+            exibirModalInfo("Erro", "Erro ao buscar as cidades");
         }
     };
 
@@ -95,7 +95,7 @@ export default function useMinhaConta() {
             }));
             setPersonais(lista);
         } catch (err) {
-            console.error("Erro ao buscar personais:", err);
+            exibirModalInfo("Erro", "Erro ao buscar os personais");
         }
     };
 
@@ -150,7 +150,7 @@ export default function useMinhaConta() {
                             const respPersonal = await api.get(`/Personal/${usuario.idPersonal}`);
                             personalSelecionado = respPersonal.data;
                         } catch (err) {
-                            console.warn("Personal vinculado não encontrado:", err);
+                            exibirModalInfo("Erro", "Personal vinculado não encontrado");
                         }
                     }
 

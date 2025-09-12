@@ -10,7 +10,6 @@ import Title from 'components/Title';
 import useMinhaConta from 'pages/MinhaConta/hooks/useMinhaConta';
 
 import './MinhaConta.css';
-import InputCref from "components/InputCref";
 
 export default function MinhaConta() {
 	const { signOut } = useAuthentication();
@@ -168,50 +167,6 @@ export default function MinhaConta() {
 				{dadosEditados.tipo === "personal" && (
 					<>
 						<div className="minha-conta-box right">
-							<label>N° CREF:</label>
-							{editando ? (
-								<InputCref
-									name="numeroCref"
-									value={dadosEditados.numeroCref || ""}
-									onChange={handleChange}
-									error={errors.numeroCref}
-								/>
-							) : (
-								<p>{dadosEditados.numeroCref}</p>
-							)}
-						</div>
-
-						<div className="minha-conta-box left">
-							<label>Categoria Profissional CREF:</label>
-							{editando ? (
-								<Select
-									label="Categoria Profissional"
-									name="categoriaCref"
-									value={dadosEditados.categoriaCref || ""}
-									onChange={handleChange}
-									options={categoriaCref}
-									error={errors.categoriaCref}
-								/>
-							) : (
-								<p>{dadosEditados.categoriaCref}</p>
-							)}
-						</div>
-
-						<div className="minha-conta-box left">
-							<label>Sigla CREF:</label>
-							{editando ? (
-								<Input
-									name="siglaCref"
-									value={dadosEditados.siglaCref || ""}
-									onChange={handleChange}
-									error={errors.siglaCref}
-								/>
-							) : (
-								<p>{dadosEditados.siglaCref}</p>
-							)}
-						</div>
-
-						<div className="minha-conta-box right">
 							<label>Estado:</label>
 							{editando ? (
 								<Select
@@ -242,6 +197,87 @@ export default function MinhaConta() {
 								<p>{dadosEditados.cidade}</p>
 							)}
 						</div>
+
+						<div className="minha-conta-box right">
+							<label>N° CREF (Conselho Regional de Educação Física):</label>
+							{editando ? (
+								<input
+									className="input-cref numeroCref"
+									id='numeroCref'
+									type='text'
+									name='numeroCref'
+									value={dadosEditados.numeroCref}
+									onChange={handleChange}
+									placeholder='Digite seu número CREF'
+									maxLength={6}
+								/>
+							) : (
+								<div className="input-cref-group">
+									<div className="input-cref-row">
+										<input
+											className="input-cref numeroCref"
+											id='numeroCref'
+											type='text'
+											name='numeroCref'
+											value={dadosEditados.numeroCref}
+											onChange={handleChange}
+											placeholder='Digite seu número CREF'
+											maxLength={6}
+											disabled
+										/>
+
+										<input
+											className="input-cref categoriaCref"
+											id="inputCategoriaCref"
+											name="inputCategoriaCref"
+											value={dadosEditados.categoriaCref}
+											maxLength={1}
+											disabled
+										/>
+
+										<input
+											className="input-cref estado"
+											id="inputEstado"
+											name="inputEstado"
+											value={dadosEditados.estado}
+											maxLength={2}
+											disabled
+										/>
+									</div>
+									{errors.cref && <span className="error-message">{errors.cref}</span>}
+								</div>
+							)}
+						</div>
+
+						{editando ? (
+							<div className="minha-conta-box left">
+								<label>Sigla CREF:</label>
+								<Input
+									name="siglaCref"
+									value={dadosEditados.siglaCref || ""}
+									onChange={handleChange}
+									error={errors.siglaCref}
+								/>
+							</div>
+						) : (
+							<></>
+						)}
+
+						{editando ? (
+							<div className="minha-conta-box left">
+								<label>Categoria Profissional CREF:</label>
+								<Select
+									label=""
+									name="categoriaCref"
+									value={dadosEditados.categoriaCref || ""}
+									onChange={handleChange}
+									options={categoriaCref}
+									error={errors.categoriaCref}
+								/>
+							</div>
+						) : (
+							<></>
+						)}
 					</>
 				)}
 			</div>

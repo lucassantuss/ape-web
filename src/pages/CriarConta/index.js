@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthentication } from "context/Authentication";
 import Button from "components/Button";
 import Input from "components/Input";
-import InputCref from "components/InputCref";
 import Modal from "components/Modal";
 import ModalInfo from "components/ModalInfo";
 import SearchInput from "components/SearchInput";
@@ -301,17 +300,40 @@ export default function CriarConta() {
                             error={errors.categoriaCref}
                         />
 
-                        <InputCref
-                            label="N° CREF (Conselho Regional de Educação Física)"
-                            name="numeroCref"
-                            onChange={handleChange}
-                            placeholder="Digite seu número CREF"
-                            maxLength={6}
-                            error={errors.cref}
-                            numeroCref={formDataPersonal.numeroCref}
-                            categoriaCref={formDataPersonal.categoriaCref}
-                            estado={formDataPersonal.estado}
-                        />
+                        <div className="input-cref-group">
+                            <label>N° CREF (Conselho Regional de Educação Física)</label>
+                            <div className="input-cref-row">
+                                <input
+                                    className="input-cref numeroCref"
+                                    id='numeroCref'
+                                    type='text'
+                                    name='numeroCref'
+                                    value={formDataPersonal.numeroCref}
+                                    onChange={handleChange}
+                                    placeholder='Digite seu número CREF'
+                                    maxLength={6}
+                                />
+
+                                <input
+                                    className="input-cref categoriaCref"
+                                    id="inputCategoriaCref"
+                                    name="inputCategoriaCref"
+                                    value={formDataPersonal.categoriaCref}
+                                    maxLength={1}
+                                    disabled
+                                />
+
+                                <input
+                                    className="input-cref estado"
+                                    id="inputEstado"
+                                    name="inputEstado"
+                                    value={formDataPersonal.estado}
+                                    maxLength={2}
+                                    disabled
+                                />
+                            </div>
+                            {errors.cref && <span className="error-message">{errors.cref}</span>}
+                        </div>
 
                         <div className="termos-container">
                             <input
