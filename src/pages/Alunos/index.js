@@ -10,9 +10,12 @@ export default function Alunos() {
         alunos,
         modalAberto,
         setModalAberto,
-        alunoSelecionadoParaRemocao,
-        abrirModal,
-        confirmarRemocao,
+        alunoSelecionado,
+        tipoAcao,
+        abrirModalDesvincular,
+        abrirModalRecusar,
+        confirmarAcao,
+        aceitarAluno,
         showModalInfo,
         modalInfoTitle,
         modalInfoMessage,
@@ -25,18 +28,36 @@ export default function Alunos() {
                 <Title titulo="Alunos" titulo2="Nenhum aluno associado ao personal." />
             ) : (
                 <>
-                    <Title titulo="Alunos" titulo2="Visualize os alunos e desvincule, caso necessário" />
+                    <Title 
+                        titulo="Alunos" 
+                        titulo2="Gerencie os pedidos de vínculo e alunos já aceitos" 
+                    />
                     <div className="alunos-lista">
                         {alunos.map((aluno) => (
                             <div key={aluno.id} className="aluno-card">
                                 <p><strong>Nome:</strong> {aluno.nome}</p>
                                 <p><strong>Email:</strong> {aluno.email || '-'}</p>
-                                <Button
-                                    label="Desvincular Aluno"
-                                    className="botao-remover"
-                                    onClick={() => abrirModal(aluno)}
-                                    cancel
-                                />
+
+                                {!aluno.aceito ? (
+                                    <div className="botoes-solicitacao">
+                                        <Button 
+                                            label="Aceitar" 
+                                            onClick={() => aceitarAluno(aluno)} 
+                                        />
+                                        <Button 
+                                            label="Recusar" 
+                                            onClick={() => abrirModalRecusar(aluno)} 
+                                            cancel 
+                                        />
+                                    </div>
+                                ) : (
+                                    <Button
+                                        label="Desvincular Aluno"
+                                        className="botao-remover"
+                                        onClick={() => abrirModalDesvincular(aluno)}
+                                        cancel
+                                    />
+                                )}
                             </div>
                         ))}
                     </div>
@@ -45,15 +66,32 @@ export default function Alunos() {
 
             {modalAberto && (
                 <Modal isOpen={modalAberto} onClose={() => setModalAberto(false)}>
-                    <h3>Confirmar Desvinculação</h3>
-                    <p>
-                        Tem certeza que deseja <strong>desvincular</strong> o aluno{' '}
-                        <strong>{alunoSelecionadoParaRemocao?.nome}</strong>?
-                        O aluno continuará cadastrado no sistema, mas sem vínculo com este personal.
-                    </p>
-                    <div className="minha-conta-modal-botoes">
+                    {tipoAcao === "desvincular" ? (
+                        <>
+                            <h3>Confirmar Desvinculação</h3>
+                            <p>
+                                Tem certeza que deseja <strong>desvincular</strong> o aluno{' '}
+                                <strong>{alunoSelecionado?.nome}</strong>?
+                                O aluno continuará cadastrado no sistema, mas sem vínculo com este personal.
+                            </p>
+                        </>
+                    ) : (
+                        <>
+                            <h3>Confirmar Recusa</h3>
+                            <p>
+                                Tem certeza que deseja <strong>recusar</strong> o aluno{' '}
+                                <strong>{alunoSelecionado?.nome}</strong>?  
+                                Ele não ficará vinculado a você.
+                            </p>
+                        </>
+                    )}
+
+                    <div className="alunos-modal-botoes">
                         <Button label="Cancelar" onClick={() => setModalAberto(false)} cancel />
-                        <Button label="Confirmar Desvinculação" onClick={confirmarRemocao} />
+                        <Button 
+                            label={tipoAcao === "desvincular" ? "Confirmar Desvinculação" : "Confirmar Recusa"} 
+                            onClick={confirmarAcao} 
+                        />
                     </div>
                 </Modal>
             )}

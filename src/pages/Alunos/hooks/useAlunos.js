@@ -5,7 +5,8 @@ import api from 'services/api';
 export default function useAlunos() {
     const [alunos, setAlunos] = useState([]);
     const [modalAberto, setModalAberto] = useState(false);
-    const [alunoSelecionadoParaRemocao, setAlunoSelecionadoParaRemocao] = useState(null);
+    const [alunoSelecionado, setAlunoSelecionado] = useState(null);
+    const [tipoAcao, setTipoAcao] = useState(null); // "desvincular" ou "recusar"
 
     const {
         showModalInfo,
@@ -32,24 +33,53 @@ export default function useAlunos() {
         if (idPersonal) fetchAlunos();
     }, [idPersonal]);
 
-    const abrirModal = (aluno) => {
-        setAlunoSelecionadoParaRemocao(aluno);
+    // Abrir modal para desvinculação
+    const abrirModalDesvincular = (aluno) => {
+        setAlunoSelecionado(aluno);
+        setTipoAcao("desvincular");
         setModalAberto(true);
     };
 
-    const confirmarRemocao = async () => {
-        if (!alunoSelecionadoParaRemocao) return;
+    // Abrir modal para recusa
+    const abrirModalRecusar = (aluno) => {
+        setAlunoSelecionado(aluno);
+        setTipoAcao("recusar");
+        setModalAberto(true);
+    };
+
+    // Confirmar ação (desvincular ou recusar)
+    const confirmarAcao = async () => {
+        if (!alunoSelecionado || !tipoAcao) return;
 
         try {
-            // Desvincular o personal
-            await api.put(`/Aluno/${alunoSelecionadoParaRemocao.id}/remover-personal`);
-            setAlunos(alunos.filter(a => a.id !== alunoSelecionadoParaRemocao.id));
-
-            setModalAberto(false);
-            setAlunoSelecionadoParaRemocao(null);
-            exibirModalInfo("Sucesso", "Aluno desvinculado com sucesso!");
+            if (tipoAcao === "desvincular") {
+                await api.put(`/Aluno/${alunoSelecionado.id}/remover-personal`);
+                setAlunos(alunos.filter(a => a.id !== alunoSelecionado.id));
+                exibirModalInfo("Sucesso", "Aluno desvinculado com sucesso!");
+            } else if (tipoAcao === "recusar") {
+                await api.put(`/Aluno/${alunoSelecionado.id}/recusar-personal`);
+                setAlunos(alunos.filter(a => a.id !== alunoSelecionado.id));
+                exibirModalInfo("Sucesso", "Aluno recusado com sucesso!");
+            }
         } catch (error) {
-            exibirModalInfo("Erro", "Não foi possível desvincular o aluno. Tente novamente.");
+            exibirModalInfo("Erro", "Não foi possível concluir a ação. Tente novamente.");
+        } finally {
+            setModalAberto(false);
+            setAlunoSelecionado(null);
+            setTipoAcao(null);
+        }
+    };
+
+    // Aceitar aluno direto
+    const aceitarAluno = async (aluno) => {
+        try {
+            await api.put(`/Aluno/${aluno.id}/aceitar-personal`);
+            setAlunos(alunos.map(a => 
+                a.id === aluno.id ? { ...a, aceito: true } : a
+            ));
+            exibirModalInfo("Sucesso", "Aluno aceito com sucesso!");
+        } catch (error) {
+            exibirModalInfo("Erro", "Não foi possível aceitar o aluno.");
         }
     };
 
@@ -57,9 +87,12 @@ export default function useAlunos() {
         alunos,
         modalAberto,
         setModalAberto,
-        alunoSelecionadoParaRemocao,
-        abrirModal,
-        confirmarRemocao,
+        alunoSelecionado,
+        tipoAcao,
+        abrirModalDesvincular,
+        abrirModalRecusar,
+        confirmarAcao,
+        aceitarAluno,
         showModalInfo,
         modalInfoTitle,
         modalInfoMessage,
