@@ -6,7 +6,6 @@ import { formatCPF, validateCPF } from "utils/Validations";
 export default function useMinhaConta() {
     const [editando, setEditando] = useState(false);
     const [showModalExcluir, setShowModalExcluir] = useState(false);
-    const [dadosEditados, setDadosEditados] = useState(null);
     const [estados, setEstados] = useState([]);
     const [cidades, setCidades] = useState([]);
     const [categoriaCref, setCategoriaCref] = useState([]);
@@ -14,6 +13,9 @@ export default function useMinhaConta() {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const [dadosOriginais, setDadosOriginais] = useState(null);
+    const [dadosEditados, setDadosEditados] = useState(null);
 
     const [showModalPersonal, setShowModalPersonal] = useState(false);
     const [nomePersonal, setNomePersonal] = useState("");
@@ -154,7 +156,7 @@ export default function useMinhaConta() {
                         }
                     }
 
-                    setDadosEditados({
+                    setDadosOriginais({
                         tipo: tipoUsuario,
                         nome: usuario.nome || "",
                         email: usuario.email || "",
@@ -172,6 +174,8 @@ export default function useMinhaConta() {
                         categoriaCref: tipoUsuario === "personal" ? usuario.categoriaCref || "" : "",
                         siglaCref: tipoUsuario === "personal" ? usuario.siglaCref || "" : "",
                     });
+
+                    setDadosEditados(prev => ({ ...usuario }));
                 }
                 setError(null);
             } catch (err) {
