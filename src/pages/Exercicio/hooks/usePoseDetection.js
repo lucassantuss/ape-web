@@ -142,14 +142,17 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         //     desenhar: (canvasCtx, canvasElement, landmarks, angulo) => {} --- desenha no canvas
         // }
         roscaDireta: {
-            pontos: ['LEFT_SHOULDER', 'LEFT_ELBOW', 'LEFT_WRIST'],
+            pontos: ['LEFT_SHOULDER', 'LEFT_ELBOW', 'LEFT_WRIST', 'RIGHT_SHOULDER', 'RIGHT_ELBOW', 'RIGHT_WRIST'],
             limites: { min: 30, max: 145 },
             calcular: (landmarks, stageRef, setCounter) => {
-                const [ls, le, lw] = [11, 13, 15].map(i => [landmarks[i].x, landmarks[i].y]);
-                let angulo = calcularAngulo(ls, le, lw);
+                const [ls, le, lw, rs, re, rw] = [12, 14, 16, 11, 13, 15].map(i => [landmarks[i].x, landmarks[i].y]);
+                const angEsq = calcularAngulo(ls, le, lw);
+                const angDir = calcularAngulo(rs, re, rw);
+                const media = (angEsq + angDir) / 2;
 
-                if (angulo > 145) stageRef.current = 'baixo';
-                if (angulo < 30 && stageRef.current === 'baixo') {
+
+                if (angEsq >= exercicios.roscaDireta.limites.max && angDir >= exercicios.roscaDireta.limites.max) stageRef.current = 'baixo';
+                if (angEsq <= exercicios.roscaDireta.limites.min && angDir <= exercicios.roscaDireta.limites.min && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
                     validarExecucao(angulo, exercicios.roscaDireta.limites);
                     incrementarContador(setCounter, stop);
@@ -157,27 +160,31 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
                 return angulo;
             },
-            desenhar: (canvasCtx, canvasElement, landmarks, angulo) => {
-                const elbow = landmarks[13];
-                const x = elbow.x * canvasElement.width + 10;
-                const y = elbow.y * canvasElement.height - 10;
+            desenhar: (canvasCtx, canvasElement, landmarks, angulos) => {
                 canvasCtx.font = '40px Arial';
                 canvasCtx.fillStyle = '#00FF00';
-                canvasCtx.fillText(`${angulo.toFixed(2)}°`, x, y);
+
+                const lElbow = landmarks[14];
+                canvasCtx.fillText(`${angulos.angEsq.toFixed(2)}°`, lElbow.x * canvasElement.width + 10, lElbow.y * canvasElement.height - 10);
+
+                const rElbow = landmarks[13];
+                canvasCtx.fillText(`${angulos.angDir.toFixed(2)}°`, rElbow.x * canvasElement.width + 10, rElbow.y * canvasElement.height - 10);
             }
         },
 
         meioAgachamento: {
             pontos: ['LEFT_HIP', 'LEFT_KNEE', 'LEFT_ANKLE', 'RIGHT_HIP', 'RIGHT_KNEE', 'RIGHT_ANKLE'],
+            limites: { min: 100, max: 170 },
             calcular: (landmarks, stageRef, setCounter) => {
                 const [lh, lk, la, rh, rk, ra] = [24, 26, 28, 23, 25, 27].map(i => [landmarks[i].x, landmarks[i].y]);
                 const angEsq = calcularAngulo(lh, lk, la);
                 const angDir = calcularAngulo(rh, rk, ra);
                 const media = (angEsq + angDir) / 2;
 
-                if (angEsq >= 170 && angDir >= 170) stageRef.current = 'baixo';
-                if (angEsq <= 100 && angDir <= 100 && stageRef.current === 'baixo') {
+                if (angEsq >= exercicios.meioAgachamento.limites.max && angDir >= exercicios.meioAgachamento.limites.max) stageRef.current = 'baixo';
+                if (angEsq <= exercicios.meioAgachamento.limites.min && angDir <= exercicios.meioAgachamento.limites.min && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
+                    validarExecucao(angulo, exercicios.meioAgachamento.limites);
                     incrementarContador(setCounter, stop);
                 }
 
@@ -197,15 +204,18 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
         supinoRetoBanco: {
             pontos: ['LEFT_SHOULDER', 'LEFT_ELBOW', 'LEFT_WRIST', 'RIGHT_SHOULDER', 'RIGHT_ELBOW', 'RIGHT_WRIST'],
+            limites: { min: 0, max: 90 },
             calcular: (landmarks, stageRef, setCounter) => {
                 const [ls, le, lw, rs, re, rw] = [12, 14, 16, 11, 13, 15].map(i => [landmarks[i].x, landmarks[i].y]);
                 const angEsq = calcularAngulo(ls, le, lw);
                 const angDir = calcularAngulo(rs, re, rw);
                 const media = (angEsq + angDir) / 2;
 
-                if (angEsq >= 90 && angDir >= 90) stageRef.current = 'baixo';
-                if (angEsq <= 0 && angDir <= 0 && stageRef.current === 'baixo') {
+
+                if (angEsq >= exercicios.supinoRetoBanco.limites.max && angDir >= exercicios.supinoRetoBanco.limites.max) stageRef.current = 'baixo';
+                if (angEsq <= exercicios.supinoRetoBanco.limites.min && angDir <= exercicios.supinoRetoBanco.limites.min && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
+                    validarExecucao(angulo, exercicios.supinoRetoBanco.limites);
                     incrementarContador(setCounter, stop);
                 }
 
@@ -225,15 +235,17 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
         tricepsCordaPoliaAlta: {
             pontos: ['LEFT_WRIST', 'LEFT_ELBOW', 'LEFT_SHOULDER', 'RIGHT_WRIST', 'RIGHT_ELBOW', 'RIGHT_SHOULDER'],
+            limites: { min: 160, max: 175 },
             calcular: (landmarks, stageRef, setCounter) => {
                 const [lw, le, ls, rw, re, rs] = [15, 13, 11, 16, 14, 12].map(i => [landmarks[i].x, landmarks[i].y]);
                 const angEsq = calcularAngulo(ls, le, lw);
                 const angDir = calcularAngulo(rs, re, rw);
                 const media = (angEsq + angDir) / 2;
 
-                if (angEsq <= 160 && angDir <= 160) stageRef.current = 'cima';
-                if (angEsq >= 175 && angDir >= 175 && stageRef.current === 'cima') {
+                if (angEsq >= exercicios.tricepsCordaPoliaAlta.limites.max && angDir >= exercicios.tricepsCordaPoliaAlta.limites.max) stageRef.current = 'cima';
+                if (angEsq <= exercicios.tricepsCordaPoliaAlta.limites.min && angDir <= exercicios.tricepsCordaPoliaAlta.limites.min && stageRef.current === 'cima') {
                     stageRef.current = 'baixo';
+                    validarExecucao(angulo, exercicios.tricepsCordaPoliaAlta.limites);
                     incrementarContador(setCounter, stop);
                 }
 
@@ -253,15 +265,17 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
         cadeiraFlexora: {
             pontos: ['LEFT_HIP', 'LEFT_KNEE', 'LEFT_ANKLE', 'RIGHT_HIP', 'RIGHT_KNEE', 'RIGHT_ANKLE'],
+            limites: { min: 90, max: 170 },
             calcular: (landmarks, stageRef, setCounter) => {
                 const [lh, lk, la, rh, rk, ra] = [23, 25, 27, 24, 26, 28].map(i => [landmarks[i].x, landmarks[i].y]);
                 const angEsq = calcularAngulo(lh, lk, la);
                 const angDir = calcularAngulo(rh, rk, ra);
                 const media = (angEsq + angDir) / 2;
 
-                if (angEsq >= 170 && angDir >= 170) stageRef.current = 'estendido';
-                if (angEsq <= 90 && angDir <= 90 && stageRef.current === 'estendido') {
+                if (angEsq >= exercicios.tricepsCordaPoliaAlta.limites.max && angDir >= exercicios.tricepsCordaPoliaAlta.limites.max) stageRef.current = 'estendido';
+                if (angEsq <= exercicios.tricepsCordaPoliaAlta.limites.min && angDir <= exercicios.tricepsCordaPoliaAlta.limites.min && stageRef.current === 'estendido') {
                     stageRef.current = 'flexionado';
+                    validarExecucao(angulo, exercicios.cadeiraFlexora.limites);
                     incrementarContador(setCounter, stop);
                 }
 
