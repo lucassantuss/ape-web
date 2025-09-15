@@ -35,8 +35,8 @@ export default function Alunos() {
             ) : (
                 <>
                     <Title 
-                        titulo="Alunos" 
-                        titulo2="Gerencie os pedidos de vínculo e os alunos já aceitos" 
+                        titulo="Gerenciar Alunos" 
+                        titulo2="Verifique os pedidos de vínculo e os alunos já aceitos" 
                     />
                     <div className="alunos-lista">
                         {alunos.map((aluno) => (

@@ -69,8 +69,8 @@ export default function Menu() {
 
                                 {tipoUsuario === "personal" && (
                                     <>
-                                        <li><Link to="/alunos" onClick={handleLinkClick}>Alunos</Link></li>
                                         <li><Link to="/relatorio-resultados" onClick={handleLinkClick}>Relatório</Link></li>
+                                        <li><Link to="/alunos" onClick={handleLinkClick}>Gerenciar Alunos</Link></li>
                                     </>
                                 )}
 
