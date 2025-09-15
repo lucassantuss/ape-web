@@ -154,11 +154,11 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= exercicios.roscaDireta.limites.max && angDir >= exercicios.roscaDireta.limites.max) stageRef.current = 'baixo';
                 if (angEsq <= exercicios.roscaDireta.limites.min && angDir <= exercicios.roscaDireta.limites.min && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
-                    validarExecucao(angulo, exercicios.roscaDireta.limites);
+                    validarExecucao(media, exercicios.roscaDireta.limites);
                     incrementarContador(setCounter, stop);
                 }
 
-                return angulo;
+                return { angEsq, angDir, media };
             },
             desenhar: (canvasCtx, canvasElement, landmarks, angulos) => {
                 canvasCtx.font = '40px Arial';
