@@ -51,7 +51,7 @@ const RelatorioResultados = () => {
                     {resultados.map((resultado) => (
                         <div key={resultado.id} className="relatorio-card">
                             <h3>{resultado.nome}</h3>
-                            <p><strong>Data:</strong> {new Date(resultado.dataExecucao).toLocaleString()}</p>
+                            <p><strong>Data:</strong> {resultado.dataExecucao}</p>
                             <p><strong>Repetições:</strong> {resultado.quantidadeRepeticoes}</p>
                             <p><strong>% Acerto:</strong> {resultado.porcentagemAcertos ?? "-"}</p>
                             <p><strong>Tempo Executado:</strong> {resultado.tempoExecutado || "-"}</p>

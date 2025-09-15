@@ -4,100 +4,38 @@ import SelectExercicio from 'components/SelectExercicio';
 import Title from 'components/Title';
 import VideoCanvas from 'components/VideoCanvas';
 import { usePoseDetection } from 'pages/Exercicio/hooks/usePoseDetection';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './Exercicio.css';
-
-const exerciciosInfo = {
-    roscaDireta: {
-        nome: "Rosca Direta",
-        descricao: "A rosca direta é um exercício de bíceps realizado com halteres. Mantenha os cotovelos fixos e suba o peso lentamente.",
-        execucao: "https://musclewiki.com/pt-br/exercise/dumbbells/male/biceps/dumbbell-curl",
-        videos: [
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-curl-front.mp4",
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-curl-side.mp4"
-        ]
-    },
-    meioAgachamento: {
-        nome: "Meio Agachamento",
-        descricao: "O meio agachamento fortalece quadríceps e glúteos. Desça até a metade da amplitude, mantendo a postura ereta.",
-        execucao: "https://musclewiki.com/pt-br/exercise/barbell/male/lowerback/barbell-low-bar-squat",
-        videos: [
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-low-bar-squat-side.mp4",
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-low-bar-squat-front.mp4"
-        ]
-    },
-    supinoRetoBanco: {
-        nome: "Supino Reto no Banco",
-        descricao: "Trabalha o peitoral, ombros e tríceps. Execute deitado no banco, empurrando a barra para cima e controlando na descida.",
-        execucao: "https://musclewiki.com/pt-br/exercise/barbell/male/chest/barbell-bench-press",
-        videos: [
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-barbell-bench-press-front.mp4",
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-barbell-bench-press-side_KciuhbB.mp4"
-        ]
-    },
-    tricepsCordaPoliaAlta: {
-        nome: "Tríceps Corda na Polia Alta",
-        descricao: "Focado nos tríceps. Estenda os braços para baixo separando a corda no final do movimento, mantendo os cotovelos fixos.",
-        execucao: "https://musclewiki.com/pt-br/exercise/cables/male/triceps/cable-rope-overhead-tricep-extension",
-        videos: [
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Cables-cable-overhead-tricep-extension-front.mp4",
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Cables-cable-overhead-tricep-extension-side.mp4"
-        ]
-    },
-    cadeiraFlexora: {
-        nome: "Cadeira Flexora",
-        descricao: "Fortalece a parte posterior das coxas. Flexione os joelhos trazendo o rolo para baixo em direção aos glúteos.",
-        execucao: "https://musclewiki.com/pt-br/exercise/machine/male/hamstrings/seated-leg-curl",
-        videos: [
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Machine-seated-leg-curl-front.mp4",
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Machine-seated-leg-curl-side.mp4"
-        ]
-    },
-    levantamentoTerra: {
-        nome: "Levantamento Terra",
-        descricao: "Um dos principais exercícios compostos, trabalha pernas, glúteos, lombar e core. Mantenha a coluna reta durante a execução.",
-        execucao: "https://musclewiki.com/pt-br/exercise/barbell/male/traps-middle/barbell-deadlift",
-        videos: [
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-deadlift-front.mp4",
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-deadlift-side.mp4"
-        ]
-    },
-    agachamentoBulgaro: {
-        nome: "Agachamento Búlgaro com Halteres",
-        descricao: "Com um pé apoiado atrás, desça flexionando o joelho da frente, segurando halteres nas mãos para resistência.",
-        execucao: "https://musclewiki.com/pt-br/exercise/dumbbells/male/glutes/dumbbell-assisted-bulgarian-split-squat",
-        videos: [
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-assisted-bulgarian-split-squat-side.mp4",
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-assisted-bulgarian-split-squat-front.mp4"
-        ]
-    },
-    agachamentoSumo: {
-        nome: "Agachamento Sumô com Halteres",
-        descricao: "Exercício para pernas e glúteos. Segure o halter entre as pernas, mantenha os pés afastados e agache mantendo postura ereta.",
-        execucao: "https://musclewiki.com/pt-br/exercise/dumbbells/male/lowerback/dumbbell-sumo-squat",
-        videos: [
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-dumbbell-sumo-squat-front.mp4",
-            "https://media.musclewiki.com/media/uploads/videos/branded/male-dumbbell-sumo-squat-side.mp4"
-        ]
-    }
-};
+import Loading from 'components/Loading';
+import Button from 'components/Button';
 
 export default function Exercicio() {
+    const navigate = useNavigate();
+
     const {
         canvasRef, videoRef, counter, angle, isRunning,
         exercise, setExercise, showModal, setShowModal,
-        contador, mostrarStatus, resultados, stageRef,
+        exercicioSelecionado, contador, mostrarStatus, resultados,
         handleStart, handleSalvarResultados, handleLimparResultados,
-        showModalFinal, setShowModalFinal, mensagemSucesso, mensagemAcao
+        showModalFinal, setShowModalFinal, handleCloseModalFinal,
+        mensagemSucesso, mensagemAcao, autorizadoAcessoAluno
     } = usePoseDetection();
 
-    const exercicioSelecionado = exerciciosInfo[exercise];
+    if (autorizadoAcessoAluno === null) return <Loading />;
+    if (autorizadoAcessoAluno === false) {
+        return (
+            <div className="container">
+                <Title titulo="Não foi possível acessar o conteúdo dessa tela" titulo2="Seu personal ainda não aceitou seu vínculo como aluno. Aguarde o aceite da parte dele!" />
+                <Button label="Voltar" onClick={() => navigate("/minha-conta")} />
+            </div>
+        );
+    }
 
     return (
         <div className="container">
             {mostrarStatus && (
-                <InfoBox counter={counter} stage={stageRef.current} angle={angle} />
+                <InfoBox counter={counter} angle={angle} />
             )}
 
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -111,11 +49,8 @@ export default function Exercicio() {
 
             </Modal>
 
-            <Modal isOpen={showModalFinal} onClose={() => setShowModalFinal(false)}>
-                <Title
-                    titulo={mensagemAcao}
-                    titulo2={mensagemSucesso}
-                />
+            <Modal isOpen={showModalFinal} onClose={handleCloseModalFinal}>
+                <Title titulo={mensagemAcao} titulo2={mensagemSucesso} />
                 <Link to="/historico-exercicios" className="btn-avaliacao">Consultar Histórico</Link>
             </Modal>
 
@@ -132,9 +67,6 @@ export default function Exercicio() {
 
             {mostrarStatus && (
                 <div className="botoes-resultado">
-                    {/*<button className="btn-avaliacao" onClick={handleSalvarResultados}>*/}
-                    {/*    Salvar Resultados*/}
-                    {/*</button>*/}
                     <button className="btn-avaliacao" onClick={handleLimparResultados}>
                         Limpar Resultados
                     </button>
@@ -166,17 +98,6 @@ export default function Exercicio() {
                     )}
                 </>
             )}
-
-            {/* <div className="exercicio-descricao">
-                <h3>Histórico</h3>
-                <ul>
-                    {logs.map((log, idx) => (
-                        <li key={idx}>
-                            [{log.hora}] {log.status} - Rep {log.repeticao}
-                        </li>
-                    ))}
-                </ul>
-            </div> */}
         </div>
     );
 }

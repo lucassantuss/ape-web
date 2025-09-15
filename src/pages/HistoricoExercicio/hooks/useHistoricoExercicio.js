@@ -1,8 +1,12 @@
 import useModalInfo from "components/ModalInfo/hooks/useModalInfo";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "services/api";
+import { verificarAceite } from "utils/VerificarAceite";
 
 export default function useHistoricoExercicio() {
+  const navigate = useNavigate();
+
   const [historico, setHistorico] = useState([]);
   const [modalAberto, setModalAberto] = useState(false);
   const [observacaoSelecionada, setObservacaoSelecionada] = useState("");
@@ -18,6 +22,16 @@ export default function useHistoricoExercicio() {
     exibirModalInfo,
     fecharModalInfo,
   } = useModalInfo();
+
+  const [autorizadoAcessoAluno, setAutorizadoAcessoAluno] = useState(null);
+  useEffect(() => {
+    const checarAceite = async () => {
+      const resultado = await verificarAceite();
+      setAutorizadoAcessoAluno(resultado);
+    };
+
+    checarAceite();
+  }, []);
 
   const idUser = localStorage.getItem("@IdUser_APE");
 
@@ -87,6 +101,7 @@ export default function useHistoricoExercicio() {
   };
 
   return {
+    autorizadoAcessoAluno,
     historico,
     observacaoSelecionada,
     modalAberto,

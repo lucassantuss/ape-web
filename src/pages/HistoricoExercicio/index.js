@@ -4,11 +4,17 @@ import TextArea from "components/TextArea";
 import Title from "components/Title";
 import useHistoricoExercicio from "pages/HistoricoExercicio/hooks/useHistoricoExercicio";
 
+import { useNavigate } from "react-router-dom";
+
 import "./HistoricoExercicio.css";
 import ModalInfo from "components/ModalInfo";
+import Loading from "components/Loading";
 
 export default function HistoricoExercicio() {
+  const navigate = useNavigate();
+
   const {
+    autorizadoAcessoAluno,
     historico,
     observacaoSelecionada,
     modalAberto,
@@ -28,6 +34,16 @@ export default function HistoricoExercicio() {
     fecharModalInfo,
   } = useHistoricoExercicio();
 
+  if (autorizadoAcessoAluno === null) return <Loading />;
+  if (autorizadoAcessoAluno === false) {
+    return (
+      <div className="container">
+        <Title titulo="Não foi possível acessar o conteúdo dessa tela" titulo2="Seu personal ainda não aceitou seu vínculo como aluno. Aguarde o aceite da parte dele!" />
+        <Button label="Voltar" onClick={() => navigate("/minha-conta")} />
+      </div>
+    );
+  }
+
   return (
     <div className="relatorio-container">
       <Title
@@ -43,7 +59,7 @@ export default function HistoricoExercicio() {
             {historico.map((item, index) => (
               <div key={index} className="relatorio-card">
                 <h3>{item.nome}</h3>
-                <p><strong>Data:</strong> {new Date(item.dataExecucao).toLocaleString()}</p>
+                <p><strong>Data:</strong> {item.dataExecucao}</p>
                 <p><strong>Repetições:</strong> {item.quantidadeRepeticoes}</p>
                 <p><strong>% Acerto:</strong> {item.porcentagemAcertos ?? "-"}</p>
                 <p><strong>Tempo Executado:</strong> {item.tempoExecutado || "-"}</p>

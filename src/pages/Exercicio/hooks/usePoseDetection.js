@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useNavigate } from "react-router-dom";
 import api from "services/api";
+import { verificarAceite } from 'utils/VerificarAceite';
 
 export function usePoseDetection(initialExercise = 'roscaDireta') {
+    const navigate = useNavigate();
+
     const canvasRef = useRef(null);
     const videoRef = useRef(null);
     const poseRef = useRef(null);
@@ -23,6 +27,93 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const [resultados, setResultados] = useState([]);
     const [mensagemAcao, setMensagemAcao] = useState("");
     const [mensagemSucesso, setMensagemSucesso] = useState("");
+
+    const [autorizadoAcessoAluno, setAutorizadoAcessoAluno] = useState(null);
+    useEffect(() => {
+        const checarAceite = async () => {
+            const resultado = await verificarAceite();
+            setAutorizadoAcessoAluno(resultado);
+        };
+
+        checarAceite();
+    }, []);
+
+    const exerciciosInfo = {
+        roscaDireta: {
+            nome: "Rosca Direta",
+            descricao: "A rosca direta é um exercício de bíceps realizado com halteres. Mantenha os cotovelos fixos e suba o peso lentamente.",
+            execucao: "https://musclewiki.com/pt-br/exercise/dumbbells/male/biceps/dumbbell-curl",
+            videos: [
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-curl-front.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-curl-side.mp4"
+            ]
+        },
+        meioAgachamento: {
+            nome: "Meio Agachamento",
+            descricao: "O meio agachamento fortalece quadríceps e glúteos. Desça até a metade da amplitude, mantendo a postura ereta.",
+            execucao: "https://musclewiki.com/pt-br/exercise/barbell/male/lowerback/barbell-low-bar-squat",
+            videos: [
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-low-bar-squat-side.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-low-bar-squat-front.mp4"
+            ]
+        },
+        supinoRetoBanco: {
+            nome: "Supino Reto no Banco",
+            descricao: "Trabalha o peitoral, ombros e tríceps. Execute deitado no banco, empurrando a barra para cima e controlando na descida.",
+            execucao: "https://musclewiki.com/pt-br/exercise/barbell/male/chest/barbell-bench-press",
+            videos: [
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-barbell-bench-press-front.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-barbell-bench-press-side_KciuhbB.mp4"
+            ]
+        },
+        tricepsCordaPoliaAlta: {
+            nome: "Tríceps Corda na Polia Alta",
+            descricao: "Focado nos tríceps. Estenda os braços para baixo separando a corda no final do movimento, mantendo os cotovelos fixos.",
+            execucao: "https://musclewiki.com/pt-br/exercise/cables/male/triceps/cable-rope-overhead-tricep-extension",
+            videos: [
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Cables-cable-overhead-tricep-extension-front.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Cables-cable-overhead-tricep-extension-side.mp4"
+            ]
+        },
+        cadeiraFlexora: {
+            nome: "Cadeira Flexora",
+            descricao: "Fortalece a parte posterior das coxas. Flexione os joelhos trazendo o rolo para baixo em direção aos glúteos.",
+            execucao: "https://musclewiki.com/pt-br/exercise/machine/male/hamstrings/seated-leg-curl",
+            videos: [
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Machine-seated-leg-curl-front.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Machine-seated-leg-curl-side.mp4"
+            ]
+        },
+        levantamentoTerra: {
+            nome: "Levantamento Terra",
+            descricao: "Um dos principais exercícios compostos, trabalha pernas, glúteos, lombar e core. Mantenha a coluna reta durante a execução.",
+            execucao: "https://musclewiki.com/pt-br/exercise/barbell/male/traps-middle/barbell-deadlift",
+            videos: [
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-deadlift-front.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-deadlift-side.mp4"
+            ]
+        },
+        agachamentoBulgaro: {
+            nome: "Agachamento Búlgaro com Halteres",
+            descricao: "Com um pé apoiado atrás, desça flexionando o joelho da frente, segurando halteres nas mãos para resistência.",
+            execucao: "https://musclewiki.com/pt-br/exercise/dumbbells/male/glutes/dumbbell-assisted-bulgarian-split-squat",
+            videos: [
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-assisted-bulgarian-split-squat-side.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-assisted-bulgarian-split-squat-front.mp4"
+            ]
+        },
+        agachamentoSumo: {
+            nome: "Agachamento Sumô com Halteres",
+            descricao: "Exercício para pernas e glúteos. Segure o halter entre as pernas, mantenha os pés afastados e agache mantendo postura ereta.",
+            execucao: "https://musclewiki.com/pt-br/exercise/dumbbells/male/lowerback/dumbbell-sumo-squat",
+            videos: [
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-dumbbell-sumo-squat-front.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-dumbbell-sumo-squat-side.mp4"
+            ]
+        }
+    };
+
+    const exercicioSelecionado = exerciciosInfo[exercise];
 
     // Landmarks
     const lmks = {
@@ -312,6 +403,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     const handleSalvarResultados = async () => {
         const idUser = localStorage.getItem("@IdUser_APE");
+        const porcentagemAcertos = calcularPorcentagemAcertos(counter, errosRef.current);
 
         let tempoExecutado = "00:00:00";
         if (startTimeRef.current) {
@@ -323,14 +415,10 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             tempoExecutado = `${hours}:${minutes}:${seconds}`;
         }
 
-        const porcentagemAcertos = calcularPorcentagemAcertos(counter, errosRef.current);
-
         const dto = {
-            nome: exercise,
-            // quantidadeRepeticoes: counter.toString(),
-            quantidadeRepeticoes: '10',
-            // porcentagemAcertos,
-            porcentagemAcertos: '100,00',
+            nome: exercicioSelecionado?.nome || exercise,
+            quantidadeRepeticoes: counter.toString(),
+            porcentagemAcertos,
             tempoExecutado,
             observacoesAluno: "",
             observacoesPersonal: "",
@@ -363,16 +451,11 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             const novoValor = prev + 1;
             if (novoValor === 10) {
                 stop();
-                handleSalvarResultados();
 
                 const erros = errosRef.current;
                 const sucesso = ((10 - erros) / 10) * 100;
                 setMensagemSucesso(`Taxa de sucesso: ${sucesso}%`);
                 setShowModalFinal(true);
-
-                // reset pro próximo treino
-                errosRef.current = 0;
-                acertosRef.current = 0;
             }
             return novoValor;
         });
@@ -389,29 +472,35 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         }
     };
 
+    const handleCloseModalFinal = () => {
+        setShowModalFinal(false);
+        navigate(0); // recarrega a mesma tela
+    };
 
     useEffect(() => {
         return () => stop();
     }, []);
 
     return {
+        autorizadoAcessoAluno,
         canvasRef,
         videoRef,
         counter,
         angle,
         isRunning,
+        exercicioSelecionado,
         exercise,
         setExercise,
         showModal,
         setShowModal,
         showModalFinal,
         setShowModalFinal,
+        handleCloseModalFinal,
         mensagemSucesso,
         mensagemAcao,
         contador,
         mostrarStatus,
         resultados,
-        stageRef,
         start,
         stop,
         reset,
