@@ -23,8 +23,10 @@ export default function CriarConta() {
         fecharModalInfo,
         tipoUsuario,
         setTipoUsuario,
-        aceiteTermos,
-        setAceiteTermos,
+        aceiteTermosAluno,
+        aceiteTermosPersonal,
+        setAceiteTermosAluno,
+        setAceiteTermosPersonal,
         errors,
         estados,
         cidades,
@@ -182,12 +184,12 @@ export default function CriarConta() {
 
                         <div className="termos-container">
                             <input
-                                id="aceiteTermos"
+                                id="aceiteTermosAluno"
                                 type="checkbox"
-                                checked={aceiteTermos}
-                                onChange={(e) => setAceiteTermos(e.target.checked)}
+                                checked={aceiteTermosAluno}
+                                onChange={(e) => setAceiteTermosAluno(e.target.checked)}
                             />
-                            <label htmlFor="aceiteTermos">
+                            <label htmlFor="aceiteTermosAluno">
                                 Eu li e aceito os{" "}
                                 <a
                                     href="/docs/termos_uso.pdf"
@@ -199,7 +201,7 @@ export default function CriarConta() {
                                 </a>
                             </label>
                             {errors.aceiteTermos && (
-                                <p className="error-message">{errors.aceiteTermos}</p>
+                                <p className="error-message">{errors.aceiteTermosAluno}</p>
                             )}
                         </div>
 
@@ -337,12 +339,12 @@ export default function CriarConta() {
 
                         <div className="termos-container">
                             <input
-                                id="aceiteTermos"
+                                id="aceiteTermosPersonal"
                                 type="checkbox"
-                                checked={aceiteTermos}
-                                onChange={(e) => setAceiteTermos(e.target.checked)}
+                                checked={aceiteTermosPersonal}
+                                onChange={(e) => setAceiteTermosPersonal(e.target.checked)}
                             />
-                            <label htmlFor="aceiteTermos">
+                            <label htmlFor="aceiteTermosPersonal">
                                 Eu li e aceito os{" "}
                                 <a
                                     href="/docs/termos_uso.pdf"
@@ -354,7 +356,7 @@ export default function CriarConta() {
                                 </a>
                             </label>
                             {errors.aceiteTermos && (
-                                <p className="error-message">{errors.aceiteTermos}</p>
+                                <p className="error-message">{errors.aceiteTermosPersonal}</p>
                             )}
                         </div>
 

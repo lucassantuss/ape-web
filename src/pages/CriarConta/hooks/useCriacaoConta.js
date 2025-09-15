@@ -23,7 +23,8 @@ export default function useCriacaoConta() {
         fecharModalInfo,
     } = useModalInfo();
 
-    const [aceiteTermos, setAceiteTermos] = useState(false);
+    const [aceiteTermosAluno, setAceiteTermosAluno] = useState(false);
+    const [aceiteTermosPersonal, setAceiteTermosPersonal] = useState(false);
     const [redirectOnClose, setRedirectOnClose] = useState(false);
 
     const [formDataAluno, setFormDataAluno] = useState({
@@ -34,6 +35,7 @@ export default function useCriacaoConta() {
         senha: "",
         confSenha: "",
         idPersonal: "",
+        aceiteTermos: false,
     });
 
     const [formDataPersonal, setFormDataPersonal] = useState({
@@ -48,6 +50,7 @@ export default function useCriacaoConta() {
         numeroCref: "",
         categoriaCref: "",
         siglaCref: "",
+        aceiteTermos: false,
     });
 
     // Busca estados via API IBGE
@@ -192,6 +195,16 @@ export default function useCriacaoConta() {
             isValid = false;
         }
 
+        if (tipoUsuario === "aluno" && !aceiteTermosAluno) {
+            newErrors.aceiteTermosAluno = "É necessário aceitar os termos para continuar";
+            isValid = false;
+        }
+
+        if (tipoUsuario === "personal" && !aceiteTermosPersonal) {
+            newErrors.aceiteTermosPersonal = "É necessário aceitar os termos para continuar";
+            isValid = false;
+        }
+
         if (tipoUsuario === "aluno" && !formData.idPersonal) {
             newErrors.personal = "Campo obrigatório";
             isValid = false;
@@ -225,7 +238,8 @@ export default function useCriacaoConta() {
                     Email: formDataAluno.email,
                     CPF: formDataAluno.cpf,
                     Senha: formDataAluno.senha,
-                    IdPersonal: formDataAluno.idPersonal
+                    IdPersonal: formDataAluno.idPersonal,
+                    AceiteTermos: aceiteTermosAluno,
                 };
                 response = await api.post("Aluno", novoUsuarioDto);
             } else {
@@ -241,6 +255,7 @@ export default function useCriacaoConta() {
                     NumeroCref: formDataPersonal.numeroCref,
                     CategoriaCref: formDataPersonal.categoriaCref,
                     SiglaCref: formDataPersonal.estado,
+                    AceiteTermos: aceiteTermosPersonal,
                 };
                 response = await api.post("Personal", novoUsuarioDto);
             }
@@ -258,6 +273,7 @@ export default function useCriacaoConta() {
                     senha: "",
                     confSenha: "",
                     idPersonal: "",
+                    aceiteTermos: false,
                 });
 
                 setFormDataPersonal({
@@ -272,6 +288,7 @@ export default function useCriacaoConta() {
                     numeroCref: "",
                     categoriaCref: "",
                     siglaCref: "",
+                    aceiteTermos: false,
                 });
             }
         } catch (error) {
@@ -287,8 +304,10 @@ export default function useCriacaoConta() {
         fecharModalInfo,
         tipoUsuario,
         setTipoUsuario,
-        aceiteTermos,
-        setAceiteTermos,
+        aceiteTermosAluno,
+        aceiteTermosPersonal,
+        setAceiteTermosAluno,
+        setAceiteTermosPersonal,
         errors,
         estados,
         cidades,
