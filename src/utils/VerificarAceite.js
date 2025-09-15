@@ -5,18 +5,30 @@ export const verificarAceite = async () => {
     const idAluno = localStorage.getItem("@IdUser_APE");
 
     if (!idAluno) {
-      return false;
+      return {
+        Resultado: false,
+        Mensagem: "ID do aluno não encontrado."
+      };
     }
 
     const response = await api.get(`/aluno/personal/${idAluno}`);
 
-    if (response.status === 200 && response.data?.resultado === true) {
-      return true;
+    if (response.status === 200 && response.data) {
+      return {
+        Resultado: response.data.resultado,
+        Mensagem: response.data.mensagem || ""
+      };
     }
 
-    return false;
+    return {
+      Resultado: false,
+      Mensagem: "Não foi possível obter a análise do personal."
+    };
   } catch (error) {
     console.error("Erro ao verificar aceite do personal:", error);
-    return false;
+    return {
+      Resultado: false,
+      Mensagem: "Erro de conexão com o servidor."
+    };
   }
 };

@@ -16,17 +16,17 @@ export default function Exercicio() {
     const {
         canvasRef, videoRef, counter, angle, isRunning,
         exercise, setExercise, showModal, setShowModal,
-        exercicioSelecionado, contador, mostrarStatus, resultados,
-        handleStart, handleSalvarResultados, handleLimparResultados,
-        showModalFinal, setShowModalFinal, handleCloseModalFinal,
-        mensagemSucesso, mensagemAcao, autorizadoAcessoAluno
+        exercicioSelecionado, contador, mostrarStatus,
+        handleStart, handleLimparResultados,
+        showModalFinal, handleCloseModalFinal, autorizadoAcessoAluno,
+        mensagemSucesso, mensagemAcao, mensagemAcessoAluno        
     } = usePoseDetection();
 
     if (autorizadoAcessoAluno === null) return <Loading />;
     if (autorizadoAcessoAluno === false) {
         return (
             <div className="container">
-                <Title titulo="Não foi possível acessar o conteúdo dessa tela" titulo2="Seu personal ainda não aceitou seu vínculo como aluno. Aguarde o aceite da parte dele!" />
+                <Title titulo="Não foi possível acessar o conteúdo dessa tela" titulo2={mensagemAcessoAluno} />
                 <Button label="Voltar" onClick={() => navigate("/minha-conta")} />
             </div>
         );
@@ -91,7 +91,8 @@ export default function Exercicio() {
                                     muted
                                     playsInline
                                     width="100%"
-                                    style={{ marginTop: "10px", borderRadius: "12px" }}
+                                    style={{ marginTop: "10px", borderRadius: "12px", cursor: 'pointer' }}
+                                    onClick={() => window.open('https://musclewiki.com/', '_blank')}
                                 />
                             ))}
                         </div>

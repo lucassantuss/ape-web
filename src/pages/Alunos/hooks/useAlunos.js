@@ -18,19 +18,20 @@ export default function useAlunos() {
 
     const idPersonal = localStorage.getItem('@IdUser_APE');
 
-    // Buscar alunos do personal
-    useEffect(() => {
-        async function fetchAlunos() {
-            try {
-                const response = await api.get(`/Personal/${idPersonal}/alunos`);
-                setAlunos(response.data);
-            } catch (error) {
-                console.error('Erro ao carregar alunos:', error);
-                exibirModalInfo("Erro", "Erro ao carregar alunos.");
-            }
+    // Função para buscar alunos do personal
+    const fetchAlunos = async () => {
+        if (!idPersonal) return;
+        try {
+            const response = await api.get(`/Personal/${idPersonal}/alunos`);
+            setAlunos(response.data);
+        } catch (error) {
+            console.error('Erro ao carregar alunos:', error);
+            exibirModalInfo("Erro", "Erro ao carregar alunos.");
         }
+    };
 
-        if (idPersonal) fetchAlunos();
+    useEffect(() => {
+        fetchAlunos();
     }, [idPersonal]);
 
     // Abrir modal para desvinculação
@@ -54,11 +55,17 @@ export default function useAlunos() {
         try {
             if (tipoAcao === "desvincular") {
                 await api.put(`/Aluno/${alunoSelecionado.id}/remover-personal`);
-                setAlunos(alunos.filter(a => a.id !== alunoSelecionado.id));
+                // Atualiza lista removendo o aluno
+                setAlunos(prev => prev.filter(a => a.id !== alunoSelecionado.id));
                 exibirModalInfo("Sucesso", "Aluno desvinculado com sucesso!");
             } else if (tipoAcao === "recusar") {
-                await api.put(`/Aluno/${alunoSelecionado.id}/recusar-personal`);
-                setAlunos(alunos.filter(a => a.id !== alunoSelecionado.id));
+                await api.post(`/Personal/recusar/${alunoSelecionado.id}`);
+                // Atualiza lista marcando como recusado
+                setAlunos(prev => prev.map(a => 
+                    a.id === alunoSelecionado.id
+                        ? { ...a, aceitePersonal: false, dataAceitePersonal: new Date().toISOString() }
+                        : a
+                ));
                 exibirModalInfo("Sucesso", "Aluno recusado com sucesso!");
             }
         } catch (error) {
@@ -73,9 +80,12 @@ export default function useAlunos() {
     // Aceitar aluno direto
     const aceitarAluno = async (aluno) => {
         try {
-            await api.put(`/Aluno/${aluno.id}/aceitar-personal`);
-            setAlunos(alunos.map(a => 
-                a.id === aluno.id ? { ...a, aceito: true } : a
+            await api.post(`/Personal/aceitar/${aluno.id}`);
+            // Atualiza lista marcando como aceito
+            setAlunos(prev => prev.map(a => 
+                a.id === aluno.id
+                    ? { ...a, aceitePersonal: true, dataAceitePersonal: new Date().toISOString() }
+                    : a
             ));
             exibirModalInfo("Sucesso", "Aluno aceito com sucesso!");
         } catch (error) {
@@ -97,5 +107,6 @@ export default function useAlunos() {
         modalInfoTitle,
         modalInfoMessage,
         fecharModalInfo,
+        fetchAlunos
     };
 }

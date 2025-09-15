@@ -22,6 +22,12 @@ export default function Alunos() {
         fecharModalInfo,
     } = useAlunos();
 
+    const obterStatus = (aluno) => {
+        if (!aluno.dataAceitePersonal) return "Pendente";
+        if (aluno.aceitePersonal) return "Aceito";
+        return "Recusado";
+    };
+
     return (
         <div className="alunos-container">
             {alunos.length === 0 ? (
@@ -30,15 +36,16 @@ export default function Alunos() {
                 <>
                     <Title 
                         titulo="Alunos" 
-                        titulo2="Gerencie os pedidos de vínculo e alunos já aceitos" 
+                        titulo2="Gerencie os pedidos de vínculo e os alunos já aceitos" 
                     />
                     <div className="alunos-lista">
                         {alunos.map((aluno) => (
                             <div key={aluno.id} className="aluno-card">
                                 <p><strong>Nome:</strong> {aluno.nome}</p>
                                 <p><strong>Email:</strong> {aluno.email || '-'}</p>
+                                <p><strong>Status:</strong> {obterStatus(aluno)}</p>
 
-                                {!aluno.aceito ? (
+                                {obterStatus(aluno) === "Pendente" ? (
                                     <div className="botoes-solicitacao">
                                         <Button 
                                             label="Aceitar" 
@@ -50,13 +57,15 @@ export default function Alunos() {
                                             cancel 
                                         />
                                     </div>
-                                ) : (
+                                ) : obterStatus(aluno) === "Aceito" ? (
                                     <Button
                                         label="Desvincular Aluno"
                                         className="botao-remover"
                                         onClick={() => abrirModalDesvincular(aluno)}
                                         cancel
                                     />
+                                ) : (
+                                    <p className="aluno-recusado">Aluno recusado</p>
                                 )}
                             </div>
                         ))}
@@ -86,7 +95,7 @@ export default function Alunos() {
                         </>
                     )}
 
-                    <div className="alunos-modal-botoes">
+                    <div className="minha-conta-botoes">
                         <Button label="Cancelar" onClick={() => setModalAberto(false)} cancel />
                         <Button 
                             label={tipoAcao === "desvincular" ? "Confirmar Desvinculação" : "Confirmar Recusa"} 

@@ -15,6 +15,7 @@ export default function HistoricoExercicio() {
 
   const {
     autorizadoAcessoAluno,
+    mensagemAcessoAluno,
     historico,
     observacaoSelecionada,
     modalAberto,
@@ -38,7 +39,7 @@ export default function HistoricoExercicio() {
   if (autorizadoAcessoAluno === false) {
     return (
       <div className="container">
-        <Title titulo="Não foi possível acessar o conteúdo dessa tela" titulo2="Seu personal ainda não aceitou seu vínculo como aluno. Aguarde o aceite da parte dele!" />
+        <Title titulo="Não foi possível acessar o conteúdo dessa tela" titulo2={mensagemAcessoAluno} />
         <Button label="Voltar" onClick={() => navigate("/minha-conta")} />
       </div>
     );
