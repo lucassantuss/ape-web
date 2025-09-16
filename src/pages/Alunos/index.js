@@ -50,7 +50,7 @@ export default function Alunos() {
                                         <Button
                                             label="Aceitar"
                                             onClick={() => aceitarAluno(aluno)}
-                                            variant="secondary"
+                                            variant="success"
                                         />
                                         <Button
                                             label="Recusar"
@@ -105,7 +105,7 @@ export default function Alunos() {
                         <Button
                             label={tipoAcao === "desvincular" ? "Confirmar Desvinculação" : "Confirmar Recusa"}
                             onClick={confirmarAcao}
-                            variant="secondary"
+                            variant="success"
                         />
                     </div>
                 </Modal>

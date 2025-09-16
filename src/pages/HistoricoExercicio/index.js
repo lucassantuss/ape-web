@@ -43,7 +43,7 @@ export default function HistoricoExercicio() {
         <Button
           label="Voltar"
           onClick={() => navigate("/minha-conta")}
-          variant="link"
+          variant="info"
         />
       </div>
     );
@@ -75,7 +75,7 @@ export default function HistoricoExercicio() {
                   label="Adicionar Observação"
                   className="botao-observacao"
                   onClick={() => abrirModal(item.id)}
-                  variant="secondary"
+                  variant="success"
                 />
                 <br />
                 <Button
@@ -110,7 +110,7 @@ export default function HistoricoExercicio() {
             <Button
               label="Salvar"
               onClick={salvarObservacao}
-              variant="secondary"
+              variant="success"
             />
           </div>
         </Modal>
@@ -127,12 +127,12 @@ export default function HistoricoExercicio() {
             <Button
               label="Cancelar"
               onClick={() => setModalRemocaoAberto(false)}
-              variant="link"
+              variant="cancel"
             />
             <Button
               label="Confirmar Exclusão"
               onClick={confirmarRemocao}
-              variant="cancel"
+              variant="success"
             />
           </div>
         </Modal>

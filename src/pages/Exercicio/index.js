@@ -30,7 +30,7 @@ export default function Exercicio() {
                 <Button
                     label="Voltar"
                     onClick={() => navigate("/minha-conta")}
-                    variant="link"
+                    variant="info"
                 />
             </div>
         );
@@ -67,7 +67,7 @@ export default function Exercicio() {
                         label="Iniciar Avaliação"
                         className="btn-avaliacao"
                         onClick={handleStart}
-                        variant="secondary"
+                        variant="success"
                     />
                 </>
             )}
@@ -78,7 +78,7 @@ export default function Exercicio() {
                         label="Limpar Resultados"
                         className="btn-avaliacao"
                         onClick={handleLimparResultados}
-                        variant="link"
+                        variant="info"
                     />
                 </div>
             )}

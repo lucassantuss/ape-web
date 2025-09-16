@@ -62,7 +62,7 @@ const RelatorioResultados = () => {
                                 label="Adicionar Observação"
                                 className="botao-observacao"
                                 onClick={() => abrirModal(resultado.id)}
-                                variant="secondary"
+                                variant="success"
                             />
                         </div>
                     ))}
@@ -87,7 +87,7 @@ const RelatorioResultados = () => {
                         <Button
                             label="Salvar"
                             onClick={salvarObservacao}
-                            variant="secondary"
+                            variant="success"
                         />
                     </div>
                 </Modal>

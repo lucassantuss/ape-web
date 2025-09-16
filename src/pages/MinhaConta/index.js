@@ -297,7 +297,7 @@ export default function MinhaConta() {
 						<Button
 							label="Salvar Alterações"
 							onClick={handleSalvar}
-							variant="secondary"
+							variant="success"
 						/>
 					</>
 				) : (
@@ -305,7 +305,7 @@ export default function MinhaConta() {
 						<Button
 							label="Alterar Dados"
 							onClick={() => setEditando(true)}
-							variant="secondary"
+							variant="info-2"
 						/>
 						<Button
 							label="Excluir Conta"
@@ -329,7 +329,7 @@ export default function MinhaConta() {
 					<Button
 						label="Confirmar Exclusão"
 						onClick={handleExcluirConta}
-						variant="secondary"
+						variant="success"
 					/>
 				</div>
 			</Modal>

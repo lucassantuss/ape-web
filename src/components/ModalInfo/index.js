@@ -15,7 +15,7 @@ export default function ModalInfo({
                 <Button
                     label="OK"
                     onClick={onClose}
-                    variant="primary"
+                    variant="success"
                 />
             </div>
         </Modal>

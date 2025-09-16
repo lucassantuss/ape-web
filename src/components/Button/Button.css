@@ -4,23 +4,64 @@
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-/* Variantes */
-.button-primary {
-  background-color: transparent;
-  color: #00994d;
+/* Default */
+.button-default {
+  background-color: white;
+  color: black;
+  border: 2px solid transparent;
+}
+
+.button-default:hover {
+  background-color: #f2f2f2;
+  color: black;
+  border: 2px solid #ccc;
+}
+
+/* Success */
+.button-success {
+  background-color: #22c55e; /* verde claro */
+  color: white;
+  border: 2px solid #22c55e;
+}
+
+.button-success:hover {
+  background-color: #00994d; /* verde escuro */
+  color: white;
   border: 2px solid #00994d;
 }
 
-.button-primary:hover {
-  background-color: #00994d;
-  color: white;
+/* Info */
+.button-info {
+  background-color: white;
+  color: #00994d; /* verde escuro */
+  border: 2px solid #00994d;
 }
 
+.button-info:hover {
+  background-color: #00994d;
+  color: white;
+  border: 2px solid #00994d;
+}
+
+/* Info-2 */
+.button-info-2 {
+  background-color: #00994d; /* verde escuro */
+  color: white;
+  border: 2px solid white;
+}
+
+.button-info-2:hover {
+  background-color: #22c55e; /* verde claro */
+  color: white;
+  border: 2px solid white;
+}
+
+/* Cancel */
 .button-cancel {
-  background-color: transparent;
+  background-color: white;
   color: red;
   border: 2px solid red;
 }
@@ -28,18 +69,22 @@
 .button-cancel:hover {
   background-color: red;
   color: white;
+  border: 2px solid red;
 }
 
+/* Secondary */
 .button-secondary {
-  background-color: #00994d;
+  background-color: #00994d; /* verde escuro */
   color: white;
   border: 2px solid #00994d;
 }
 
 .button-secondary:hover {
-  background-color: #007a3d;
+  background-color: #22c55e; /* verde claro */
+  border: 2px solid #22c55e;
 }
 
+/* Link */
 .button-link {
   background: none;
   border: none;

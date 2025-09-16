@@ -65,14 +65,14 @@ export default function CriarConta() {
                     type="button"
                     className={tipoUsuario === "aluno" ? "tab active" : "tab"}
                     onClick={() => setTipoUsuario("aluno")}
-                    variant="secondary"
+                    variant="info-2"
                 />
                 <Button
                     label="Personal Trainer"
                     type="button"
                     className={tipoUsuario === "personal" ? "tab active" : "tab"}
                     onClick={() => setTipoUsuario("personal")}
-                    variant="secondary"
+                    variant="info-2"
                 />
             </div>
 
@@ -210,7 +210,7 @@ export default function CriarConta() {
                         <Button
                             label="Cadastrar Aluno"
                             type="submit"
-                            variant="secondary"
+                            variant="success"
                         />
                     </>
                 )}
@@ -369,7 +369,7 @@ export default function CriarConta() {
                         <Button 
                             label="Cadastrar Personal"
                             type="submit"
-                            variant="secondary"
+                            variant="success"
                         />
                     </>
                 )}

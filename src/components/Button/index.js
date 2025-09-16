@@ -2,7 +2,7 @@ import './Button.css';
 
 const Button = ({
   label,
-  variant = "primary", // "primary" | "cancel" | "secondary" | "link"
+  variant = "default", // "default" | "success" | "info" | "info-2" | "cancel" | "secondary" | "link"
   onClick,
   type = "button",
   className = "",

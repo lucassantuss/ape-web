@@ -14,7 +14,7 @@ const ModalPesquisaPersonal = ({ isOpen, onClose, children }) => {
                     label="✖"
                     onClick={onClose}
                     className="modal-close"
-                    variant="link"
+                    variant="default"
                 />
                 {children}
             </div>

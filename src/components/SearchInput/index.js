@@ -30,8 +30,8 @@ const SearchInput = ({
                     label="🔍"
                     type="button"
                     onClick={onClick}
-                    variant="secondary"
                     className="search-button"
+                    variant="info"
                 />
             </div>
             {error && <span className="error-message">{error}</span>}

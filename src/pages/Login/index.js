@@ -37,14 +37,14 @@ export default function Login() {
                             type="button"
                             className={tipoUsuario === "aluno" ? "tab active" : "tab"}
                             onClick={() => setTipoUsuario("aluno")}
-                            variant="secondary"
+                            variant="info-2"
                         />
                         <Button
                             label="Personal Trainer"
                             type="button"
                             className={tipoUsuario === "personal" ? "tab active" : "tab"}
                             onClick={() => setTipoUsuario("personal")}
-                            variant="secondary"
+                            variant="info-2"
                         />
                     </div>
 

@@ -57,7 +57,7 @@ export default function Menu() {
                     label="☰"
                     onClick={toggleMenu}
                     className="menu-toggle"
-                    variant="secondary" // ou "link"
+                    variant="secondary"
                 />
 
                 <div className={`menu-items-right ${menuOpen ? "menu-open" : ""}`}>
@@ -93,10 +93,10 @@ export default function Menu() {
                     <div className="menu-login">
                         {isLogged ? (
                             <Button
-                                label="Sair"
-                                onClick={handleLogout}
+                                label="Sair" 
+                                onClick={handleLogout} 
                                 className="menu-login"
-                                variant="link"
+                                variant="info-2"
                             />
                         ) : (
                             <Link to="/login" onClick={handleLinkClick}>Entrar</Link>
