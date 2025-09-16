@@ -65,7 +65,6 @@ export default function Exercicio() {
                     <SelectExercicio selectedExercise={exercise} onChange={setExercise} />
                     <Button
                         label="Iniciar Avaliação"
-                        className="btn-avaliacao"
                         onClick={handleStart}
                         variant="success"
                     />

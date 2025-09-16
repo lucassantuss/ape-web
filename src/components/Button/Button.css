@@ -22,8 +22,8 @@
 
 /* Success */
 .button-success {
-  background-color: #22c55e; /* verde claro */
-  color: white;
+  background-color: white; 
+  color: #22c55e; /* verde claro */
   border: 2px solid #22c55e;
 }
 
