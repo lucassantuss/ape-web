@@ -53,12 +53,9 @@ export default function Menu() {
                     )}
                 </div>
 
-                <Button
-                    label="☰"
-                    onClick={toggleMenu}
-                    className="menu-toggle"
-                    variant="secondary"
-                />
+                <button className="menu-toggle" onClick={toggleMenu}>
+                    ☰
+                </button>
 
                 <div className={`menu-items-right ${menuOpen ? "menu-open" : ""}`}>
                     <ul className="menu-links">
@@ -93,8 +90,8 @@ export default function Menu() {
                     <div className="menu-login">
                         {isLogged ? (
                             <Button
-                                label="Sair" 
-                                onClick={handleLogout} 
+                                label="Sair"
+                                onClick={handleLogout}
                                 className="menu-login"
                                 variant="info-2"
                             />

@@ -23,12 +23,12 @@
 /* Success */
 .button-success {
   background-color: white; 
-  color: #22c55e; /* verde claro */
-  border: 2px solid #22c55e;
+  color: #00994d;
+  border: 2px solid #00994d;
 }
 
 .button-success:hover {
-  background-color: #00994d; /* verde escuro */
+  background-color: #00994d
   color: white;
   border: 2px solid #00994d;
 }
@@ -54,7 +54,7 @@
 }
 
 .button-info-2:hover {
-  background-color: #22c55e; /* verde claro */
+  background-color: #00994d; /* verde escuro */
   color: white;
   border: 2px solid white;
 }

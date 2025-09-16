@@ -10,12 +10,7 @@ const ModalPesquisaPersonal = ({ isOpen, onClose, children }) => {
                 className="modal-content"
                 onClick={(e) => e.stopPropagation()} // impede fechamento ao clicar dentro
             >
-                <Button
-                    label="✖"
-                    onClick={onClose}
-                    className="modal-close"
-                    variant="default"
-                />
+                <button className="modal-close" onClick={onClose}>✖</button>
                 {children}
             </div>
         </div>
