@@ -16,7 +16,7 @@ export default function Home() {
                         em experiências mais seguras, eficientes e inteligentes.
                     </p>
                     <div className="hero-buttons">
-                        <Link to="/login" id="btn-home-primary" className="button-info-2">Começar Agora</Link>
+                        <Link to="/login" id="btn-home-primary" className="btn-primary">Começar Agora</Link>
                         <Link to="/quem-somos" id="btn-home-secondary" className="btn-secondary">Saiba Mais</Link>
                     </div>
                 </div>
@@ -55,7 +55,7 @@ export default function Home() {
             <section id="home-cta" className="home-cta">
                 <h2>Pronto para transformar seus treinos?</h2>
                 <p>Crie sua conta e comece agora mesmo!</p>
-                <Link to="/login" id="btn-home-cta" className="button-info-2">Entrar</Link>
+                <Link to="/login" id="btn-home-cta" className="btn-home-cta">Entrar</Link>
             </section>
         </div>
     );
