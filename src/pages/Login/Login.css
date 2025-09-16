@@ -73,6 +73,10 @@
     text-decoration: underline;
 }
 
+.btn-login:hover {
+    background-color: #22c55e;
+}
+
 .login-create-account {
     display: block;
     margin-top: 20px;

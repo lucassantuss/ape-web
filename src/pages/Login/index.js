@@ -73,6 +73,7 @@ export default function Login() {
                     <Button
                         label="Entrar"
                         type="submit"
+                        className="btn-login"
                         variant="info-2"
                     />
                 </form>

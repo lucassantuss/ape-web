@@ -192,7 +192,7 @@ export default function CriarConta() {
                             <label htmlFor="aceiteTermosAluno">
                                 Eu li e aceito os{" "}
                                 <a
-                                    href="/docs/termos_uso.pdf"
+                                    href="/docs/APE - Termos de Uso e Política de Privacidade.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="link-termos"
@@ -351,7 +351,7 @@ export default function CriarConta() {
                             <label htmlFor="aceiteTermosPersonal">
                                 Eu li e aceito os{" "}
                                 <a
-                                    href="/docs/termos_uso.pdf"
+                                    href="/docs/APE - Termos de Uso e Política de Privacidade.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="link-termos"

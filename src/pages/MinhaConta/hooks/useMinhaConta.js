@@ -127,7 +127,6 @@ export default function useMinhaConta() {
 
                 if (response.data) {
                     const usuario = response.data;
-                    let estadoSigla = "";
 
                     if (tipoUsuario === "personal" && usuario.estado) {
                         const estadoObj = estados.find(
@@ -135,8 +134,6 @@ export default function useMinhaConta() {
                         );
 
                         if (estadoObj) {
-                            estadoSigla = estadoObj.value;
-
                             await fetchCidades(estadoObj.id).then(() => {
                                 setDadosEditados((prev) => ({
                                     ...prev,
