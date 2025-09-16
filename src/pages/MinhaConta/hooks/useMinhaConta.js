@@ -311,6 +311,7 @@ export default function useMinhaConta() {
         setShowModalExcluir,
         showModalPersonal,
         setShowModalPersonal,
+        dadosOriginais,
         dadosEditados,
         errors,
         personais,

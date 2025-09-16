@@ -21,12 +21,12 @@ export default function MinhaConta() {
 		setShowModalExcluir,
 		showModalPersonal,
 		setShowModalPersonal,
+		dadosOriginais,
 		dadosEditados,
 		errors,
 		categoriaCref,
 		personais,
 		pesquisa,
-		nomePersonal,
 		redirectOnClose,
 		modalInfoTitle,
 		modalInfoMessage,
@@ -285,7 +285,10 @@ export default function MinhaConta() {
 			<div className="minha-conta-botoes">
 				{editando ? (
 					<>
-						<Button label="Cancelar" onClick={() => setEditando(false)} cancel />
+						<Button label="Cancelar" onClick={() => {
+							setDadosEditados(dadosOriginais);
+							setEditando(false);
+						}} cancel />
 						<Button label="Salvar Alterações" onClick={handleSalvar} />
 					</>
 				) : (
