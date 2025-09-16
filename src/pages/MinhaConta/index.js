@@ -305,7 +305,7 @@ export default function MinhaConta() {
 						<Button
 							label="Alterar Dados"
 							onClick={() => setEditando(true)}
-							variant="info-2"
+							variant="success"
 						/>
 						<Button
 							label="Excluir Conta"

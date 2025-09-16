@@ -42,6 +42,7 @@ export default function Alunos() {
                         {alunos.map((aluno) => (
                             <div key={aluno.id} className="aluno-card">
                                 <p><strong>Nome:</strong> {aluno.nome}</p>
+                                <p><strong>Usuário:</strong> {aluno.usuario}</p>
                                 <p><strong>Email:</strong> {aluno.email || '-'}</p>
                                 <p><strong>Status:</strong> {obterStatus(aluno)}</p>
 
