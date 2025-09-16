@@ -258,6 +258,7 @@ export default function MinhaConta() {
 									value={dadosEditados.siglaCref || ""}
 									onChange={handleChange}
 									error={errors.siglaCref}
+									disabled={true}
 								/>
 							</div>
 						) : (

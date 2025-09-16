@@ -8,6 +8,7 @@ const Input = ({
     placeholder,
     type = "text",
     maxLength,
+    disabled = false,
     error
 }) => {
     return (
@@ -20,6 +21,7 @@ const Input = ({
                 onChange={onChange}
                 placeholder={placeholder}
                 maxLength={maxLength}
+                disabled={disabled}
             />
             {error && <span className="error-message">{error}</span>}
         </div>
