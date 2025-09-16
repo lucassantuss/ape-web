@@ -19,7 +19,7 @@ export default function Exercicio() {
         exercicioSelecionado, contador, mostrarStatus,
         handleStart, handleLimparResultados,
         showModalFinal, handleCloseModalFinal, autorizadoAcessoAluno,
-        mensagemSucesso, mensagemAcao, mensagemAcessoAluno        
+        mensagemSucesso, mensagemAcao, mensagemAcessoAluno
     } = usePoseDetection();
 
     if (autorizadoAcessoAluno === null) return <Loading />;
@@ -27,7 +27,11 @@ export default function Exercicio() {
         return (
             <div className="container">
                 <Title titulo="Não foi possível acessar o conteúdo dessa tela" titulo2={mensagemAcessoAluno} />
-                <Button label="Voltar" onClick={() => navigate("/minha-conta")} />
+                <Button
+                    label="Voltar"
+                    onClick={() => navigate("/minha-conta")}
+                    variant="link"
+                />
             </div>
         );
     }
@@ -59,17 +63,23 @@ export default function Exercicio() {
             {!isRunning && (
                 <>
                     <SelectExercicio selectedExercise={exercise} onChange={setExercise} />
-                    <button className="btn-avaliacao" onClick={handleStart}>
-                        Iniciar Avaliação
-                    </button>
+                    <Button
+                        label="Iniciar Avaliação"
+                        className="btn-avaliacao"
+                        onClick={handleStart}
+                        variant="secondary"
+                    />
                 </>
             )}
 
             {mostrarStatus && (
                 <div className="botoes-resultado">
-                    <button className="btn-avaliacao" onClick={handleLimparResultados}>
-                        Limpar Resultados
-                    </button>
+                    <Button
+                        label="Limpar Resultados"
+                        className="btn-avaliacao"
+                        onClick={handleLimparResultados}
+                        variant="link"
+                    />
                 </div>
             )}
 

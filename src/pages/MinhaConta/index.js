@@ -16,6 +16,7 @@ export default function MinhaConta() {
 
 	const {
 		editando,
+		setDadosEditados,
 		setEditando,
 		showModalExcluir,
 		setShowModalExcluir,
@@ -285,16 +286,32 @@ export default function MinhaConta() {
 			<div className="minha-conta-botoes">
 				{editando ? (
 					<>
-						<Button label="Cancelar" onClick={() => {
-							setDadosEditados(dadosOriginais);
-							setEditando(false);
-						}} cancel />
-						<Button label="Salvar Alterações" onClick={handleSalvar} />
+						<Button
+							label="Cancelar"
+							onClick={() => {
+								setDadosEditados(dadosOriginais);
+								setEditando(false);
+							}}
+							variant="cancel"
+						/>
+						<Button
+							label="Salvar Alterações"
+							onClick={handleSalvar}
+							variant="secondary"
+						/>
 					</>
 				) : (
 					<>
-						<Button label="Alterar Dados" onClick={() => setEditando(true)} />
-						<Button label="Excluir Conta" onClick={() => setShowModalExcluir(true)} cancel />
+						<Button
+							label="Alterar Dados"
+							onClick={() => setEditando(true)}
+							variant="secondary"
+						/>
+						<Button
+							label="Excluir Conta"
+							onClick={() => setShowModalExcluir(true)}
+							variant="cancel"
+						/>
 					</>
 				)}
 
@@ -304,8 +321,16 @@ export default function MinhaConta() {
 				<h3>Confirmar Exclusão</h3>
 				<p>Tem certeza que deseja excluir sua conta? Essa ação é irreversível.</p>
 				<div className="minha-conta-modal-botoes">
-					<Button label="Cancelar" onClick={() => setShowModalExcluir(false)} cancel />
-					<Button label="Confirmar Exclusão" onClick={handleExcluirConta} />
+					<Button
+						label="Cancelar"
+						onClick={() => setShowModalExcluir(false)}
+						variant="cancel"
+					/>
+					<Button
+						label="Confirmar Exclusão"
+						onClick={handleExcluirConta}
+						variant="secondary"
+					/>
 				</div>
 			</Modal>
 

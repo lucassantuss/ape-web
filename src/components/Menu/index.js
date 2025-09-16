@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthentication } from "context/Authentication";
+import Button from "components/Button";
 
 import './Menu.css';
 
@@ -52,9 +53,12 @@ export default function Menu() {
                     )}
                 </div>
 
-                <button className="menu-toggle" onClick={toggleMenu}>
-                    ☰
-                </button>
+                <Button
+                    label="☰"
+                    onClick={toggleMenu}
+                    className="menu-toggle"
+                    variant="secondary" // ou "link"
+                />
 
                 <div className={`menu-items-right ${menuOpen ? "menu-open" : ""}`}>
                     <ul className="menu-links">
@@ -88,7 +92,12 @@ export default function Menu() {
 
                     <div className="menu-login">
                         {isLogged ? (
-                            <button className="menu-login" onClick={handleLogout}>Sair</button>
+                            <Button
+                                label="Sair"
+                                onClick={handleLogout}
+                                className="menu-login"
+                                variant="link"
+                            />
                         ) : (
                             <Link to="/login" onClick={handleLinkClick}>Entrar</Link>
                         )}

@@ -60,20 +60,20 @@ export default function CriarConta() {
         <div className="cadastro-usuario-container">
             <Title titulo="Cadastro de Contas" />
             <div className="login-tabs">
-                <button
+                <Button
+                    label="Aluno"
                     type="button"
                     className={tipoUsuario === "aluno" ? "tab active" : "tab"}
                     onClick={() => setTipoUsuario("aluno")}
-                >
-                    Aluno
-                </button>
-                <button
+                    variant="secondary"
+                />
+                <Button
+                    label="Personal Trainer"
                     type="button"
                     className={tipoUsuario === "personal" ? "tab active" : "tab"}
                     onClick={() => setTipoUsuario("personal")}
-                >
-                    Personal Trainer
-                </button>
+                    variant="secondary"
+                />
             </div>
 
             <form onSubmit={handleSubmit}>
@@ -207,7 +207,11 @@ export default function CriarConta() {
 
                         <br></br>
 
-                        <Button label="Cadastrar Aluno" type="submit" />
+                        <Button
+                            label="Cadastrar Aluno"
+                            type="submit"
+                            variant="secondary"
+                        />
                     </>
                 )}
 
@@ -362,7 +366,11 @@ export default function CriarConta() {
 
                         <br></br>
 
-                        <Button label="Cadastrar Personal" type="submit" />
+                        <Button 
+                            label="Cadastrar Personal"
+                            type="submit"
+                            variant="secondary"
+                        />
                     </>
                 )}
 

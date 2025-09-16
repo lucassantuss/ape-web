@@ -1,44 +1,65 @@
-.button-group {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.button {
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-    .button-group .button {
-        padding: 10px 20px;
-        font-size: 18px;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+/* Variantes */
+.button-primary {
+  background-color: transparent;
+  color: #00994d;
+  border: 2px solid #00994d;
+}
 
-    .button-group .button-primary {
-        background-color: transparent;
-        color: #00994d;
-        border: 2px solid #00994d;
-    }
+.button-primary:hover {
+  background-color: #00994d;
+  color: white;
+}
 
-        .button-group .button-primary:hover {
-            background-color: #00994d;
-            color: white;
-        }
+.button-cancel {
+  background-color: transparent;
+  color: red;
+  border: 2px solid red;
+}
 
-    .button-group .button-cancel {
-        background-color: transparent;
-        color: red;
-        border: 2px solid red;
-    }
+.button-cancel:hover {
+  background-color: red;
+  color: white;
+}
 
-        .button-group .button-cancel:hover {
-            background-color: red;
-            color: white;
-        }
+.button-secondary {
+  background-color: #00994d;
+  color: white;
+  border: 2px solid #00994d;
+}
 
+.button-secondary:hover {
+  background-color: #007a3d;
+}
+
+.button-link {
+  background: none;
+  border: none;
+  color: #00994d;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
-    .button {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-    }
+  .button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
 }

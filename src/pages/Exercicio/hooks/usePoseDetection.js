@@ -184,7 +184,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= exercicios.meioAgachamento.limites.max && angDir >= exercicios.meioAgachamento.limites.max) stageRef.current = 'baixo';
                 if (angEsq <= exercicios.meioAgachamento.limites.min && angDir <= exercicios.meioAgachamento.limites.min && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
-                    validarExecucao(angulo, exercicios.meioAgachamento.limites);
+                    validarExecucao(angEsq, exercicios.meioAgachamento.limites);
                     incrementarContador(setCounter, stop);
                 }
 
@@ -215,7 +215,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= exercicios.supinoRetoBanco.limites.max && angDir >= exercicios.supinoRetoBanco.limites.max) stageRef.current = 'baixo';
                 if (angEsq <= exercicios.supinoRetoBanco.limites.min && angDir <= exercicios.supinoRetoBanco.limites.min && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
-                    validarExecucao(angulo, exercicios.supinoRetoBanco.limites);
+                    validarExecucao(angEsq, exercicios.supinoRetoBanco.limites);
                     incrementarContador(setCounter, stop);
                 }
 
@@ -245,7 +245,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= exercicios.tricepsCordaPoliaAlta.limites.max && angDir >= exercicios.tricepsCordaPoliaAlta.limites.max) stageRef.current = 'cima';
                 if (angEsq <= exercicios.tricepsCordaPoliaAlta.limites.min && angDir <= exercicios.tricepsCordaPoliaAlta.limites.min && stageRef.current === 'cima') {
                     stageRef.current = 'baixo';
-                    validarExecucao(angulo, exercicios.tricepsCordaPoliaAlta.limites);
+                    validarExecucao(angEsq, exercicios.tricepsCordaPoliaAlta.limites);
                     incrementarContador(setCounter, stop);
                 }
 
@@ -275,7 +275,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= exercicios.tricepsCordaPoliaAlta.limites.max && angDir >= exercicios.tricepsCordaPoliaAlta.limites.max) stageRef.current = 'estendido';
                 if (angEsq <= exercicios.tricepsCordaPoliaAlta.limites.min && angDir <= exercicios.tricepsCordaPoliaAlta.limites.min && stageRef.current === 'estendido') {
                     stageRef.current = 'flexionado';
-                    validarExecucao(angulo, exercicios.cadeiraFlexora.limites);
+                    validarExecucao(angEsq, exercicios.cadeiraFlexora.limites);
                     incrementarContador(setCounter, stop);
                 }
 

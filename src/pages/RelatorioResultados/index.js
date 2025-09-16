@@ -62,6 +62,7 @@ const RelatorioResultados = () => {
                                 label="Adicionar Observação"
                                 className="botao-observacao"
                                 onClick={() => abrirModal(resultado.id)}
+                                variant="secondary"
                             />
                         </div>
                     ))}
@@ -78,8 +79,16 @@ const RelatorioResultados = () => {
                         placeholder="Digite sua observação aqui..."
                     />
                     <div className="modal-botoes">
-                        <Button label="Cancelar" onClick={() => setModalAberto(false)} cancel />
-                        <Button label="Salvar" onClick={salvarObservacao} />
+                        <Button
+                            label="Cancelar"
+                            onClick={() => setModalAberto(false)}
+                            variant="cancel"
+                        />
+                        <Button
+                            label="Salvar"
+                            onClick={salvarObservacao}
+                            variant="secondary"
+                        />
                     </div>
                 </Modal>
             )}

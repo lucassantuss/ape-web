@@ -73,23 +73,6 @@
     text-decoration: underline;
 }
 
-.login-button {
-    background-color: #00994d;
-    color: white;
-    border: 2px solid white;
-    padding: 12px 0;
-    width: 70%;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.login-button:hover {
-    background-color: white;
-    color: #00994d;
-}
-
 .login-create-account {
     display: block;
     margin-top: 20px;
@@ -136,10 +119,6 @@
     }
     .login-forgot-password {
         font-size: 14px;
-    }
-    .login-button {
-        font-size: 14px;
-        padding: 10px 0;
     }
     .login-create-account {
         font-size: 14px;

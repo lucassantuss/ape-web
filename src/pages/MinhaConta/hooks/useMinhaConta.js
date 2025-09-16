@@ -306,6 +306,7 @@ export default function useMinhaConta() {
 
     return {
         editando,
+        setDadosEditados,
         setEditando,
         showModalExcluir,
         setShowModalExcluir,
