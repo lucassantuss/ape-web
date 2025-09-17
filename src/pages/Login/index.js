@@ -4,6 +4,7 @@ import ModalInfo from "components/ModalInfo";
 import useLogin from "pages/Login/hooks/useLogin";
 
 import './Login.css';
+import Button from "components/Button";
 
 export default function Login() {
     const {
@@ -31,20 +32,20 @@ export default function Login() {
                 <form onSubmit={handleSubmit}>
                     {/* Abas de seleção */}
                     <div className="login-tabs">
-                        <button
+                        <Button
+                            label="Aluno"
                             type="button"
                             className={tipoUsuario === "aluno" ? "tab active" : "tab"}
                             onClick={() => setTipoUsuario("aluno")}
-                        >
-                            Aluno
-                        </button>
-                        <button
+                            variant="info-2"
+                        />
+                        <Button
+                            label="Personal Trainer"
                             type="button"
                             className={tipoUsuario === "personal" ? "tab active" : "tab"}
                             onClick={() => setTipoUsuario("personal")}
-                        >
-                            Personal Trainer
-                        </button>
+                            variant="info-2"
+                        />
                     </div>
 
                     <div className="login-input-group">
@@ -69,7 +70,12 @@ export default function Login() {
                             required
                         />
                     </div>
-                    <button type="submit" className="login-button">Entrar</button>
+                    <Button
+                        label="Entrar"
+                        type="submit"
+                        className="btn-login"
+                        variant="info-2"
+                    />
                 </form>
 
                 <Link to="/criar-conta" className="login-create-account">Criar conta</Link>

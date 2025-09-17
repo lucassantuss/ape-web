@@ -1,70 +1,131 @@
-# Getting Started with Create React App
+# 🏋️‍♂️ APE Web
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicação **React** desenvolvida para análise e acompanhamento de treinos, integrada com a [API APE](https://github.com/lucassantuss/ape-api).  
+O projeto conta com **CI/CD automatizado** e está publicado na **Vercel**:  
+👉 [Acesse aqui](https://ape-web.vercel.app/)
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Tecnologias
 
-### `npm start`
+- [React](https://reactjs.org/)  
+- [React Router](https://reactrouter.com/)  
+- [Context API](https://react.dev/reference/react/useContext)  
+- [TailwindCSS](https://tailwindcss.com/)  
+- [Vite](https://vitejs.dev/)  
+- [Vercel](https://vercel.com/) – Deploy e CI/CD  
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📦 Instalação e execução local
 
-### `npm test`
+Clone o repositório:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    ```bash
+    git clone https://github.com/lucassantuss/ape-web.git
+    cd ape-web
 
-### `npm run build`
+Instale as dependências:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    ```bash
+    npm install
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Execute em ambiente de desenvolvimento:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    ```bash
+    npm run dev
 
-### `npm run eject`
+A aplicação ficará disponível em:
+👉 http://localhost:5173
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛠️ Scripts disponíveis
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+No diretório do projeto, você pode executar:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+npm run dev – Inicia o servidor de desenvolvimento
 
-## Learn More
+npm run build – Gera a versão de produção
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+npm run preview – Visualiza a build de produção localmente
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+npm run lint – Verifica problemas de linting no código
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🔗 Integração com a API
 
-### Analyzing the Bundle Size
+O APE Web consome dados da APE API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Certifique-se de configurar as variáveis de ambiente no .env:
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## ⚙️ CI/CD
 
-### Advanced Configuration
+O projeto possui pipeline automatizado com Vercel:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Deploy automático em cada push para a branch main
 
-### Deployment
+Preview Deploys para cada Pull Request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Integração contínua com feedback rápido
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📌 Estrutura do Projeto
+
+ape-web/
+
+├── public/            # Arquivos estáticos
+
+├── src/
+
+│   ├── components/    # Componentes reutilizáveis
+
+│   ├── context/       # Context API e autenticação
+
+│   ├── pages/         # Páginas principais
+
+│   ├── hooks/         # Hooks customizados
+
+│   ├── services/      # Integração com API
+
+│   ├── App.jsx        # Root da aplicação
+
+│   └── main.jsx       # Ponto de entrada
+
+└── package.json
+
+---
+
+## 👨‍💻 Contribuição
+
+Contribuições são bem-vindas!
+Para colaborar:
+
+Faça um fork do projeto
+
+Crie uma branch (git checkout -b feature/minha-feature)
+
+Commit suas alterações (git commit -m 'Adiciona nova feature')
+
+Faça push para a branch (git push origin feature/minha-feature)
+
+Abra um Pull Request
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
+Consulte o arquivo LICENSE para mais detalhes.
+
+---
+
+## 🌐 Deploy
+
+👉 ape-web.vercel.app
+
+---

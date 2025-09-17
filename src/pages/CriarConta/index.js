@@ -60,20 +60,20 @@ export default function CriarConta() {
         <div className="cadastro-usuario-container">
             <Title titulo="Cadastro de Contas" />
             <div className="login-tabs">
-                <button
+                <Button
+                    label="Aluno"
                     type="button"
                     className={tipoUsuario === "aluno" ? "tab active" : "tab"}
                     onClick={() => setTipoUsuario("aluno")}
-                >
-                    Aluno
-                </button>
-                <button
+                    variant="info-2"
+                />
+                <Button
+                    label="Personal Trainer"
                     type="button"
                     className={tipoUsuario === "personal" ? "tab active" : "tab"}
                     onClick={() => setTipoUsuario("personal")}
-                >
-                    Personal Trainer
-                </button>
+                    variant="info-2"
+                />
             </div>
 
             <form onSubmit={handleSubmit}>
@@ -192,7 +192,7 @@ export default function CriarConta() {
                             <label htmlFor="aceiteTermosAluno">
                                 Eu li e aceito os{" "}
                                 <a
-                                    href="/docs/termos_uso.pdf"
+                                    href="/docs/APE - Termos de Uso e Política de Privacidade.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="link-termos"
@@ -207,7 +207,11 @@ export default function CriarConta() {
 
                         <br></br>
 
-                        <Button label="Cadastrar Aluno" type="submit" />
+                        <Button
+                            label="Cadastrar Aluno"
+                            type="submit"
+                            variant="success"
+                        />
                     </>
                 )}
 
@@ -347,7 +351,7 @@ export default function CriarConta() {
                             <label htmlFor="aceiteTermosPersonal">
                                 Eu li e aceito os{" "}
                                 <a
-                                    href="/docs/termos_uso.pdf"
+                                    href="/docs/APE - Termos de Uso e Política de Privacidade.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="link-termos"
@@ -362,7 +366,11 @@ export default function CriarConta() {
 
                         <br></br>
 
-                        <Button label="Cadastrar Personal" type="submit" />
+                        <Button 
+                            label="Cadastrar Personal"
+                            type="submit"
+                            variant="success"
+                        />
                     </>
                 )}
 

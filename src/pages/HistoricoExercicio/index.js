@@ -40,7 +40,11 @@ export default function HistoricoExercicio() {
     return (
       <div className="container">
         <Title titulo="Não foi possível acessar o conteúdo dessa tela" titulo2={mensagemAcessoAluno} />
-        <Button label="Voltar" onClick={() => navigate("/minha-conta")} />
+        <Button
+          label="Voltar"
+          onClick={() => navigate("/minha-conta")}
+          variant="info"
+        />
       </div>
     );
   }
@@ -71,13 +75,14 @@ export default function HistoricoExercicio() {
                   label="Adicionar Observação"
                   className="botao-observacao"
                   onClick={() => abrirModal(item.id)}
+                  variant="success"
                 />
                 <br />
                 <Button
                   label="Excluir Treino"
                   className="botao-remover"
                   onClick={() => abrirModalRemocao(item)}
-                  cancel
+                  variant="cancel"
                 />
               </div>
             ))}
@@ -97,8 +102,16 @@ export default function HistoricoExercicio() {
             rows={5}
           />
           <div className="modal-botoes">
-            <Button label="Cancelar" onClick={fecharModal} cancel />
-            <Button label="Salvar" onClick={salvarObservacao} />
+            <Button
+              label="Cancelar"
+              onClick={fecharModal}
+              variant="cancel"
+            />
+            <Button
+              label="Salvar"
+              onClick={salvarObservacao}
+              variant="success"
+            />
           </div>
         </Modal>
       )}
@@ -111,8 +124,16 @@ export default function HistoricoExercicio() {
             <strong>{treinoSelecionadoParaRemocao?.nome}</strong> da sua lista?
           </p>
           <div className="modal-botoes">
-            <Button label="Cancelar" onClick={() => setModalRemocaoAberto(false)} cancel />
-            <Button label="Confirmar Exclusão" onClick={confirmarRemocao} />
+            <Button
+              label="Cancelar"
+              onClick={() => setModalRemocaoAberto(false)}
+              variant="cancel"
+            />
+            <Button
+              label="Confirmar Exclusão"
+              onClick={confirmarRemocao}
+              variant="success"
+            />
           </div>
         </Modal>
       )}

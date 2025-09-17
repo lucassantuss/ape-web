@@ -16,8 +16,8 @@ export default function Home() {
                         em experiências mais seguras, eficientes e inteligentes.
                     </p>
                     <div className="hero-buttons">
-                        <Link to="/login" id="btn-home-primary" className="btn-primary">Começar Agora</Link>
-                        <Link to="/quem-somos" id="btn-home-secondary" className="btn-secondary">Saiba Mais</Link>
+                        <Link to="/login" id="btn-home-primary" className="btn-home-primary">Começar Agora</Link>
+                        <Link to="/quem-somos" id="btn-home-secondary" className="btn-home-secondary">Saiba Mais</Link>
                     </div>
                 </div>
             </section>

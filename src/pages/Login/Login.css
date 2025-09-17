@@ -73,21 +73,8 @@
     text-decoration: underline;
 }
 
-.login-button {
-    background-color: #00994d;
-    color: white;
-    border: 2px solid white;
-    padding: 12px 0;
-    width: 70%;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.login-button:hover {
-    background-color: white;
-    color: #00994d;
+.btn-login:hover {
+    background-color: #22c55e;
 }
 
 .login-create-account {
@@ -137,10 +124,6 @@
     .login-forgot-password {
         font-size: 14px;
     }
-    .login-button {
-        font-size: 14px;
-        padding: 10px 0;
-    }
     .login-create-account {
         font-size: 14px;
         padding-bottom: 10px;
@@ -156,8 +139,8 @@
 
 .tab {
     padding: 10px 20px;
-    background-color: #ffffff;
-    border: 2px solid #00994d;
+    background-color: #00994d;
+    border: 2px solid #ffffff;
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;

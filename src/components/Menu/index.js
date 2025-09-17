@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthentication } from "context/Authentication";
+import Button from "components/Button";
 
 import './Menu.css';
 
@@ -88,7 +89,12 @@ export default function Menu() {
 
                     <div className="menu-login">
                         {isLogged ? (
-                            <button className="menu-login" onClick={handleLogout}>Sair</button>
+                            <Button
+                                label="Sair"
+                                onClick={handleLogout}
+                                className="menu-login"
+                                variant="info-2"
+                            />
                         ) : (
                             <Link to="/login" onClick={handleLinkClick}>Entrar</Link>
                         )}

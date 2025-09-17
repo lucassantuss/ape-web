@@ -1,3 +1,4 @@
+import Button from 'components/Button';
 import './SearchInput.css';
 
 const SearchInput = ({
@@ -25,7 +26,13 @@ const SearchInput = ({
                     maxLength={maxLength}
                     readOnly={readOnly}
                 />
-                <button type="button" onClick={onClick}>🔍</button>
+                <Button
+                    label="🔍"
+                    type="button"
+                    onClick={onClick}
+                    className="search-button"
+                    variant="info"
+                />
             </div>
             {error && <span className="error-message">{error}</span>}
         </div>

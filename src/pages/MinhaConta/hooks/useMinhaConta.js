@@ -6,7 +6,6 @@ import { formatCPF, validateCPF } from "utils/Validations";
 export default function useMinhaConta() {
     const [editando, setEditando] = useState(false);
     const [showModalExcluir, setShowModalExcluir] = useState(false);
-    const [dadosEditados, setDadosEditados] = useState(null);
     const [estados, setEstados] = useState([]);
     const [cidades, setCidades] = useState([]);
     const [categoriaCref, setCategoriaCref] = useState([]);
@@ -14,6 +13,9 @@ export default function useMinhaConta() {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const [dadosOriginais, setDadosOriginais] = useState(null);
+    const [dadosEditados, setDadosEditados] = useState(null);
 
     const [showModalPersonal, setShowModalPersonal] = useState(false);
     const [nomePersonal, setNomePersonal] = useState("");
@@ -125,16 +127,14 @@ export default function useMinhaConta() {
 
                 if (response.data) {
                     const usuario = response.data;
-                    let estadoSigla = "";
 
                     if (tipoUsuario === "personal" && usuario.estado) {
                         const estadoObj = estados.find(
-                            (uf) => uf.label.toLowerCase() === usuario.estado.toLowerCase()
+                            (uf) => uf.value.toLowerCase() === usuario.estado.toLowerCase()
                         );
 
                         if (estadoObj) {
-                            estadoSigla = estadoObj.value;
-                            fetchCidades(estadoObj.id).then(() => {
+                            await fetchCidades(estadoObj.id).then(() => {
                                 setDadosEditados((prev) => ({
                                     ...prev,
                                     cidade: usuario.cidade || "",
@@ -154,7 +154,7 @@ export default function useMinhaConta() {
                         }
                     }
 
-                    setDadosEditados({
+                    const usuarioFormatado = {
                         tipo: tipoUsuario,
                         nome: usuario.nome || "",
                         email: usuario.email || "",
@@ -166,12 +166,15 @@ export default function useMinhaConta() {
                                     ? { id: usuario.idPersonal, nomeCompleto: personalSelecionado.nome }
                                     : { id: "", nomeCompleto: "" }
                                 : null,
-                        estado: tipoUsuario === "personal" ? usuario.estado : "",
+                        estado: tipoUsuario === "personal" ? usuario.estado || "" : "",
                         cidade: tipoUsuario === "personal" ? usuario.cidade || "" : "",
                         numeroCref: tipoUsuario === "personal" ? usuario.numeroCref || "" : "",
                         categoriaCref: tipoUsuario === "personal" ? usuario.categoriaCref || "" : "",
                         siglaCref: tipoUsuario === "personal" ? usuario.siglaCref || "" : "",
-                    });
+                    };
+
+                    setDadosOriginais(usuarioFormatado);
+                    setDadosEditados(usuarioFormatado);
                 }
                 setError(null);
             } catch (err) {
@@ -204,6 +207,7 @@ export default function useMinhaConta() {
                 ...prev,
                 estado: value,
                 cidade: "", // reseta cidade quando trocar estado
+                siglaCref: value, // sigla do estado
             }));
         } else if (name.includes(".")) {
             const keys = name.split(".");
@@ -233,15 +237,49 @@ export default function useMinhaConta() {
 
     const handlePesquisaPersonal = (event) => setPesquisa(event.target.value);
 
-    // Salvar alterações
-    const handleSalvar = async () => {
+    const validarDados = (dados) => {
         let newErrors = {};
 
-        if (!dadosEditados) return;
+        if (!dados) return newErrors;
 
-        if (!validateCPF(dadosEditados.cpf)) {
+        // comuns
+        if (!dados.nome) newErrors.nome = "Campo obrigatório";
+        if (!dados.usuario) newErrors.usuario = "Campo obrigatório";
+
+        const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
+        if (!dados.email) {
+            newErrors.email = "Campo obrigatório";
+        } else if (!validateEmail(dados.email)) {
+            newErrors.email = "Email inválido";
+        }
+
+        if (!dados.cpf || !validateCPF(dados.cpf)) {
             newErrors.cpf = "CPF inválido";
         }
+
+        // aluno
+        if (dados.tipo === "aluno") {
+            if (!dados.personal?.id) {
+                newErrors.personal = "Campo obrigatório";
+            }
+        }
+
+        // personal
+        if (dados.tipo === "personal") {
+            if (!dados.numeroCref) newErrors.numeroCref = "Campo obrigatório";
+            if (!dados.estado) newErrors.estado = "Campo obrigatório";
+            if (!dados.cidade) newErrors.cidade = "Campo obrigatório";
+            if (!dados.categoriaCref) newErrors.categoriaCref = "Campo obrigatório";
+        }
+
+        return newErrors;
+    };
+
+    // Salvar alterações
+    const handleSalvar = async () => {
+        if (!dadosEditados) return;
+
+        const newErrors = validarDados(dadosEditados);
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -302,11 +340,13 @@ export default function useMinhaConta() {
 
     return {
         editando,
+        setDadosEditados,
         setEditando,
         showModalExcluir,
         setShowModalExcluir,
         showModalPersonal,
         setShowModalPersonal,
+        dadosOriginais,
         dadosEditados,
         errors,
         personais,

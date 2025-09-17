@@ -1,44 +1,110 @@
-.button-group {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.button {
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-    .button-group .button {
-        padding: 10px 20px;
-        font-size: 18px;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+/* Default */
+.button-default {
+  background-color: white;
+  color: black;
+  border: 2px solid transparent;
+}
 
-    .button-group .button-primary {
-        background-color: transparent;
-        color: #00994d;
-        border: 2px solid #00994d;
-    }
+.button-default:hover {
+  background-color: #f2f2f2;
+  color: black;
+  border: 2px solid #ccc;
+}
 
-        .button-group .button-primary:hover {
-            background-color: #00994d;
-            color: white;
-        }
+/* Success */
+.button-success {
+  background-color: white; 
+  color: #00994d;
+  border: 2px solid #00994d;
+}
 
-    .button-group .button-cancel {
-        background-color: transparent;
-        color: red;
-        border: 2px solid red;
-    }
+.button-success:hover {
+  background-color: #00994d;
+  color: white;
+  border: 2px solid #00994d;
+}
 
-        .button-group .button-cancel:hover {
-            background-color: red;
-            color: white;
-        }
+/* Info */
+.button-info {
+  background-color: white;
+  color: #00994d; /* verde escuro */
+  border: 2px solid #00994d;
+}
 
+.button-info:hover {
+  background-color: #00994d;
+  color: white;
+  border: 2px solid #00994d;
+}
+
+/* Info-2 */
+.button-info-2 {
+  background-color: #00994d; /* verde escuro */
+  color: white;
+  border: 2px solid white;
+}
+
+.button-info-2:hover {
+  background-color: #00994d; /* verde escuro */
+  color: white;
+  border: 2px solid white;
+}
+
+/* Cancel */
+.button-cancel {
+  background-color: white;
+  color: red;
+  border: 2px solid red;
+}
+
+.button-cancel:hover {
+  background-color: red;
+  color: white;
+  border: 2px solid red;
+}
+
+/* Secondary */
+.button-secondary {
+  background-color: #00994d; /* verde escuro */
+  color: white;
+  border: 2px solid #00994d;
+}
+
+.button-secondary:hover {
+  background-color: #22c55e; /* verde claro */
+  border: 2px solid #22c55e;
+}
+
+/* Link */
+.button-link {
+  background: none;
+  border: none;
+  color: #00994d;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
-    .button {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-    }
+  .button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
 }

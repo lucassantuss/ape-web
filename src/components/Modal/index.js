@@ -1,3 +1,4 @@
+import Button from 'components/Button';
 import './Modal.css';
 
 const ModalPesquisaPersonal = ({ isOpen, onClose, children }) => {
