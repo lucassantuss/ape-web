@@ -9,10 +9,6 @@ O projeto conta com **CI/CD automatizado** e está publicado na **Vercel**:
 ## 🚀 Tecnologias
 
 - [React](https://reactjs.org/)  
-- [React Router](https://reactrouter.com/)  
-- [Context API](https://react.dev/reference/react/useContext)  
-- [TailwindCSS](https://tailwindcss.com/)  
-- [Vite](https://vitejs.dev/)  
 - [Vercel](https://vercel.com/) – Deploy e CI/CD  
 
 ---
@@ -21,44 +17,25 @@ O projeto conta com **CI/CD automatizado** e está publicado na **Vercel**:
 
 Clone o repositório:
 
-    ```bash
-    git clone https://github.com/lucassantuss/ape-web.git
-    cd ape-web
+```bash
+git clone https://github.com/lucassantuss/ape-web.git
+cd ape-web
+```
 
 Instale as dependências:
 
-    ```bash
-    npm install
+```bash
+npm install
+```
 
-Execute em ambiente de desenvolvimento:
+Execute a aplicação:
 
-    ```bash
-    npm run dev
+```bash
+npm start
+```
 
 A aplicação ficará disponível em:
 👉 http://localhost:5173
-
----
-
-## 🛠️ Scripts disponíveis
-
-No diretório do projeto, você pode executar:
-
-npm run dev – Inicia o servidor de desenvolvimento
-
-npm run build – Gera a versão de produção
-
-npm run preview – Visualiza a build de produção localmente
-
-npm run lint – Verifica problemas de linting no código
-
----
-
-## 🔗 Integração com a API
-
-O APE Web consome dados da APE API
-
-Certifique-se de configurar as variáveis de ambiente no .env:
 
 ---
 
@@ -66,11 +43,9 @@ Certifique-se de configurar as variáveis de ambiente no .env:
 
 O projeto possui pipeline automatizado com Vercel:
 
-Deploy automático em cada push para a branch main
-
-Preview Deploys para cada Pull Request
-
-Integração contínua com feedback rápido
+- Deploy automático em cada push para a branch main
+- Preview Deploys para cada Pull Request
+- Integração contínua com feedback rápido
 
 ---
 
@@ -102,30 +77,19 @@ ape-web/
 
 ## 👨‍💻 Contribuição
 
-Contribuições são bem-vindas!
-Para colaborar:
+Contribuições são bem-vindas! Para colaborar:
 
-Faça um fork do projeto
-
-Crie uma branch (git checkout -b feature/minha-feature)
-
-Commit suas alterações (git commit -m 'Adiciona nova feature')
-
-Faça push para a branch (git push origin feature/minha-feature)
-
-Abra um Pull Request
+- Fork este repositório
+- Crie uma nova branch para sua feature ou correção (feature/nome-da-feature)
+- Realize as alterações
+- Submeta um Pull Request descrevendo as mudanças
 
 ---
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT.
-Consulte o arquivo LICENSE para mais detalhes.
+Este projeto está licenciado sob a licença MIT.
 
----
-
-## 🌐 Deploy
-
-👉 ape-web.vercel.app
+Veja o arquivo [MIT](LICENSE) para mais detalhes.
 
 ---
