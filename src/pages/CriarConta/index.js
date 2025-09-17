@@ -163,23 +163,26 @@ export default function CriarConta() {
                                 maxLength={255}
                                 error={errors.personal}
                             />
-                            <select
-                                className="selectPersonal"
-                                onChange={handleSelecionado}
-                                value={formDataAluno.idPersonal || ""}
-                                style={{ margin: "0px" }}
-                            >
-                                <option value="">Selecione um personal</option>
-                                {personais
-                                    .filter((p) =>
-                                        p.nomeCompleto.toLowerCase().includes(pesquisa.toLowerCase())
-                                    )
-                                    .map((p) => (
-                                        <option key={p.id} value={p.id}>
-                                            {p.nomeCompleto}
-                                        </option>
-                                    ))}
-                            </select>
+                            <div className="selectPersonal-group">
+                                <select
+                                    className="selectPersonal"
+                                    onChange={handleSelecionado}
+                                    value={formDataAluno.idPersonal || ""}
+                                    style={{ margin: "0px" }}
+                                >
+                                    <option value="">Selecione um personal</option>
+                                    {personais
+                                        .filter((p) =>
+                                            p.nomeCompleto.toLowerCase().includes(pesquisa.toLowerCase())
+                                        )
+                                        .map((p) => (
+                                            <option key={p.id} value={p.id}>
+                                                {p.nomeCompleto}
+                                            </option>
+                                        ))}
+                                </select>
+                            </div>
+                            
                         </Modal>
 
                         <div className="termos-container">

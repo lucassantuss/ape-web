@@ -49,6 +49,11 @@ export default function Home() {
                         <h3>Privacidade Garantida</h3>
                         <p>Não armazenamos vídeos ou imagens, apenas dados essenciais para feedback em tempo real.</p>
                     </div>
+                    <div id="feature-4" className="feature-card">
+                        <span className="feature-icon">🧠</span>
+                        <h3>Utilização de IA</h3>
+                        <p>Implementamos Inteligência Artificial como tecnologia para detecção da pose humana.</p>
+                    </div>
                 </div>
             </section>
 

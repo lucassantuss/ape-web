@@ -199,7 +199,7 @@ export default function MinhaConta() {
 							)}
 						</div>
 
-						<div className="minha-conta-box right">
+						<div className="minha-conta-box right" style={{ height: "135px" }}>
 							<label>N° CREF (Conselho Regional de Educação Física):</label>
 							{editando ? (
 								<input

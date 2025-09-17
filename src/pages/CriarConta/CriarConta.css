@@ -15,6 +15,22 @@
     touch-action: none;
 }
 
+.selectPersonal-group {
+    margin-bottom: 20px;
+}
+
+    .selectPersonal-group select {
+        width: 390px;
+        padding: 10px;
+        font-size: 18px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        box-sizing: border-box;
+        touch-action: none;
+    }
+
 @media (max-width: 768px) {
     .cadastro-usuario-container {
         justify-content: center;
