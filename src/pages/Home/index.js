@@ -51,8 +51,8 @@ export default function Home() {
                     </div>
                     <div id="feature-4" className="feature-card">
                         <span className="feature-icon">🧠</span>
-                        <h3>Utilização de IA</h3>
-                        <p>Implementamos Inteligência Artificial como tecnologia para detecção da pose humana.</p>
+                        <h3>Utilização de Visão Computacional</h3>
+                        <p>Aplicamos visão computacional para detectar a pose humana durante a execução dos exercícios.</p>
                     </div>
                 </div>
             </section>
