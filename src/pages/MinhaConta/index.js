@@ -199,8 +199,8 @@ export default function MinhaConta() {
 							)}
 						</div>
 
-						<div className="minha-conta-box right" style={{ height: "135px" }}>
-							<label>N° CREF (Conselho Regional de Educação Física):</label>
+						<div className="minha-conta-box right" style={{ height: "135px", paddingTop: "17px" }}>
+							<label style={{ marginBottom: "12px" }}>N° CREF (Conselho Regional de Educação Física):</label>
 							{editando ? (
 								<input
 									className="input-cref numeroCref"
