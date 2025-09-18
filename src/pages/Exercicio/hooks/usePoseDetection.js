@@ -19,6 +19,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const [exercise, setExercise] = useState(initialExercise);
     const [isRunning, setIsRunning] = useState(false);
     const startTimeRef = useRef(null);
+    const [facingMode, setFacingMode] = useState("user");
 
     const [showModal, setShowModal] = useState(false);
     const [showModalFinal, setShowModalFinal] = useState(false);
@@ -338,7 +339,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const setupCamera = async () => {
         const video = videoRef.current;
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: 'user', width: { ideal: window.innerWidth }, height: { ideal: window.innerHeight } },
+            video: { facingMode, width: { ideal: window.innerWidth }, height: { ideal: window.innerHeight } },
             audio: false
         });
         video.srcObject = stream;
@@ -347,6 +348,10 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         const canvas = canvasRef.current;
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+    };
+
+    const toggleCamera = () => {
+        setFacingMode(prev => (prev === "user" ? "environment" : "user"));
     };
 
     const start = async () => {
@@ -506,6 +511,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         start,
         stop,
         reset,
+        toggleCamera,
         handleStart,
         handleLimparResultados,
     };

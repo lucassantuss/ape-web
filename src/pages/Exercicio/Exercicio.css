@@ -73,7 +73,18 @@
     display: contents;
 }
 
+.btn-inverter-camera {
+  display: none;
+}
+
 /* Responsividade */
+@media (max-width: 1024px) {
+  .btn-inverter-camera {
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem 0.75rem;
