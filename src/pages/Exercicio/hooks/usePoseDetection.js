@@ -158,6 +158,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                     stageRef.current = 'cima';
                     incrementarContador(setCounter, stop);
                 }
+                // Teste com a validação da angulação fora dos IFs, validar com grupo
                 validarExecucao(media, exercicios.roscaDireta.limites);
 
                 return { angEsq, angDir, media };
@@ -479,8 +480,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         } else {
             errosRef.current += 1;
         }
-        console.log(angulo + " < " + (min - tolerancia));
-        console.log(angulo + " > " + (max + tolerancia));
+
         if (angulo < (min - tolerancia)) {
             const msgFeedback = "Evite flexionar demais o músculo.";
             setFeedback(msgFeedback);
@@ -506,7 +506,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             if (texto !== ultimaMensagem) {
                 ultimaMensagem = texto;
                 clearTimeout(timeoutFala);
-                timeoutFala = setTimeout(() => { ultimaMensagem = ""; }, 3000);
+                timeoutFala = setTimeout(() => { ultimaMensagem = ""; }, 5000);
                 const utterance = new SpeechSynthesisUtterance(texto);
                 utterance.lang = "pt-BR";
                 window.speechSynthesis.speak(utterance);
