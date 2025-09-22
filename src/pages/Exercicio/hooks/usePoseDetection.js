@@ -156,9 +156,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= exercicios.roscaDireta.limites.max && angDir >= exercicios.roscaDireta.limites.max) stageRef.current = 'baixo';
                 if (angEsq <= exercicios.roscaDireta.limites.min && angDir <= exercicios.roscaDireta.limites.min && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
-                    validarExecucao(media, exercicios.roscaDireta.limites);
                     incrementarContador(setCounter, stop);
                 }
+                validarExecucao(media, exercicios.roscaDireta.limites);
 
                 return { angEsq, angDir, media };
             },
@@ -482,12 +482,12 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         console.log(angulo + " < " + (min - tolerancia));
         console.log(angulo + " > " + (max + tolerancia));
         if (angulo < (min - tolerancia)) {
-            const msgFeedback = "Evite flexionar demais o músculo trabalhado.";
+            const msgFeedback = "Evite flexionar demais o músculo.";
             setFeedback(msgFeedback);
             falar(msgFeedback);
         }
         if (angulo > (max + tolerancia)) {
-            const msgFeedback = "Evite estender demais o músculo trabalhado.";
+            const msgFeedback = "Evite estender demais o músculo.";
             setFeedback(msgFeedback);
             falar(msgFeedback);
         }
