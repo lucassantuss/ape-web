@@ -71,6 +71,10 @@ export default function Exercicio() {
                 </>
             )}
 
+            <div id="info" className='info-box'>
+                <div><span>Feedback:{feedback}</span></div>
+            </div>
+
             {mostrarStatus && (
                 <div className="botoes-resultado">
                     <Button
@@ -114,10 +118,6 @@ export default function Exercicio() {
                     )}
                 </>
             )}
-
-            <div id="info" className='info-box'>
-                <div><span>{feedback}</span></div>
-            </div>
         </div>
     );
 }

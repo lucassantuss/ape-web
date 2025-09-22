@@ -481,12 +481,12 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         }
 
         if (angulo >= (min - tolerancia)) {
-            const msgFeedback = "Cuidado! Evite estender demais o músculo trabalhado.";
+            const msgFeedback = "Evite estender demais o músculo trabalhado.";
             setFeedback(msgFeedback);
             falar(msgFeedback); // 🔊 chama a voz
         }
-        if (angulo >= (max + tolerancia)) {
-            const msgFeedback = "Cuidado! Evite flexionar demais o músculo trabalhado.";
+        if (angulo <= (max + tolerancia)) {
+            const msgFeedback = "Evite flexionar demais o músculo trabalhado.";
             setFeedback(msgFeedback);
             falar(msgFeedback); // 🔊 chama a voz
         }
