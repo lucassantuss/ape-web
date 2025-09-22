@@ -71,9 +71,11 @@ export default function Exercicio() {
                 </>
             )}
 
-            <div id="info" className='info-box'>
-                <div><span>Feedback:{feedback}</span></div>
-            </div>
+            {mostrarStatus && (
+                <div id="info" className='info-box' style={{ margin: "2%" }}>
+                    <div><span>Feedback:{feedback}</span></div>
+                </div>
+            )}
 
             {mostrarStatus && (
                 <div className="botoes-resultado">
