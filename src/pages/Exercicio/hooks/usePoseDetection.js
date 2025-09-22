@@ -479,16 +479,17 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         } else {
             errosRef.current += 1;
         }
-
+        console.log(angulo + " < " + (min - tolerancia));
+        console.log(angulo + " > " + (max + tolerancia));
         if (angulo < (min - tolerancia)) {
             const msgFeedback = "Evite flexionar demais o músculo trabalhado.";
             setFeedback(msgFeedback);
-            falar(msgFeedback); // 🔊 chama a voz
+            falar(msgFeedback);
         }
         if (angulo > (max + tolerancia)) {
             const msgFeedback = "Evite estender demais o músculo trabalhado.";
             setFeedback(msgFeedback);
-            falar(msgFeedback); // 🔊 chama a voz
+            falar(msgFeedback);
         }
     };
 
@@ -505,7 +506,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             if (texto !== ultimaMensagem) {
                 ultimaMensagem = texto;
                 clearTimeout(timeoutFala);
-                timeoutFala = setTimeout(() => { ultimaMensagem = ""; }, 3000); // libera depois de 3s
+                timeoutFala = setTimeout(() => { ultimaMensagem = ""; }, 3000);
                 const utterance = new SpeechSynthesisUtterance(texto);
                 utterance.lang = "pt-BR";
                 window.speechSynthesis.speak(utterance);

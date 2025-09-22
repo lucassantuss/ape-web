@@ -73,7 +73,7 @@ export default function Exercicio() {
 
             {mostrarStatus && (
                 <div id="info" className='info-box' style={{ margin: "2%" }}>
-                    <div><span>Feedback:{feedback}</span></div>
+                    <div><span>Feedback: {feedback}</span></div>
                 </div>
             )}
 
