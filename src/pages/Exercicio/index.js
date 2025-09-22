@@ -17,7 +17,7 @@ export default function Exercicio() {
         canvasRef, videoRef, counter, angle, isRunning,
         exercise, setExercise, showModal, setShowModal,
         exercicioSelecionado, contador, mostrarStatus,
-        handleStart, handleLimparResultados,
+        handleStart, handleLimparResultados, toggleCamera,
         showModalFinal, handleCloseModalFinal, autorizadoAcessoAluno,
         mensagemSucesso, mensagemAcao, mensagemAcessoAluno, feedback
     } = usePoseDetection();
@@ -74,10 +74,16 @@ export default function Exercicio() {
             {mostrarStatus && (
                 <div className="botoes-resultado">
                     <Button
+                        label="Inverter Câmera"
+                        onClick={toggleCamera}
+                        variant="secondary"
+                        className="btn-inverter-camera"
+                    />
+                    <br></br>
+                    <Button
                         label="Limpar Resultados"
-                        className="btn-avaliacao"
                         onClick={handleLimparResultados}
-                        variant="info"
+                        variant="secondary"
                     />
                 </div>
             )}
@@ -101,7 +107,7 @@ export default function Exercicio() {
                                     playsInline
                                     width="100%"
                                     style={{ marginTop: "10px", borderRadius: "12px", cursor: 'pointer' }}
-                                    onClick={() => window.open('https://musclewiki.com/', '_blank')}
+                                    onClick={() => window.open(exercicioSelecionado.execucao, '_blank')}
                                 />
                             ))}
                         </div>

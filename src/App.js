@@ -19,11 +19,13 @@ import Exercicio from "pages/Exercicio";
 import Faq from "pages/Faq";
 import QuemSomos from "pages/QuemSomos";
 import RelatorioResultados from "pages/RelatorioResultados";
+import ScrollToTop from "components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter> {/* Gerenciador de rotas do React */}
       <AuthenticationProvider> {/* Provedor do contexto de autenticação */}
+        <ScrollToTop />
         <Menu /> {/* Componente fixo do menu no topo da página */}
 
         <Routes> {/* Definição de rotas */}
