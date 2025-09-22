@@ -19,7 +19,7 @@ export default function Exercicio() {
         exercicioSelecionado, contador, mostrarStatus,
         handleStart, handleLimparResultados,
         showModalFinal, handleCloseModalFinal, autorizadoAcessoAluno,
-        mensagemSucesso, mensagemAcao, mensagemAcessoAluno
+        mensagemSucesso, mensagemAcao, mensagemAcessoAluno, feedback
     } = usePoseDetection();
 
     if (autorizadoAcessoAluno === null) return <Loading />;
@@ -108,6 +108,10 @@ export default function Exercicio() {
                     )}
                 </>
             )}
+
+            <div id="info" className='info-box'>
+                <div><span>{feedback}</span></div>
+            </div>
         </div>
     );
 }

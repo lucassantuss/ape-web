@@ -26,6 +26,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const [mostrarStatus, setMostrarStatus] = useState(false);
     const [mensagemAcao, setMensagemAcao] = useState("");
     const [mensagemSucesso, setMensagemSucesso] = useState("");
+    const [feedback, setFeedback] = useState("");
 
     const [autorizadoAcessoAluno, setAutorizadoAcessoAluno] = useState(null);
     const [mensagemAcessoAluno, setMensagemAcessoAluno] = useState("");
@@ -204,7 +205,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
         supinoRetoBanco: {
             pontos: ['LEFT_SHOULDER', 'LEFT_ELBOW', 'LEFT_WRIST', 'RIGHT_SHOULDER', 'RIGHT_ELBOW', 'RIGHT_WRIST'],
-            limites: { min: 90, max: 170 }, //min 0
+            limites: { min: 0, max: 90 },
             calcular: (landmarks, stageRef, setCounter) => {
                 const [ls, le, lw, rs, re, rw] = [12, 14, 16, 11, 13, 15].map(i => [landmarks[i].x, landmarks[i].y]);
                 const angEsq = calcularAngulo(ls, le, lw);
@@ -473,12 +474,40 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         } else {
             errosRef.current += 1;
         }
+
+        if (angulo >= (min - tolerancia)) {
+            const msgFeedback = "Cuidado! Evite estender demais o músculo trabalhado.";
+            setFeedback(msgFeedback);
+            falar(msgFeedback); // 🔊 chama a voz
+        }
+        if (angulo >= (max + tolerancia)) {
+            const msgFeedback = "Cuidado! Evite flexionar demais o músculo trabalhado.";
+            setFeedback(msgFeedback);
+            falar(msgFeedback); // 🔊 chama a voz
+        }
     };
 
     const handleCloseModalFinal = () => {
         setShowModalFinal(false);
         navigate(0); // recarrega a mesma tela
     };
+
+    let ultimaMensagem = "";
+    let timeoutFala = null;
+
+    function falar(texto) {
+        if ("speechSynthesis" in window) {
+            if (texto !== ultimaMensagem) {
+                ultimaMensagem = texto;
+                clearTimeout(timeoutFala);
+                timeoutFala = setTimeout(() => { ultimaMensagem = ""; }, 3000); // libera depois de 3s
+                const utterance = new SpeechSynthesisUtterance(texto);
+                utterance.lang = "pt-BR";
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+    }
+
 
     useEffect(() => {
         return () => stop();
@@ -508,5 +537,6 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         reset,
         handleStart,
         handleLimparResultados,
+        feedback
     };
 }
