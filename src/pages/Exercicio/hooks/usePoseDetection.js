@@ -275,8 +275,8 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 const angDir = calcularAngulo(rh, rk, ra);
                 const media = (angEsq + angDir) / 2;
 
-                if (angEsq >= exercicios.tricepsCordaPoliaAlta.limites.max && angDir >= exercicios.tricepsCordaPoliaAlta.limites.max) stageRef.current = 'estendido';
-                if (angEsq <= exercicios.tricepsCordaPoliaAlta.limites.min && angDir <= exercicios.tricepsCordaPoliaAlta.limites.min && stageRef.current === 'estendido') {
+                if (angEsq >= exercicios.cadeiraFlexora.limites.max && angDir >= exercicios.cadeiraFlexora.limites.max) stageRef.current = 'estendido';
+                if (angEsq <= exercicios.cadeiraFlexora.limites.min && angDir <= exercicios.cadeiraFlexora.limites.min && stageRef.current === 'estendido') {
                     stageRef.current = 'flexionado';
                     incrementarContador(setCounter, stop);
                 }
