@@ -296,22 +296,6 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             }
         }
 
-        // Membros superiores
-        'RIGHT_SHOULDER': 11,
-        'LEFT_SHOULDER': 12,
-        'RIGHT_ELBOW': 13,
-        'LEFT_ELBOW': 14,
-        'RIGHT_WRIST': 15,
-        'LEFT_WRIST': 16,
-
-        // Membros inferiores
-        'RIGHT_HIP': 23,
-        'LEFT_HIP': 24,
-        'RIGHT_KNEE': 25,
-        'LEFT_KNEE': 26,
-        'RIGHT_ANKLE': 27,
-        'LEFT_ANKLE': 28
-
         // Adicionar novos exercícios abaixo no mesmo padrão...
     };
 
