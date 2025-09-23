@@ -477,8 +477,11 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         if (dentroRange) {
             acertosRef.current += 1;
         } else {
-            if (errosRef.current < 10)
+            if (errosRef.current < 10) {
+
                 errosRef.current += 1;
+                console.log(errosRef.current);
+            }
         }
 
         if (angulo < (min - tolerancia)) {
