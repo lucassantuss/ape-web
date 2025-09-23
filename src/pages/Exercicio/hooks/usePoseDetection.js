@@ -354,37 +354,30 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     const toggleCamera = async () => {
         if (videoRef.current?.srcObject) {
-            const tracks = videoRef.current.srcObject.getTracks();
-            tracks.forEach(track => track.stop());
+            videoRef.current.srcObject.getTracks().forEach(track => track.stop());
         }
 
-        setFacingMode(prev => {
-            const novo = prev === "user" ? "environment" : "user";
-            setupCameraComModo(novo);
-            return novo;
-        });
-    };
+        const novoFacingMode = facingMode === "user" ? "environment" : "user";
+        setFacingMode(novoFacingMode);
 
-    const setupCameraComModo = async (modo) => {
-        const video = videoRef.current;
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: { exact: modo },
-                    width: { ideal: window.innerWidth },
-                    height: { ideal: window.innerHeight }
-                },
+                video: { facingMode: novoFacingMode },
                 audio: false
             });
 
-            video.srcObject = stream;
-            await video.play();
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+                await videoRef.current.play();
+            }
 
             const canvas = canvasRef.current;
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
         } catch (err) {
-            console.error("Erro ao trocar câmera:", err);
+            console.error("Erro ao alternar câmera:", err);
         }
     };
 
@@ -568,6 +561,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         setExercise,
         showModal,
         setShowModal,
+        showModalLimpar,
         showModalFinal,
         handleCloseModalLimpar,
         handleCloseModalFinal,
