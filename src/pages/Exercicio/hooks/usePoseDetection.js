@@ -270,7 +270,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             pontos: ['LEFT_HIP', 'LEFT_KNEE', 'LEFT_ANKLE', 'RIGHT_HIP', 'RIGHT_KNEE', 'RIGHT_ANKLE'],
             limites: { min: 110, max: 170 }, // 180 - 90
             calcular: (landmarks, stageRef, setCounter) => {
-                const [lh, lk, la, rh, rk, ra] = [23, 25, 27, 24, 26, 28].map(i => [landmarks[i].x, landmarks[i].y]);
+                const [lh, lk, la, rh, rk, ra] = [24, 26, 28, 23, 25, 27].map(i => [landmarks[i].x, landmarks[i].y]);
                 const angEsq = calcularAngulo(lh, lk, la);
                 const angDir = calcularAngulo(rh, rk, ra);
                 const media = (angEsq + angDir) / 2;
@@ -295,6 +295,22 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 canvasCtx.fillText(`${angulos.angDir.toFixed(2)}°`, rKnee.x * canvasElement.width + 10, rKnee.y * canvasElement.height - 10);
             }
         }
+
+        // Membros superiores
+        'RIGHT_SHOULDER': 11,
+        'LEFT_SHOULDER': 12,
+        'RIGHT_ELBOW': 13,
+        'LEFT_ELBOW': 14,
+        'RIGHT_WRIST': 15,
+        'LEFT_WRIST': 16,
+
+        // Membros inferiores
+        'RIGHT_HIP': 23,
+        'LEFT_HIP': 24,
+        'RIGHT_KNEE': 25,
+        'LEFT_KNEE': 26,
+        'RIGHT_ANKLE': 27,
+        'LEFT_ANKLE': 28
 
         // Adicionar novos exercícios abaixo no mesmo padrão...
     };
