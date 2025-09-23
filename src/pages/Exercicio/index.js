@@ -56,7 +56,7 @@ export default function Exercicio() {
             </Modal>
 
             <Modal isOpen={showModalLimpar} onClose={handleCloseModalLimpar}>
-                <Title titulo="Resultados limpos" titulo2={mensagemAcao} />
+                <Title titulo={mensagemAcao} />
                 <Button label="Ok" onClick={handleCloseModalLimpar} variant="success" />
             </Modal>
 

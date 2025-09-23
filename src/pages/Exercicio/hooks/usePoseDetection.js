@@ -354,8 +354,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     const toggleCamera = async () => {
         if (videoRef.current?.srcObject) {
-            const tracks = videoRef.current.srcObject.getTracks();
-            tracks.forEach(track => track.stop());
+            videoRef.current.srcObject.getTracks().forEach(track => track.stop());
         }
 
         setFacingMode(prev => {
@@ -370,7 +369,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
-                    facingMode: { exact: modo },
+                    facingMode: modo,
                     width: { ideal: window.innerWidth },
                     height: { ideal: window.innerHeight }
                 },
