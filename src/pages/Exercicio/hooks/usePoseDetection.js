@@ -357,33 +357,42 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             videoRef.current.srcObject.getTracks().forEach(track => track.stop());
         }
 
-        setFacingMode(prev => {
-            const novo = prev === "user" ? "environment" : "user";
-            setupCameraComModo(novo);
-            return novo;
-        });
-    };
-
-    const setupCameraComModo = async (modo) => {
-        const video = videoRef.current;
         try {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const videoDevices = devices.filter(d => d.kind === "videoinput");
+
+            let selectedDevice;
+            if (facingMode === "user") {
+                // procura a traseira
+                selectedDevice = videoDevices.find(d =>
+                    d.label.toLowerCase().includes("back")
+                ) || videoDevices[videoDevices.length - 1];
+                setFacingMode("environment");
+            } else {
+                // procura a frontal
+                selectedDevice = videoDevices.find(d =>
+                    d.label.toLowerCase().includes("front")
+                ) || videoDevices[0];
+                setFacingMode("user");
+            }
+
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: modo,
-                    width: { ideal: window.innerWidth },
-                    height: { ideal: window.innerHeight }
-                },
+                video: { deviceId: selectedDevice.deviceId },
                 audio: false
             });
 
-            video.srcObject = stream;
-            await video.play();
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+                await videoRef.current.play();
+            }
 
             const canvas = canvasRef.current;
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
         } catch (err) {
-            console.error("Erro ao trocar câmera:", err);
+            console.error("Erro ao alternar câmera:", err);
         }
     };
 
