@@ -20,7 +20,6 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const [isRunning, setIsRunning] = useState(false);
     const startTimeRef = useRef(null);
     const [facingMode, setFacingMode] = useState("user");
-    const rafId = useRef(null);
 
     const [showModal, setShowModal] = useState(false);
     const [showModalLimpar, setShowModalLimpar] = useState(false);
