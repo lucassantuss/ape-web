@@ -369,6 +369,13 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     };
 
     const toggleCamera = async () => {
+        // Cancela o loop atual antes de parar a câmera
+        if (rafRef.current) {
+            cancelAnimationFrame(rafRef.current);
+            rafRef.current = null;
+        }
+
+        // Para a câmera atual
         if (videoRef.current?.srcObject) {
             videoRef.current.srcObject.getTracks().forEach(track => track.stop());
         }
@@ -392,6 +399,21 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             }
+
+            // Reinicia o loop com o novo stream
+            if (poseRef.current) {
+                const detect = async () => {
+                    if (!videoRef.current || videoRef.current.readyState < 2) return;
+                    try {
+                        await poseRef.current.send({ image: videoRef.current });
+                    } catch (err) {
+                        console.error("Erro no loop do Pose:", err);
+                    }
+                    rafRef.current = requestAnimationFrame(detect);
+                };
+                detect();
+            }
+
         } catch (err) {
             console.error("Erro ao alternar câmera:", err);
         }
@@ -411,7 +433,12 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         poseRef.current = pose;
 
         const detect = async () => {
-            await pose.send({ image: videoRef.current });
+            if (!videoRef.current || videoRef.current.readyState < 2) return;
+            try {
+                await pose.send({ image: videoRef.current });
+            } catch (err) {
+                console.error("Erro no loop do Pose:", err);
+            }
             rafRef.current = requestAnimationFrame(detect);
         };
         detect();
