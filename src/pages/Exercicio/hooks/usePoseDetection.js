@@ -146,7 +146,8 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         // }
         roscaDireta: {
             pontos: ['LEFT_SHOULDER', 'LEFT_ELBOW', 'LEFT_WRIST', 'RIGHT_SHOULDER', 'RIGHT_ELBOW', 'RIGHT_WRIST'],
-            limites: { min: 10, max: 150 },
+            limites: { min: 70, max: 120 }, // testes
+            // limites: { min: 10, max: 150 },
             calcular: (landmarks, stageRef, setCounter) => {
                 const [ls, le, lw, rs, re, rw] = [12, 14, 16, 11, 13, 15].map(i => [landmarks[i].x, landmarks[i].y]);
                 const angEsq = calcularAngulo(ls, le, lw);
