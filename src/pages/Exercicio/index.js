@@ -18,6 +18,7 @@ export default function Exercicio() {
         exercise, setExercise, showModal, setShowModal,
         exercicioSelecionado, contador, mostrarStatus,
         handleStart, handleLimparResultados, toggleCamera,
+        showModalLimpar, handleCloseModalLimpar,
         showModalFinal, handleCloseModalFinal, autorizadoAcessoAluno,
         mensagemSucesso, mensagemAcao, mensagemAcessoAluno, feedback
     } = usePoseDetection();
@@ -43,19 +44,20 @@ export default function Exercicio() {
             )}
 
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-                <Title
-                    titulo={'Prepare-se!'}
-                    titulo2={`O treino vai começar!`}
-                />
+                <Title titulo={'Prepare-se!'} titulo2={`O treino vai começar!`} />
                 <div style={{ textAlign: "center" }}>
                     <label style={{ color: "#00994d", fontSize: "100px", fontWeight: "bold" }}>{contador}</label>
                 </div>
-
             </Modal>
 
             <Modal isOpen={showModalFinal} onClose={handleCloseModalFinal}>
                 <Title titulo={mensagemAcao} titulo2={mensagemSucesso} />
                 <Link to="/historico-exercicios" className="btn-avaliacao">Consultar Histórico</Link>
+            </Modal>
+
+            <Modal isOpen={showModalLimpar} onClose={handleCloseModalLimpar}>
+                <Title titulo="Resultados limpos" titulo2={mensagemAcao} />
+                <Button label="Ok" onClick={handleCloseModalLimpar} variant="success" />
             </Modal>
 
             <VideoCanvas canvasRef={canvasRef} videoRef={videoRef} />

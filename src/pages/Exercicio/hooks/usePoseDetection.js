@@ -22,6 +22,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const [facingMode, setFacingMode] = useState("user");
 
     const [showModal, setShowModal] = useState(false);
+    const [showModalLimpar, setShowModalLimpar] = useState(false);
     const [showModalFinal, setShowModalFinal] = useState(false);
     const [contador, setContador] = useState(0);
     const [mostrarStatus, setMostrarStatus] = useState(false);
@@ -351,8 +352,40 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         canvas.height = window.innerHeight;
     };
 
-    const toggleCamera = () => {
-        setFacingMode(prev => (prev === "user" ? "environment" : "user"));
+    const toggleCamera = async () => {
+        if (videoRef.current?.srcObject) {
+            const tracks = videoRef.current.srcObject.getTracks();
+            tracks.forEach(track => track.stop());
+        }
+
+        setFacingMode(prev => {
+            const novo = prev === "user" ? "environment" : "user";
+            setupCameraComModo(novo);
+            return novo;
+        });
+    };
+
+    const setupCameraComModo = async (modo) => {
+        const video = videoRef.current;
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: { exact: modo },
+                    width: { ideal: window.innerWidth },
+                    height: { ideal: window.innerHeight }
+                },
+                audio: false
+            });
+
+            video.srcObject = stream;
+            await video.play();
+
+            const canvas = canvasRef.current;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        } catch (err) {
+            console.error("Erro ao trocar câmera:", err);
+        }
     };
 
     const start = async () => {
@@ -451,7 +484,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const handleLimparResultados = () => {
         reset();
         setMensagemAcao('Resultados atuais limpos!');
-        setShowModalFinal(true);
+        setShowModalLimpar(true);
     };
 
     const incrementarContador = (setCounter, stop) => {
@@ -469,7 +502,6 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             return novoValor;
         });
     };
-
 
     const validarExecucao = (angulo, { min, max }) => {
         const tolerancia = (max * 20) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
@@ -491,6 +523,10 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             setFeedback(msgFeedback);
             falar(msgFeedback);
         }
+    };
+
+    const handleCloseModalLimpar = () => {
+        setShowModalLimpar(false);
     };
 
     const handleCloseModalFinal = () => {
@@ -533,6 +569,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         showModal,
         setShowModal,
         showModalFinal,
+        handleCloseModalLimpar,
         handleCloseModalFinal,
         mensagemSucesso,
         mensagemAcao,
