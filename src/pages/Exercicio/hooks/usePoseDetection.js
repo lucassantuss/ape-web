@@ -338,48 +338,53 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         canvasCtx.restore();
     }, [analisarExercicio]);
 
-    const setupCamera = async (modo = facingMode) => {
+    const setupCamera = async () => {
         const video = videoRef.current;
-
-        // Mantém proporção consistente
-        const constraints = {
-            video: {
-                facingMode: modo,
-                width: { ideal: 1280 },
-                height: { ideal: 720 },
-                aspectRatio: { ideal: 16 / 9 }
-            },
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode, width: { ideal: window.innerWidth }, height: { ideal: window.innerHeight } },
             audio: false
-        };
-
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        });
         video.srcObject = stream;
-
         await video.play().catch(console.error);
 
         const canvas = canvasRef.current;
-        canvas.width = video.videoWidth || 1280;
-        canvas.height = video.videoHeight || 720;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     };
 
     const toggleCamera = async () => {
-        // Cancela loop e fecha tracks antigas
+        // Cancela o loop atual antes de parar a câmera
         if (rafRef.current) {
             cancelAnimationFrame(rafRef.current);
             rafRef.current = null;
         }
+
+        // Para a câmera atual
         if (videoRef.current?.srcObject) {
             videoRef.current.srcObject.getTracks().forEach(track => track.stop());
         }
 
-        // Alterna entre frente/traseira
         const novoFacingMode = facingMode === "user" ? "environment" : "user";
         setFacingMode(novoFacingMode);
 
         try {
-            await setupCamera(novoFacingMode);
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: novoFacingMode },
+                audio: false
+            });
 
-            // Reinicia detecção
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+                await videoRef.current.play();
+            }
+
+            const canvas = canvasRef.current;
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            // Reinicia o loop com o novo stream
             if (poseRef.current) {
                 const detect = async () => {
                     if (!videoRef.current || videoRef.current.readyState < 2) return;
@@ -392,6 +397,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 };
                 detect();
             }
+
         } catch (err) {
             console.error("Erro ao alternar câmera:", err);
         }
@@ -523,19 +529,19 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         const dentroRange = angulo >= (min - tolerancia) && angulo <= (max + tolerancia);
         if (dentroRange) {
             acertosRef.current += 1;
-            const msgFeedback = 'Continue assim!';
+            const msgFeedback = 'continue assim!';
             setFeedback(msgFeedback);
         } else {
             if (errosRef.current < 10)
                 errosRef.current += 1;
 
             if (angulo < (min - tolerancia)) {
-                const msgFeedback = `Flexione no máximo até ${min - tolerancia}°.`;
+                const msgFeedback = `flexione no máximo até ${min - tolerancia}°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
             if (angulo > (max + tolerancia)) {
-                const msgFeedback = `Estenda no máximo até ${max + tolerancia}°.`;
+                const msgFeedback = `estenda no máximo até ${max + tolerancia}°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
