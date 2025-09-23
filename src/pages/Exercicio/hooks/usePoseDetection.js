@@ -564,9 +564,10 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     function unlockSpeech() {
         if ("speechSynthesis" in window) {
+            // Criar utterance vazio só pra destravar no mobile
             const utterance = new SpeechSynthesisUtterance("");
             utterance.lang = "pt-BR";
-            window.speechSynthesis.speak(utterance); // desbloqueia no mobile/desktop
+            window.speechSynthesis.speak(utterance);
             setSpeechUnlocked(true);
         }
     }
@@ -577,6 +578,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 ultimaMensagem = texto;
                 clearTimeout(timeoutFala);
                 timeoutFala = setTimeout(() => { ultimaMensagem = ""; }, 5000);
+
+                // Cancela falas pendentes para não sobrepor
+                window.speechSynthesis.cancel();
 
                 const utterance = new SpeechSynthesisUtterance(texto);
                 utterance.lang = "pt-BR";
