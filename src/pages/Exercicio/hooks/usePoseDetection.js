@@ -571,6 +571,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         setExercise,
         showModal,
         setShowModal,
+        showModalLimpar,
         showModalFinal,
         handleCloseModalLimpar,
         handleCloseModalFinal,
