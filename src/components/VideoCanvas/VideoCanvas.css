@@ -1,5 +1,6 @@
 .hidden-video {
   display: none;
+  object-fit: cover;
 }
 
 .video-canvas {
