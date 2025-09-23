@@ -529,6 +529,8 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         const dentroRange = angulo >= (min - tolerancia) && angulo <= (max + tolerancia);
         if (dentroRange) {
             acertosRef.current += 1;
+            const msgFeedback = 'Continue assim!';
+            setFeedback(msgFeedback);
         } else {
             if (errosRef.current < 10)
                 errosRef.current += 1;
@@ -543,7 +545,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
-        }        
+        }
     };
 
     const handleCloseModalLimpar = () => {
@@ -557,20 +559,53 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     let ultimaMensagem = "";
     let timeoutFala = null;
+    let speechUnlocked = false;
 
     function falar(texto) {
-        if ("speechSynthesis" in window) {
-            if (texto !== ultimaMensagem) {
-                ultimaMensagem = texto;
-                clearTimeout(timeoutFala);
-                timeoutFala = setTimeout(() => { ultimaMensagem = ""; }, 5000);
-                const utterance = new SpeechSynthesisUtterance(texto);
-                utterance.lang = "pt-BR";
-                window.speechSynthesis.speak(utterance);
-            }
+        if (!("speechSynthesis" in window)) return;
+
+        // só fala se já estiver desbloqueado no mobile
+        if (!speechUnlocked) return;
+
+        if (texto !== ultimaMensagem) {
+            ultimaMensagem = texto;
+            clearTimeout(timeoutFala);
+            timeoutFala = setTimeout(() => { ultimaMensagem = ""; }, 5000);
+
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = "pt-BR";
+
+            const voices = window.speechSynthesis.getVoices();
+            const vozPt = voices.find(v => v.lang === "pt-BR");
+            if (vozPt) utterance.voice = vozPt;
+
+            window.speechSynthesis.speak(utterance);
         }
     }
 
+    // React useEffect para desbloquear no primeiro clique
+    useEffect(() => {
+        const unlock = () => {
+            // depois do primeiro clique, libera fala automática
+            speechUnlocked = true;
+
+            // fala uma vez para garantir
+            falar("Voz desbloqueada no celular");
+
+            document.removeEventListener("click", unlock);
+            document.removeEventListener("touchstart", unlock);
+        };
+
+        document.addEventListener("click", unlock);
+        document.addEventListener("touchstart", unlock);
+
+        return () => {
+            document.removeEventListener("click", unlock);
+            document.removeEventListener("touchstart", unlock);
+        };
+    }, []);
 
     useEffect(() => {
         return () => stop();
