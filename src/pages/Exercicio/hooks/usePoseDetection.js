@@ -158,7 +158,6 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                     stageRef.current = 'cima';
                     incrementarContador(setCounter, stop);
                 }
-                // Teste com a validação da angulação fora dos IFs, validar com grupo
                 validarExecucao(media, exercicios.roscaDireta.limites);
 
                 return { angEsq, angDir, media };
@@ -187,9 +186,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= exercicios.meioAgachamento.limites.max && angDir >= exercicios.meioAgachamento.limites.max) stageRef.current = 'baixo';
                 if (angEsq <= exercicios.meioAgachamento.limites.min && angDir <= exercicios.meioAgachamento.limites.min && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
-                    validarExecucao(media, exercicios.meioAgachamento.limites);
                     incrementarContador(setCounter, stop);
                 }
+                validarExecucao(media, exercicios.meioAgachamento.limites);
 
                 return { angEsq, angDir, media };
             },
@@ -218,9 +217,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= exercicios.supinoRetoBanco.limites.max && angDir >= exercicios.supinoRetoBanco.limites.max) stageRef.current = 'baixo';
                 if (angEsq <= exercicios.supinoRetoBanco.limites.min && angDir <= exercicios.supinoRetoBanco.limites.min && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
-                    validarExecucao(media, exercicios.supinoRetoBanco.limites);
                     incrementarContador(setCounter, stop);
                 }
+                validarExecucao(media, exercicios.supinoRetoBanco.limites);
 
                 return { angEsq, angDir, media };
             },
@@ -248,9 +247,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= exercicios.tricepsCordaPoliaAlta.limites.max && angDir >= exercicios.tricepsCordaPoliaAlta.limites.max) stageRef.current = 'cima';
                 if (angEsq <= exercicios.tricepsCordaPoliaAlta.limites.min && angDir <= exercicios.tricepsCordaPoliaAlta.limites.min && stageRef.current === 'cima') {
                     stageRef.current = 'baixo';
-                    validarExecucao(media, exercicios.tricepsCordaPoliaAlta.limites);
                     incrementarContador(setCounter, stop);
                 }
+                validarExecucao(media, exercicios.tricepsCordaPoliaAlta.limites);
 
                 return { angEsq, angDir, media };
             },
@@ -278,9 +277,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 if (angEsq >= exercicios.tricepsCordaPoliaAlta.limites.max && angDir >= exercicios.tricepsCordaPoliaAlta.limites.max) stageRef.current = 'estendido';
                 if (angEsq <= exercicios.tricepsCordaPoliaAlta.limites.min && angDir <= exercicios.tricepsCordaPoliaAlta.limites.min && stageRef.current === 'estendido') {
                     stageRef.current = 'flexionado';
-                    validarExecucao(media, exercicios.cadeiraFlexora.limites);
                     incrementarContador(setCounter, stop);
                 }
+                validarExecucao(media, exercicios.cadeiraFlexora.limites);
 
                 return { angEsq, angDir, media };
             },
@@ -473,22 +472,22 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
 
     const validarExecucao = (angulo, { min, max }) => {
-        const tolerancia = (max * 10)/100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
+        const tolerancia = (max * 20) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
         const dentroRange = angulo >= (min - tolerancia) && angulo <= (max + tolerancia);
         if (dentroRange) {
             acertosRef.current += 1;
         } else {
-            if(errosRef.current < 10)
+            if (errosRef.current < 10)
                 errosRef.current += 1;
         }
 
         if (angulo < (min - tolerancia)) {
-            const msgFeedback = "Evite flexionar demais o músculo.";
+            const msgFeedback = `Flexione no máximo até ${min - tolerancia}°.`;
             setFeedback(msgFeedback);
             falar(msgFeedback);
         }
         if (angulo > (max + tolerancia)) {
-            const msgFeedback = "Evite estender demais o músculo.";
+            const msgFeedback = `Estenda no máximo até ${max + tolerancia}°.`;
             setFeedback(msgFeedback);
             falar(msgFeedback);
         }
