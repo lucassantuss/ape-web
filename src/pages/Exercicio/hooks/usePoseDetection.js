@@ -357,27 +357,12 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             videoRef.current.srcObject.getTracks().forEach(track => track.stop());
         }
 
+        const novoFacingMode = facingMode === "user" ? "environment" : "user";
+        setFacingMode(novoFacingMode);
+
         try {
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            const videoDevices = devices.filter(d => d.kind === "videoinput");
-
-            let selectedDevice;
-            if (facingMode === "user") {
-                // procura a traseira
-                selectedDevice = videoDevices.find(d =>
-                    d.label.toLowerCase().includes("back")
-                ) || videoDevices[videoDevices.length - 1];
-                setFacingMode("environment");
-            } else {
-                // procura a frontal
-                selectedDevice = videoDevices.find(d =>
-                    d.label.toLowerCase().includes("front")
-                ) || videoDevices[0];
-                setFacingMode("user");
-            }
-
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: { deviceId: selectedDevice.deviceId },
+                video: { facingMode: novoFacingMode },
                 audio: false
             });
 
