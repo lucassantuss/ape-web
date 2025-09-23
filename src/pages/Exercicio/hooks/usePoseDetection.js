@@ -147,7 +147,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         // }
         roscaDireta: {
             pontos: ['LEFT_SHOULDER', 'LEFT_ELBOW', 'LEFT_WRIST', 'RIGHT_SHOULDER', 'RIGHT_ELBOW', 'RIGHT_WRIST'],
-            limites: { min: 30, max: 145 },
+            limites: { min: 10, max: 150 },
             calcular: (landmarks, stageRef, setCounter) => {
                 const [ls, le, lw, rs, re, rw] = [12, 14, 16, 11, 13, 15].map(i => [landmarks[i].x, landmarks[i].y]);
                 const angEsq = calcularAngulo(ls, le, lw);
@@ -208,7 +208,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
         supinoRetoBanco: {
             pontos: ['LEFT_SHOULDER', 'LEFT_ELBOW', 'LEFT_WRIST', 'RIGHT_SHOULDER', 'RIGHT_ELBOW', 'RIGHT_WRIST'],
-            limites: { min: 0, max: 90 },
+            limites: { min: 90, max: 180 },
             calcular: (landmarks, stageRef, setCounter) => {
                 const [ls, le, lw, rs, re, rw] = [12, 14, 16, 11, 13, 15].map(i => [landmarks[i].x, landmarks[i].y]);
                 const angEsq = calcularAngulo(ls, le, lw);
@@ -269,15 +269,15 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
         cadeiraFlexora: {
             pontos: ['LEFT_HIP', 'LEFT_KNEE', 'LEFT_ANKLE', 'RIGHT_HIP', 'RIGHT_KNEE', 'RIGHT_ANKLE'],
-            limites: { min: 90, max: 170 },
+            limites: { min: 110, max: 170 }, // 180 - 90
             calcular: (landmarks, stageRef, setCounter) => {
                 const [lh, lk, la, rh, rk, ra] = [23, 25, 27, 24, 26, 28].map(i => [landmarks[i].x, landmarks[i].y]);
                 const angEsq = calcularAngulo(lh, lk, la);
                 const angDir = calcularAngulo(rh, rk, ra);
                 const media = (angEsq + angDir) / 2;
 
-                if (angEsq >= exercicios.tricepsCordaPoliaAlta.limites.max && angDir >= exercicios.tricepsCordaPoliaAlta.limites.max) stageRef.current = 'estendido';
-                if (angEsq <= exercicios.tricepsCordaPoliaAlta.limites.min && angDir <= exercicios.tricepsCordaPoliaAlta.limites.min && stageRef.current === 'estendido') {
+                if (angEsq >= exercicios.cadeiraFlexora.limites.max && angDir >= exercicios.cadeiraFlexora.limites.max) stageRef.current = 'estendido';
+                if (angEsq <= exercicios.cadeiraFlexora.limites.min && angDir <= exercicios.cadeiraFlexora.limites.min && stageRef.current === 'estendido') {
                     stageRef.current = 'flexionado';
                     incrementarContador(setCounter, stop);
                 }
@@ -530,23 +530,20 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         if (dentroRange) {
             acertosRef.current += 1;
         } else {
-            if (errosRef.current < 10) {
-
+            if (errosRef.current < 10)
                 errosRef.current += 1;
-                console.log(errosRef.current);
-            }
-        }
 
-        if (angulo < (min - tolerancia)) {
-            const msgFeedback = `Flexione no máximo até ${min - tolerancia}°.`;
-            setFeedback(msgFeedback);
-            falar(msgFeedback);
-        }
-        if (angulo > (max + tolerancia)) {
-            const msgFeedback = `Estenda no máximo até ${max + tolerancia}°.`;
-            setFeedback(msgFeedback);
-            falar(msgFeedback);
-        }
+            if (angulo < (min - tolerancia)) {
+                const msgFeedback = `Flexione no máximo até ${min - tolerancia}°.`;
+                setFeedback(msgFeedback);
+                falar(msgFeedback);
+            }
+            if (angulo > (max + tolerancia)) {
+                const msgFeedback = `Estenda no máximo até ${max + tolerancia}°.`;
+                setFeedback(msgFeedback);
+                falar(msgFeedback);
+            }
+        }        
     };
 
     const handleCloseModalLimpar = () => {
