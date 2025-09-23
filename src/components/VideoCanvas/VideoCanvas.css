@@ -14,9 +14,10 @@
 
 @media (max-width: 768px) {
   .video-canvas {
-    width: 100vw;
+    /* width: 100vw;
     height: 50vh;
-    max-width: none;
+    max-width: none; */
+    max-width: 100%;
     aspect-ratio: 16 / 9;
   }
 }
