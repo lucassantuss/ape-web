@@ -10,13 +10,11 @@
 
   max-width: 600px;
   aspect-ratio: 4 / 3;
-  object-fit: cover;
 }
 
 @media (max-width: 768px) {
   .video-canvas {
     max-width: 100%;
     aspect-ratio: 16 / 9;
-    object-fit: cover;
   }
 }
