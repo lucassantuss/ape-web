@@ -340,10 +340,19 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     const setupCamera = async () => {
         const video = videoRef.current;
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode, width: { ideal: window.innerWidth }, height: { ideal: window.innerHeight } },
+        const isMobile = window.innerWidth <= 768;
+
+        const constraints = {
+            video: {
+                facingMode, // "user" ou "environment"
+                aspectRatio: isMobile ? 16 / 9 : 4 / 3,
+                width: { ideal: window.innerWidth },
+                height: { ideal: window.innerHeight }
+            },
             audio: false
-        });
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
         video.srcObject = stream;
         await video.play().catch(console.error);
 
