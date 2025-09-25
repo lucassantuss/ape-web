@@ -40,7 +40,7 @@ export default function Exercicio() {
     return (
         <div className="container">
             {mostrarStatus && (
-                <InfoBox counter={counter} angle={angle} />
+                <InfoBox counter={counter} angle={angle} feedback={feedback} />
             )}
 
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -71,12 +71,6 @@ export default function Exercicio() {
                         variant="success"
                     />
                 </>
-            )}
-
-            {mostrarStatus && (
-                <div id="info" className='info-box' style={{ margin: "2%" }}>
-                    <div><span>Feedback: {feedback}</span></div>
-                </div>
             )}
 
             {mostrarStatus && (
