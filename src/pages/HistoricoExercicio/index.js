@@ -66,7 +66,7 @@ export default function HistoricoExercicio() {
                 <h3>{item.nome}</h3>
                 <p><strong>Data:</strong> {item.dataExecucao}</p>
                 <p><strong>Repetições:</strong> {item.quantidadeRepeticoes}</p>
-                <p><strong>% Acerto:</strong> {item.porcentagemAcertos ?? "-"}</p>
+                <p><strong>Acerto:</strong> {item.porcentagemAcertos + "%" ?? "-"}</p>
                 <p><strong>Tempo Executado:</strong> {item.tempoExecutado || "-"}</p>
                 <p><strong>Observações do Personal:</strong> {item.observacoesPersonal || "Nenhuma"}</p>
                 <p><strong>Sua Observação:</strong> {item.observacoesAluno || "Nenhuma"}</p>

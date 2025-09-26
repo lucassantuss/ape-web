@@ -53,7 +53,7 @@ const RelatorioResultados = () => {
                             <h3>{resultado.nome}</h3>
                             <p><strong>Data:</strong> {resultado.dataExecucao}</p>
                             <p><strong>Repetições:</strong> {resultado.quantidadeRepeticoes}</p>
-                            <p><strong>% Acerto:</strong> {resultado.porcentagemAcertos ?? "-"}</p>
+                            <p><strong>Acerto:</strong> {resultado.porcentagemAcertos + "%" ?? "-"}</p>
                             <p><strong>Tempo Executado:</strong> {resultado.tempoExecutado || "-"}</p>
                             <p><strong>Observações do Aluno:</strong> {resultado.observacoesAluno || 'Nenhuma'}</p>
                             <p><strong>Sua Observação:</strong> {resultado.observacoesPersonal || 'Nenhuma'}</p>
