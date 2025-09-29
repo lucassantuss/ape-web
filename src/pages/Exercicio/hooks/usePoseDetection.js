@@ -22,6 +22,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const [facingMode, setFacingMode] = useState("user");
 
     const [showModal, setShowModal] = useState(false);
+    const [showModalAviso, setShowModalAviso] = useState(false);
     const [showModalLimpar, setShowModalLimpar] = useState(false);
     const [showModalFinal, setShowModalFinal] = useState(false);
     const [contador, setContador] = useState(0);
@@ -314,7 +315,11 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
         // Verifica se todos os pontos necessários estão visíveis
         const lmkIndexes = ex.pontos.map(p => lmks[p]);
-        if (!lmkIndexes.every(i => pontoVisivel(landmarks, i))) return;
+        if (!lmkIndexes.every(i => pontoVisivel(landmarks, i))){
+            const msgFeedback = 'enquadre os pontos do corpo na tela';
+            setFeedback(msgFeedback);
+            return;  
+        }
 
         const resultado = ex.calcular(landmarks, stageRef, setCounter);
         setAngle(resultado.media || resultado); // ajusta para casos com média ou único ângulo
@@ -421,37 +426,38 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             if (!temCamera) {
                // se não tiver câmera, abre modal e cancela execução
                 setMensagemAcao("Nenhuma câmera foi encontrada no dispositivo.");
-                setShowModal(true);
+                setShowModalAviso(true);
                 return;
             }
+            else{
+                await setupCamera();
+                
+                startTimeRef.current = Date.now();
+                iniciarTimer();
             
-            await setupCamera();
+                reset();
             
-            startTimeRef.current = Date.now();
-            iniciarTimer();
+                const pose = new window.Pose({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}` });
+                pose.setOptions({ modelComplexity: 1, smoothLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+                pose.onResults(onResults);
+                poseRef.current = pose;
             
-            reset();
-            
-            const pose = new window.Pose({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}` });
-            pose.setOptions({ modelComplexity: 1, smoothLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
-            pose.onResults(onResults);
-            poseRef.current = pose;
-            
-            const detect = async () => {
-                if (!videoRef.current || videoRef.current.readyState < 2) return;
-                try {
-                    await pose.send({ image: videoRef.current });
-                } catch (err) {
-                    console.error("Erro no loop do Pose:", err);
-                }
-                rafRef.current = requestAnimationFrame(detect);
-            };
-            detect();
-            setIsRunning(true);
+                const detect = async () => {
+                    if (!videoRef.current || videoRef.current.readyState < 2) return;
+                    try {
+                        await pose.send({ image: videoRef.current });
+                    } catch (err) {
+                        console.error("Erro no loop do Pose:", err);
+                    }
+                    rafRef.current = requestAnimationFrame(detect);
+                };
+                detect();
+                setIsRunning(true);
+            }
         }
         catch {
             setMensagemAcao("Não foi possível acessar a câmera.");
-            setShowModal(true);
+            setShowModalAviso(true);
         }
     };
 
@@ -574,6 +580,10 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         }
     };
 
+    const handleCloseModalAviso = () => {
+        setShowModalAviso(false);
+    };
+
     const handleCloseModalLimpar = () => {
         setShowModalLimpar(false);
     };
@@ -642,9 +652,11 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         exercise,
         setExercise,
         showModal,
+        showModalAviso,
         setShowModal,
         showModalLimpar,
         showModalFinal,
+        handleCloseModalAviso,
         handleCloseModalLimpar,
         handleCloseModalFinal,
         mensagemSucesso,

@@ -16,9 +16,9 @@ export default function Exercicio() {
     const {
         canvasRef, videoRef, counter, angle, isRunning,
         exercise, setExercise, showModal, setShowModal,
-        exercicioSelecionado, contador, mostrarStatus,
+        exercicioSelecionado, contador, mostrarStatus, showModalAviso,
         handleStart, handleLimparResultados, toggleCamera,
-        showModalLimpar, handleCloseModalLimpar,
+        showModalLimpar, handleCloseModalLimpar, handleCloseModalAviso,
         showModalFinal, handleCloseModalFinal, autorizadoAcessoAluno,
         mensagemSucesso, mensagemAcao, mensagemAcessoAluno, feedback
     } = usePoseDetection();
@@ -53,6 +53,11 @@ export default function Exercicio() {
             <Modal isOpen={showModalFinal} onClose={handleCloseModalFinal}>
                 <Title titulo={mensagemAcao} titulo2={mensagemSucesso} />
                 <Link to="/historico-exercicios" className="btn-avaliacao">Consultar Histórico</Link>
+            </Modal>
+
+            <Modal isOpen={showModalAviso} onClose={handleCloseModalAviso}>
+                <Title titulo={mensagemAcao} />
+                <Button label="Ok" onClick={handleCloseModalAviso} variant="success" />
             </Modal>
 
             <Modal isOpen={showModalLimpar} onClose={handleCloseModalLimpar}>
