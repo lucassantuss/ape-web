@@ -13,7 +13,7 @@ export default function Faq() {
         {
             question: "📋 Quais exercícios são analisados pela plataforma?",
             answer: "Atualmente, a APE oferece suporte para exercícios como rosca direta, " +
-                "meio agachamento, supino reto no banco, tríceps corda na polia alta, cadeira flexora, " +
+                "meio agachamento, supino reto no banco, tríceps na polia com corda, cadeira flexora, " +
                 "com novos movimentos sendo adicionados continuamente conforme " +
                 "o feedback dos profissionais."
         },

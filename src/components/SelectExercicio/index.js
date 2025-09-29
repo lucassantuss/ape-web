@@ -13,7 +13,7 @@ export default function SelectExercicio({ selectedExercise, onChange }) {
         <option value="roscaDireta">Rosca Direta</option>
         <option value="meioAgachamento">Meio Agachamento</option>
         <option value="supinoRetoBanco">Supino Reto no Banco</option>
-        <option value="tricepsCordaPoliaAlta">Tríceps Corda na Polia Alta</option>
+        <option value="tricepsPoliaCorda">Tríceps na Polia com Corda</option>
         <option value="cadeiraFlexora">Cadeira Flexora</option>
         {/* <option value="levantamentoTerra">(Não implementado ainda) Levantamento Terra</option> */}
         {/* <option value="agachamentoBulgaro">(Não implementado ainda) Agachamento Búlgaro com Halteres</option> */}
