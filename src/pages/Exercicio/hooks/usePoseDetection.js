@@ -57,8 +57,8 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             descricao: "O meio agachamento fortalece quadríceps e glúteos. Desça até a metade da amplitude, mantendo a postura ereta.",
             execucao: "https://musclewiki.com/pt-br/exercise/barbell/male/lowerback/barbell-low-bar-squat",
             videos: [
-                "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-low-bar-squat-side.mp4",
-                "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-low-bar-squat-front.mp4"
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-low-bar-squat-front.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Barbell-barbell-low-bar-squat-side.mp4"
             ]
         },
         supinoRetoBanco: {
@@ -70,13 +70,13 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 "https://media.musclewiki.com/media/uploads/videos/branded/male-barbell-bench-press-side_KciuhbB.mp4"
             ]
         },
-        tricepsCordaPoliaAlta: {
-            nome: "Tríceps Corda na Polia Alta",
-            descricao: "Focado nos tríceps. Estenda os braços para baixo separando a corda no final do movimento, mantendo os cotovelos fixos.",
-            execucao: "https://musclewiki.com/pt-br/exercise/cables/male/triceps/cable-rope-overhead-tricep-extension",
+        tricepsPoliaCorda: {
+            nome: "Tríceps na Polia com Corda",
+            descricao: "O cabo deve ser ajustado até o topo da máquina. Mantenha a parte superior do braço colada ao corpo. Estenda os cotovelos até sentir a contração nos tríceps.",
+            execucao: "https://musclewiki.com/pt-br/exercise/cable-rope-pushdown",
             videos: [
-                "https://media.musclewiki.com/media/uploads/videos/branded/male-Cables-cable-overhead-tricep-extension-front.mp4",
-                "https://media.musclewiki.com/media/uploads/videos/branded/male-Cables-cable-overhead-tricep-extension-side.mp4"
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Cables-cable-push-down-front.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Cables-cable-push-down-side.mp4"
             ]
         },
         cadeiraFlexora: {
@@ -102,8 +102,8 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             descricao: "Com um pé apoiado atrás, desça flexionando o joelho da frente, segurando halteres nas mãos para resistência.",
             execucao: "https://musclewiki.com/pt-br/exercise/dumbbells/male/glutes/dumbbell-assisted-bulgarian-split-squat",
             videos: [
-                "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-assisted-bulgarian-split-squat-side.mp4",
-                "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-assisted-bulgarian-split-squat-front.mp4"
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-assisted-bulgarian-split-squat-front.mp4",
+                "https://media.musclewiki.com/media/uploads/videos/branded/male-Dumbbells-dumbbell-assisted-bulgarian-split-squat-side.mp4"
             ]
         },
         agachamentoSumo: {
@@ -236,7 +236,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             }
         },
 
-        tricepsCordaPoliaAlta: {
+        tricepsPoliaCorda: {
             pontos: ['LEFT_WRIST', 'LEFT_ELBOW', 'LEFT_SHOULDER', 'RIGHT_WRIST', 'RIGHT_ELBOW', 'RIGHT_SHOULDER'],
             limites: { min: 160, max: 175 },
             calcular: (landmarks, stageRef, setCounter) => {
@@ -245,12 +245,12 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 const angDir = calcularAngulo(rs, re, rw);
                 const media = (angEsq + angDir) / 2;
 
-                if (angEsq >= exercicios.tricepsCordaPoliaAlta.limites.max && angDir >= exercicios.tricepsCordaPoliaAlta.limites.max) stageRef.current = 'cima';
-                if (angEsq <= exercicios.tricepsCordaPoliaAlta.limites.min && angDir <= exercicios.tricepsCordaPoliaAlta.limites.min && stageRef.current === 'cima') {
+                if (angEsq >= exercicios.tricepsPoliaCorda.limites.max && angDir >= exercicios.tricepsPoliaCorda.limites.max) stageRef.current = 'cima';
+                if (angEsq <= exercicios.tricepsPoliaCorda.limites.min && angDir <= exercicios.tricepsPoliaCorda.limites.min && stageRef.current === 'cima') {
                     stageRef.current = 'baixo';
                     incrementarContador(setCounter, stop);
                 }
-                validarExecucao(media, exercicios.tricepsCordaPoliaAlta.limites);
+                validarExecucao(media, exercicios.tricepsPoliaCorda.limites);
 
                 return { angEsq, angDir, media };
             },
@@ -413,29 +413,46 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     };
 
     const start = async () => {
-        await setupCamera();
-
-        startTimeRef.current = Date.now();
-        iniciarTimer();
-
-        reset();
-
-        const pose = new window.Pose({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}` });
-        pose.setOptions({ modelComplexity: 1, smoothLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
-        pose.onResults(onResults);
-        poseRef.current = pose;
-
-        const detect = async () => {
-            if (!videoRef.current || videoRef.current.readyState < 2) return;
-            try {
-                await pose.send({ image: videoRef.current });
-            } catch (err) {
-                console.error("Erro no loop do Pose:", err);
+        try {           
+            // Verifica se há câmera disponível
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const temCamera = devices.some(d => d.kind === "videoinput");
+            
+            if (!temCamera) {
+               // se não tiver câmera, abre modal e cancela execução
+                setMensagemAcao("Nenhuma câmera foi encontrada no dispositivo.");
+                setShowModal(true);
+                return;
             }
-            rafRef.current = requestAnimationFrame(detect);
-        };
-        detect();
-        setIsRunning(true);
+            
+            await setupCamera();
+            
+            startTimeRef.current = Date.now();
+            iniciarTimer();
+            
+            reset();
+            
+            const pose = new window.Pose({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}` });
+            pose.setOptions({ modelComplexity: 1, smoothLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+            pose.onResults(onResults);
+            poseRef.current = pose;
+            
+            const detect = async () => {
+                if (!videoRef.current || videoRef.current.readyState < 2) return;
+                try {
+                    await pose.send({ image: videoRef.current });
+                } catch (err) {
+                    console.error("Erro no loop do Pose:", err);
+                }
+                rafRef.current = requestAnimationFrame(detect);
+            };
+            detect();
+            setIsRunning(true);
+        }
+        catch {
+            setMensagemAcao("Não foi possível acessar a câmera.");
+            setShowModal(true);
+        }
     };
 
     const stop = () => {
@@ -581,23 +598,32 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         }
     }
 
-    function falar(texto) {
-        if ("speechSynthesis" in window && speechUnlocked) {
-            if (texto !== ultimaMensagem) {
-                ultimaMensagem = texto;
-                clearTimeout(timeoutFala);
-                timeoutFala = setTimeout(() => { ultimaMensagem = ""; }, 5000);
+    function falar(mensagem) {
+        if (!speechUnlocked) return;
+        if (!("speechSynthesis" in window)) return;
 
-                // Cancela falas pendentes para não sobrepor
-                window.speechSynthesis.cancel();
+        // evita repetir a mesma mensagem em loop
+        if (mensagem === ultimaMensagem) return;
 
-                const utterance = new SpeechSynthesisUtterance(texto);
-                utterance.lang = "pt-BR";
-                utterance.rate = 1;   // velocidade normal
-                utterance.pitch = 1;  // tom normal
-                window.speechSynthesis.speak(utterance);
-            }
+        // limpa timeout anterior
+        if (timeoutFala) {
+            clearTimeout(timeoutFala);
+            timeoutFala = null;
         }
+
+        const utterance = new SpeechSynthesisUtterance(mensagem);
+        utterance.lang = "pt-BR";
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+
+        window.speechSynthesis.speak(utterance);
+
+        ultimaMensagem = mensagem;
+
+        // libera para falar a mesma mensagem de novo só após alguns segundos
+        timeoutFala = setTimeout(() => {
+            ultimaMensagem = "";
+        }, 4000);
     }
 
     useEffect(() => {
