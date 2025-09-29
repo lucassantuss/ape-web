@@ -165,7 +165,12 @@ export default function useCriacaoConta() {
     const validateForm = () => {
         const newErrors = {};
         let isValid = true;
+
         const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
+
+        // Regex senha forte: mínimo 8 caracteres, 1 minúscula, 1 maiúscula, 1 número e 1 especial
+        const validateSenhaForte = (senha) =>
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(senha);
 
         const formData =
             tipoUsuario === "aluno" ? formDataAluno : formDataPersonal;
@@ -192,6 +197,10 @@ export default function useCriacaoConta() {
         if (!formData.senha || formData.senha !== formData.confSenha) {
             newErrors.senha = "As senhas não conferem";
             newErrors.confSenha = "As senhas não conferem";
+            isValid = false;
+        } else if (!validateSenhaForte(formData.senha)) {
+            newErrors.senha =
+                "A senha deve ter no mínimo 8 caracteres, incluindo letra maiúscula, minúscula, número e caractere especial";
             isValid = false;
         }
 
