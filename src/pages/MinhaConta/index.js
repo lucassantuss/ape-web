@@ -303,7 +303,7 @@ export default function MinhaConta() {
 					</>
 				) : (
 					<>
-						<Button
+						{/* <Button
 							label="Alterar Dados"
 							onClick={() => setEditando(true)}
 							variant="success"
@@ -312,7 +312,7 @@ export default function MinhaConta() {
 							label="Excluir Conta"
 							onClick={() => setShowModalExcluir(true)}
 							variant="cancel"
-						/>
+						/> */}
 					</>
 				)}
 
