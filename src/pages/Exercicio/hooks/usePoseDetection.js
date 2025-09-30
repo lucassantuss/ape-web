@@ -13,6 +13,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const stageRef = useRef('---');
     const acertosRef = useRef(0);
     const errosRef = useRef(0);
+    const pontosVisiveisRef = useRef(false);
 
     const [counter, setCounter] = useState(0);
     const [angle, setAngle] = useState(0);
@@ -316,10 +317,13 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         // Verifica se todos os pontos necessários estão visíveis
         const lmkIndexes = ex.pontos.map(p => lmks[p]);
         if (!lmkIndexes.every(i => pontoVisivel(landmarks, i))){
+            pontosVisiveisRef.current = false;
             const msgFeedback = 'enquadre os pontos do corpo na tela';
             setFeedback(msgFeedback);
             return;  
         }
+
+        pontosVisiveisRef.current = true;
 
         const resultado = ex.calcular(landmarks, stageRef, setCounter);
         setAngle(resultado.media || resultado); // ajusta para casos com média ou único ângulo
@@ -557,6 +561,8 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     };
 
     const validarExecucao = (angulo, { min, max }) => {
+        if (!pontosVisiveisRef.current) return;
+
         const tolerancia = (max * 20) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
         const dentroRange = angulo >= (min - tolerancia) && angulo <= (max + tolerancia);
         if (dentroRange) {
