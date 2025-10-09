@@ -316,11 +316,11 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
         // Verifica se todos os pontos necessários estão visíveis
         const lmkIndexes = ex.pontos.map(p => lmks[p]);
-        if (!lmkIndexes.every(i => pontoVisivel(landmarks, i))){
+        if (!lmkIndexes.every(i => pontoVisivel(landmarks, i))) {
             pontosVisiveisRef.current = false;
             const msgFeedback = 'enquadre os pontos do corpo na tela';
             setFeedback(msgFeedback);
-            return;  
+            return;
         }
 
         pontosVisiveisRef.current = true;
@@ -355,8 +355,8 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             video: {
                 facingMode, // "user" ou "environment"
                 aspectRatio: isMobile ? 16 / 9 : 4 / 3,
-                width: { ideal: window.innerWidth },
-                height: { ideal: window.innerHeight }
+                width: { ideal: isMobile ? 1280 : 960 },
+                height: { ideal: isMobile ? 720 : 720 }
             },
             audio: false
         };
@@ -366,8 +366,12 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         await video.play().catch(console.error);
 
         const canvas = canvasRef.current;
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        if (canvas) {
+            const largura = window.innerWidth;
+            const altura = isMobile ? largura * (9 / 16) : largura * (3 / 4);
+            canvas.width = largura;
+            canvas.height = altura;
+        }
     };
 
     const toggleCamera = async () => {
@@ -386,10 +390,19 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         setFacingMode(novoFacingMode);
 
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: novoFacingMode },
-                audio: false
-            });
+            const isMobile = window.innerWidth <= 768;
+            
+            const constraints = {
+                video: {
+                    facingMode: novoFacingMode,
+                    aspectRatio: isMobile ? 16 / 9 : 4 / 3,
+                    width: { ideal: isMobile ? 1280 : 960 },
+                    height: { ideal: isMobile ? 720 : 720 },
+                },
+                audio: false,
+            };
+
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
@@ -398,8 +411,10 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
             const canvas = canvasRef.current;
             if (canvas) {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+                const largura = window.innerWidth;
+                const altura = isMobile ? largura * (9 / 16) : largura * (3 / 4);
+                canvas.width = largura;
+                canvas.height = altura;
             }
 
             // Reinicia o loop com o novo stream
@@ -422,30 +437,30 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     };
 
     const start = async () => {
-        try {           
+        try {
             // Verifica se há câmera disponível
             const devices = await navigator.mediaDevices.enumerateDevices();
             const temCamera = devices.some(d => d.kind === "videoinput");
-            
+
             if (!temCamera) {
-               // se não tiver câmera, abre modal e cancela execução
+                // se não tiver câmera, abre modal e cancela execução
                 setMensagemAcao("Nenhuma câmera foi encontrada no dispositivo.");
                 setShowModalAviso(true);
                 return;
             }
-            else{
+            else {
                 await setupCamera();
-                
+
                 startTimeRef.current = Date.now();
                 iniciarTimer();
-            
+
                 reset();
-            
+
                 const pose = new window.Pose({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}` });
                 pose.setOptions({ modelComplexity: 1, smoothLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
                 pose.onResults(onResults);
                 poseRef.current = pose;
-            
+
                 const detect = async () => {
                     if (!videoRef.current || videoRef.current.readyState < 2) return;
                     try {
