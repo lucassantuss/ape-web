@@ -10,7 +10,9 @@ export default function VideoCanvas({ canvasRef, videoRef }) {
 
     const updateCanvasSize = () => {
       const { videoWidth, videoHeight } = video;
-      if (videoWidth && videoHeight) {
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile && videoWidth && videoHeight) {
         const aspectRatio = videoWidth / videoHeight;
 
         // Mantém largura 100% e altura proporcional
