@@ -63,9 +63,9 @@ export default function Exercicio() {
                     <p className="mt-4 text-sm text-gray-500">
                         Dica: mantenha-se centralizado e evite movimentos fora do campo da câmera.
                     </p>
-
-                    <Button label="Entendi" onClick={handleCloseModalInstrucoes} variant="success" />
                 </div>
+
+                <Button label="Entendi" onClick={handleCloseModalInstrucoes} variant="success" />
             </Modal>
 
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
