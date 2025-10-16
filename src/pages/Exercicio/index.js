@@ -66,7 +66,7 @@ export default function Exercicio() {
 
                     <div className="mt-6 flex justify-end">
                         <button
-                            onClick={fecharInstrucoes}
+                            onClick={handleCloseModalInstrucoes}
                             className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition"
                         >
                             Entendi
