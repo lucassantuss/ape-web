@@ -32,6 +32,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const [mensagemAcao, setMensagemAcao] = useState("");
     const [mensagemSucesso, setMensagemSucesso] = useState("");
     const [feedback, setFeedback] = useState("");
+    const [trava, setTrava] = useState(false);
 
     const [autorizadoAcessoAluno, setAutorizadoAcessoAluno] = useState(null);
     const [mensagemAcessoAluno, setMensagemAcessoAluno] = useState("");
@@ -586,15 +587,20 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             const msgFeedback = 'continue assim!';
             setFeedback(msgFeedback);
         } else {
-            if (errosRef.current < 10)
-                errosRef.current += 1;
-
             if (angulo < (min - tolerancia)) {
+                if (trava == false && errosRef.current < 10) {
+                    errosRef.current += 1;
+                    setTrava(true);
+                }
                 const msgFeedback = `flexione no máximo até ${min - tolerancia}°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
             if (angulo > (max + tolerancia)) {
+                if (trava == true && errosRef.current < 10) {
+                    errosRef.current += 1;
+                    setTrava(false);
+                }
                 const msgFeedback = `estenda no máximo até ${max + tolerancia}°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
