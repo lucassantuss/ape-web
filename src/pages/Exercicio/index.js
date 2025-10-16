@@ -47,15 +47,15 @@ export default function Exercicio() {
                 isOpen={showModalInstrucoes}
                 onClose={handleCloseModalInstrucoes}
             >
-                <Title titulo={`Como usar esta tela de exercício`} />
+                <Title titulo={`Como usar a tela de exercício`} />
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                     <p>Antes de começar, siga estes passos:</p>
 
                     <ol className="list-decimal list-inside space-y-2">
                         <li>Garanta que sua câmera esteja ligada e visível no navegador.</li>
-                        <li>Posicione-se de corpo inteiro em frente à câmera, com boa iluminação.</li>
                         <li>Escolha o exercício desejado (como agachamento ou rosca direta).</li>
                         <li>Pressione <strong>“Iniciar avaliação”</strong> para começar a detecção.</li>
+                        <li>Posicione o corpo em frente à câmera, com boa iluminação.</li>
                         <li>Execute o movimento corretamente — o contador aumentará automaticamente.</li>
                         <li>Ao finalizar, poderá ver o resultado da análise.</li>
                     </ol>
@@ -64,14 +64,7 @@ export default function Exercicio() {
                         Dica: mantenha-se centralizado e evite movimentos fora do campo da câmera.
                     </p>
 
-                    <div className="mt-6 flex justify-end">
-                        <button
-                            onClick={handleCloseModalInstrucoes}
-                            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition"
-                        >
-                            Entendi
-                        </button>
-                    </div>
+                    <Button label="Entendi" onClick={handleCloseModalInstrucoes} variant="success" />
                 </div>
             </Modal>
 
