@@ -24,6 +24,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     const [showModal, setShowModal] = useState(false);
     const [showModalAviso, setShowModalAviso] = useState(false);
+    const [showModalInstrucoes, setShowModalInstrucoes] = useState(true);
     const [showModalLimpar, setShowModalLimpar] = useState(false);
     const [showModalFinal, setShowModalFinal] = useState(false);
     const [contador, setContador] = useState(0);
@@ -605,6 +606,10 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         setShowModalAviso(false);
     };
 
+    const handleCloseModalInstrucoes = () => {
+        setShowModalInstrucoes(false);
+    };
+
     const handleCloseModalLimpar = () => {
         setShowModalLimpar(false);
     };
@@ -674,10 +679,12 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         setExercise,
         showModal,
         showModalAviso,
+        showModalInstrucoes,
         setShowModal,
         showModalLimpar,
         showModalFinal,
         handleCloseModalAviso,
+        handleCloseModalInstrucoes,
         handleCloseModalLimpar,
         handleCloseModalFinal,
         mensagemSucesso,

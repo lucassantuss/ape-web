@@ -15,9 +15,9 @@ export default function Exercicio() {
 
     const {
         canvasRef, videoRef, counter, angle, isRunning,
-        exercise, setExercise, showModal, setShowModal,
+        exercise, setExercise, showModal, setShowModal, showModalInstrucoes,
         exercicioSelecionado, contador, mostrarStatus, showModalAviso,
-        handleStart, handleLimparResultados, toggleCamera,
+        handleStart, handleLimparResultados, toggleCamera, handleCloseModalInstrucoes,
         showModalLimpar, handleCloseModalLimpar, handleCloseModalAviso,
         showModalFinal, handleCloseModalFinal, autorizadoAcessoAluno,
         mensagemSucesso, mensagemAcao, mensagemAcessoAluno, feedback
@@ -42,6 +42,38 @@ export default function Exercicio() {
             {mostrarStatus && (
                 <InfoBox counter={counter} angle={angle} feedback={feedback} />
             )}
+
+            <Modal
+                isOpen={showModalInstrucoes}
+                onClose={handleCloseModalInstrucoes}
+            >
+                <Title titulo={`Como usar esta tela de exercício`} />
+                <div className="space-y-4 text-gray-700 leading-relaxed">
+                    <p>Antes de começar, siga estes passos:</p>
+
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Garanta que sua câmera esteja ligada e visível no navegador.</li>
+                        <li>Posicione-se de corpo inteiro em frente à câmera, com boa iluminação.</li>
+                        <li>Escolha o exercício desejado (como agachamento ou rosca direta).</li>
+                        <li>Pressione <strong>“Iniciar avaliação”</strong> para começar a detecção.</li>
+                        <li>Execute o movimento corretamente — o contador aumentará automaticamente.</li>
+                        <li>Ao finalizar, poderá ver o resultado da análise.</li>
+                    </ol>
+
+                    <p className="mt-4 text-sm text-gray-500">
+                        Dica: mantenha-se centralizado e evite movimentos fora do campo da câmera.
+                    </p>
+
+                    <div className="mt-6 flex justify-end">
+                        <button
+                            onClick={fecharInstrucoes}
+                            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition"
+                        >
+                            Entendi
+                        </button>
+                    </div>
+                </div>
+            </Modal>
 
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
                 <Title titulo={'Prepare-se!'} titulo2={`O treino vai começar!`} />
