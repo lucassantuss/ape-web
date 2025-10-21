@@ -54,6 +54,7 @@ export default function Exercicio() {
                     <ol className="list-decimal list-inside space-y-2">
                         <li>Garanta que sua câmera esteja ligada e visível no navegador.</li>
                         <li>Escolha o exercício desejado (como agachamento ou rosca direta).</li>
+                        <li>Confira na parte inferior da tela uma demonstração do exercício selecionado.</li>
                         <li>Pressione <strong>“Iniciar avaliação”</strong> para começar a detecção.</li>
                         <li>Posicione o corpo em frente à câmera, com boa iluminação.</li>
                         <li>Execute o movimento corretamente — o contador aumentará automaticamente.</li>
