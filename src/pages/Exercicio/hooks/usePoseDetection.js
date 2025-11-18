@@ -580,7 +580,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const validarExecucao = (angulo, { min, max }) => {
         if (!pontosVisiveisRef.current) return;
 
-        const tolerancia = (8.57) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
+        const tolerancia = (10) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
         const dentroRange = angulo >= (min - (min * tolerancia)) && angulo <= (max + (max * tolerancia));
         if (dentroRange) {
             acertosRef.current += 1;
