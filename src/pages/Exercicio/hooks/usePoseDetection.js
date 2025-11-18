@@ -580,28 +580,28 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const validarExecucao = (angulo, { min, max }) => {
         if (!pontosVisiveisRef.current) return;
 
-        const tolerancia = (max * 20) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
-        const dentroRange = angulo >= (min - tolerancia) && angulo <= (max + tolerancia);
+        const tolerancia = (8.57) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
+        const dentroRange = angulo >= (min - (min * tolerancia)) && angulo <= (max + (max * tolerancia));
         if (dentroRange) {
             acertosRef.current += 1;
             const msgFeedback = 'continue assim!';
             setFeedback(msgFeedback);
         } else {
-            if (angulo < (min - tolerancia)) {
+            if (angulo < (min - (min * tolerancia))) {
                 if (trava == false && errosRef.current < 10) {
                     errosRef.current += 1;
                     setTrava(true);
                 }
-                const msgFeedback = `flexione no máximo até ${min - tolerancia}°.`;
+                const msgFeedback = `flexione no máximo até ${min - (min * tolerancia) }°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
-            if (angulo > (max + tolerancia)) {
+            if (angulo > (max + (max * tolerancia))) {
                 if (trava == true && errosRef.current < 10) {
                     errosRef.current += 1;
                     setTrava(false);
                 }
-                const msgFeedback = `estenda no máximo até ${max + tolerancia}°.`;
+                const msgFeedback = `estenda no máximo até ${max + (max * tolerancia) }°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
