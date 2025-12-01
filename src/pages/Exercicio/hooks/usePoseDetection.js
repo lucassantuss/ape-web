@@ -393,7 +393,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
         try {
             const isMobile = window.innerWidth <= 768;
-            
+
             const constraints = {
                 video: {
                     facingMode: novoFacingMode,
@@ -496,8 +496,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     };
 
     const handleStart = () => {
-        unlockSpeech();
-        start();
+        unlockSpeech(() => {
+            setTimeout(() => start(), 150);
+        });
     };
 
     const iniciarTimer = () => {
@@ -592,7 +593,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                     errosRef.current += 1;
                     setTrava(true);
                 }
-                const msgFeedback = `flexione no máximo até ${min - (min * tolerancia) }°.`;
+                const msgFeedback = `flexione no máximo até ${min - (min * tolerancia)}°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
@@ -601,7 +602,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                     errosRef.current += 1;
                     setTrava(false);
                 }
-                const msgFeedback = `estenda no máximo até ${max + (max * tolerancia) }°.`;
+                const msgFeedback = `estenda no máximo até ${max + (max * tolerancia)}°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
