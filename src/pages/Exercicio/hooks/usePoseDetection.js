@@ -633,6 +633,31 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     const unlockSpeech = (callback) => {
         try {
+            const u = new SpeechSynthesisUtterance("");
+            u.lang = "pt-BR";
+
+            u.onend = () => {
+                setSpeechUnlocked(true);
+
+                const testUtter = new SpeechSynthesisUtterance("Testando áudio");
+                testUtter.lang = "pt-BR";
+                window.speechSynthesis.speak(testUtter);
+
+                testUtter.onend = () => {
+                    if (callback) callback();
+                };
+            };
+
+            window.speechSynthesis.speak(u);
+
+        } catch (e) {
+            console.error("Erro ao desbloquear fala:", e);
+            if (callback) callback();
+        }
+    };
+
+    const unlockSpeech2 = (callback) => {
+        try {
             const u = new SpeechSynthesisUtterance(" ");
             u.lang = "pt-BR";
 
