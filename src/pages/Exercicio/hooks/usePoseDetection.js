@@ -496,11 +496,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     };
 
     const handleStart = () => {
-        unlockSpeech(() => {
-            setTimeout(() => start(), 150);
-        });
+        unlockSpeech(() => start());
     };
-
+    
     const iniciarTimer = () => {
         setShowModal(true);
         setContador(5);
@@ -632,23 +630,19 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     const [speechUnlocked, setSpeechUnlocked] = useState(false);
 
     const unlockSpeech = (callback) => {
+        if (speechUnlocked) {
+            if (callback) callback();
+            return;
+        }
+
         try {
             const u = new SpeechSynthesisUtterance("");
             u.lang = "pt-BR";
-
             u.onend = () => {
                 setSpeechUnlocked(true);
-                const testUtter = new SpeechSynthesisUtterance("");
-                testUtter.lang = "pt-BR";
-                window.speechSynthesis.speak(testUtter);
-
-                testUtter.onend = () => {
-                    if (callback) callback();
-                };
+                if (callback) callback();
             };
-
             window.speechSynthesis.speak(u);
-
         } catch (e) {
             console.error("Erro ao desbloquear fala:", e);
             if (callback) callback();
