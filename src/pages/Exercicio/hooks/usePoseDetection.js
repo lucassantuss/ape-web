@@ -638,8 +638,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
             u.onend = () => {
                 setSpeechUnlocked(true);
-
-                const testUtter = new SpeechSynthesisUtterance("Testando áudio");
+                const testUtter = new SpeechSynthesisUtterance("");
                 testUtter.lang = "pt-BR";
                 window.speechSynthesis.speak(testUtter);
 
@@ -653,25 +652,6 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         } catch (e) {
             console.error("Erro ao desbloquear fala:", e);
             if (callback) callback();
-        }
-    };
-
-    const unlockSpeech2 = (callback) => {
-        try {
-            const u = new SpeechSynthesisUtterance(" ");
-            u.lang = "pt-BR";
-
-            // Quando a fala "fake" terminar, o navegador libera o áudio
-            u.onend = () => {
-                setSpeechUnlocked(true);
-                if (typeof callback === "function") callback();
-            };
-
-            speechSynthesis.speak(u);
-
-        } catch (e) {
-            console.error("Erro ao desbloquear fala:", e);
-            if (typeof callback === "function") callback();
         }
     };
 
@@ -691,16 +671,16 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         const utterance = new SpeechSynthesisUtterance(mensagem);
         utterance.lang = "pt-BR";
         utterance.rate = 1.0;
-        utterance.pitch = 1.0;
+        utterance.pitch = 1.1;
 
         window.speechSynthesis.speak(utterance);
 
         ultimaMensagem = mensagem;
 
         // libera para falar a mesma mensagem de novo só após alguns segundos
-        timeoutFala = setTimeout(() => {
-            ultimaMensagem = "";
-        }, 4000);
+        // timeoutFala = setTimeout(() => {
+        //     ultimaMensagem = "";
+        // }, 4000);
     }
 
     useEffect(() => {
