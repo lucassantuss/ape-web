@@ -638,7 +638,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
             // Quando a fala "fake" terminar, o navegador libera o áudio
             u.onend = () => {
-                console.log("Audio desbloqueado");
+                setSpeechUnlocked(true);
                 if (typeof callback === "function") callback();
             };
 
