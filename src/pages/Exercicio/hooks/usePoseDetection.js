@@ -676,7 +676,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     };
 
     function falar(mensagem) {
-        if (!speechUnlocked) return;
+        // if (!speechUnlocked) return;
         if (!("speechSynthesis" in window)) return;
 
         // evita repetir a mesma mensagem em loop
