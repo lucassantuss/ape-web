@@ -631,15 +631,24 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     const [speechUnlocked, setSpeechUnlocked] = useState(false);
 
-    function unlockSpeech() {
-        if ("speechSynthesis" in window) {
-            // Criar utterance vazio só pra destravar no mobile
-            const utterance = new SpeechSynthesisUtterance("");
-            utterance.lang = "pt-BR";
-            window.speechSynthesis.speak(utterance);
-            setSpeechUnlocked(true);
+    const unlockSpeech = (callback) => {
+        try {
+            const u = new SpeechSynthesisUtterance(" ");
+            u.lang = "pt-BR";
+
+            // Quando a fala "fake" terminar, o navegador libera o áudio
+            u.onend = () => {
+                console.log("Audio desbloqueado");
+                if (typeof callback === "function") callback();
+            };
+
+            speechSynthesis.speak(u);
+
+        } catch (e) {
+            console.error("Erro ao desbloquear fala:", e);
+            if (typeof callback === "function") callback();
         }
-    }
+    };
 
     function falar(mensagem) {
         if (!speechUnlocked) return;
