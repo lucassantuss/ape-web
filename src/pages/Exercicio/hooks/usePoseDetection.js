@@ -656,7 +656,6 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     };
 
     function falar(mensagem) {
-        // if (!speechUnlocked) return;
         if (!("speechSynthesis" in window)) return;
 
         // evita repetir a mesma mensagem em loop
@@ -678,9 +677,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         ultimaMensagem = mensagem;
 
         // libera para falar a mesma mensagem de novo só após alguns segundos
-        // timeoutFala = setTimeout(() => {
-        //     ultimaMensagem = "";
-        // }, 4000);
+        timeoutFala = setTimeout(() => {
+            ultimaMensagem = "";
+        }, 12000);
     }
 
     useEffect(() => {
