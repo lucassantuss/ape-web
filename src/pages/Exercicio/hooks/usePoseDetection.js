@@ -393,7 +393,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
         try {
             const isMobile = window.innerWidth <= 768;
-            
+
             const constraints = {
                 video: {
                     facingMode: novoFacingMode,
@@ -496,10 +496,9 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
     };
 
     const handleStart = () => {
-        unlockSpeech();
-        start();
+        unlockSpeech(() => start());
     };
-
+    
     const iniciarTimer = () => {
         setShowModal(true);
         setContador(5);
@@ -593,7 +592,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                     errosRef.current += 1;
                     setTrava(true);
                 }
-                const msgFeedback = `flexione no máximo até ${min - (min * tolerancia) }°.`;
+                const msgFeedback = `flexione no máximo até ${min - (min * tolerancia)}°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
@@ -602,7 +601,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                     errosRef.current += 1;
                     setTrava(false);
                 }
-                const msgFeedback = `estenda no máximo até ${max + (max * tolerancia) }°.`;
+                const msgFeedback = `estenda no máximo até ${max + (max * tolerancia)}°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
@@ -631,18 +630,27 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
 
     const [speechUnlocked, setSpeechUnlocked] = useState(false);
 
-    function unlockSpeech() {
-        if ("speechSynthesis" in window) {
-            // Criar utterance vazio só pra destravar no mobile
-            const utterance = new SpeechSynthesisUtterance("");
-            utterance.lang = "pt-BR";
-            window.speechSynthesis.speak(utterance);
-            setSpeechUnlocked(true);
+    const unlockSpeech = (callback) => {
+        if (speechUnlocked) {
+            if (callback) callback();
+            return;
         }
-    }
+
+        try {
+            const u = new SpeechSynthesisUtterance("");
+            u.lang = "pt-BR";
+            u.onend = () => {
+                setSpeechUnlocked(true);
+                if (callback) callback();
+            };
+            window.speechSynthesis.speak(u);
+        } catch (e) {
+            console.error("Erro ao desbloquear fala:", e);
+            if (callback) callback();
+        }
+    };
 
     function falar(mensagem) {
-        if (!speechUnlocked) return;
         if (!("speechSynthesis" in window)) return;
 
         // evita repetir a mesma mensagem em loop
@@ -657,7 +665,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         const utterance = new SpeechSynthesisUtterance(mensagem);
         utterance.lang = "pt-BR";
         utterance.rate = 1.0;
-        utterance.pitch = 1.0;
+        utterance.pitch = 1.1;
 
         window.speechSynthesis.speak(utterance);
 
@@ -666,7 +674,7 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         // libera para falar a mesma mensagem de novo só após alguns segundos
         timeoutFala = setTimeout(() => {
             ultimaMensagem = "";
-        }, 4000);
+        }, 12000);
     }
 
     useEffect(() => {
