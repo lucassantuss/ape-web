@@ -583,8 +583,8 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         // const dentroRange = angulo >= (min - (min * tolerancia)) && angulo <= (max + (max * tolerancia));
         // const dentroRange = (min >= angulo >= (min - (min * tolerancia))) || ((max + (max * tolerancia)) >= angulo >= max);
 
-        const minInferior = min - min * tolerancia;
-        const maxSuperior = max + max * tolerancia;
+        const minInferior = min - (min * tolerancia);
+        const maxSuperior = max + (max * tolerancia);
 
         const dentroFaixaMin = angulo >= minInferior && angulo <= min;
         const dentroFaixaMax = angulo >= max && angulo <= maxSuperior;
@@ -596,21 +596,21 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
             const msgFeedback = 'continue assim!';
             setFeedback(msgFeedback);
         } else {
-            if (angulo < (min - (min * tolerancia))) {
+            if (angulo < minInferior) {
                 if (trava == false && errosRef.current < 10) {
                     errosRef.current += 1;
                     setTrava(true);
                 }
-                const msgFeedback = `flexione no máximo até ${min - (min * tolerancia)}°.`;
+                const msgFeedback = `flexione no máximo até ${minInferior}°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
-            if (angulo > (max + (max * tolerancia))) {
+            if (angulo > maxSuperior) {
                 if (trava == true && errosRef.current < 10) {
                     errosRef.current += 1;
                     setTrava(false);
                 }
-                const msgFeedback = `estenda no máximo até ${max + (max * tolerancia)}°.`;
+                const msgFeedback = `estenda no máximo até ${maxSuperior}°.`;
                 setFeedback(msgFeedback);
                 falar(msgFeedback);
             }
