@@ -157,9 +157,23 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 const angDir = calcularAngulo(rs, re, rw);
                 const media = (angEsq + angDir) / 2;
 
+                const min = exercicios.roscaDireta.limites.min;
+                const max = exercicios.roscaDireta.limites.max;
+                const tolerancia = (20) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
 
-                if (angEsq >= exercicios.roscaDireta.limites.max && angDir >= exercicios.roscaDireta.limites.max) stageRef.current = 'baixo';
-                if (angEsq <= exercicios.roscaDireta.limites.min && angDir <= exercicios.roscaDireta.limites.min && stageRef.current === 'baixo') {
+                const limiteMin = min - (min * tolerancia); // ponto baixo aceitável
+                const limiteMax = max + (max * tolerancia); // ponto alto aceitável
+
+                // Verifica se está no ponto baixo
+                const noPontoBaixo = angEsq >= (limiteMax - (limiteMax - max)) && angDir >= (limiteMax - (limiteMax - max)); 
+                // Verifica se está no ponto alto
+                const noPontoAlto = angEsq <= (min + (min - limiteMin)) && angDir <= (min + (min - limiteMin));
+
+                if (noPontoBaixo) {
+                    stageRef.current = 'baixo';
+                }
+
+                if (noPontoAlto && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
                     incrementarContador(setCounter, stop);
                 }
@@ -188,8 +202,23 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 const angDir = calcularAngulo(rh, rk, ra);
                 const media = (angEsq + angDir) / 2;
 
-                if (angEsq >= exercicios.meioAgachamento.limites.max && angDir >= exercicios.meioAgachamento.limites.max) stageRef.current = 'baixo';
-                if (angEsq <= exercicios.meioAgachamento.limites.min && angDir <= exercicios.meioAgachamento.limites.min && stageRef.current === 'baixo') {
+                const min = exercicios.meioAgachamento.limites.min;
+                const max = exercicios.meioAgachamento.limites.max;
+                const tolerancia = (20) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
+
+                const limiteMin = min - (min * tolerancia); // ponto baixo aceitável
+                const limiteMax = max + (max * tolerancia); // ponto alto aceitável
+
+                // Verifica se está no ponto baixo
+                const noPontoBaixo = angEsq >= (limiteMax - (limiteMax - max)) && angDir >= (limiteMax - (limiteMax - max)); 
+                // Verifica se está no ponto alto
+                const noPontoAlto = angEsq <= (min + (min - limiteMin)) && angDir <= (min + (min - limiteMin));
+
+                if (noPontoBaixo) {
+                    stageRef.current = 'baixo';
+                }
+
+                if (noPontoAlto && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
                     incrementarContador(setCounter, stop);
                 }
@@ -218,9 +247,23 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 const angDir = calcularAngulo(rs, re, rw);
                 const media = (angEsq + angDir) / 2;
 
+                const min = exercicios.supinoRetoBanco.limites.min;
+                const max = exercicios.supinoRetoBanco.limites.max;
+                const tolerancia = (20) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
 
-                if (angEsq >= exercicios.supinoRetoBanco.limites.max && angDir >= exercicios.supinoRetoBanco.limites.max) stageRef.current = 'baixo';
-                if (angEsq <= exercicios.supinoRetoBanco.limites.min && angDir <= exercicios.supinoRetoBanco.limites.min && stageRef.current === 'baixo') {
+                const limiteMin = min - (min * tolerancia); // ponto baixo aceitável
+                const limiteMax = max + (max * tolerancia); // ponto alto aceitável
+
+                // Verifica se está no ponto baixo
+                const noPontoBaixo = angEsq >= (limiteMax - (limiteMax - max)) && angDir >= (limiteMax - (limiteMax - max)); 
+                // Verifica se está no ponto alto
+                const noPontoAlto = angEsq <= (min + (min - limiteMin)) && angDir <= (min + (min - limiteMin));
+
+                if (noPontoBaixo) {
+                    stageRef.current = 'baixo';
+                }
+
+                if (noPontoAlto && stageRef.current === 'baixo') {
                     stageRef.current = 'cima';
                     incrementarContador(setCounter, stop);
                 }
@@ -249,8 +292,23 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 const angDir = calcularAngulo(rs, re, rw);
                 const media = (angEsq + angDir) / 2;
 
-                if (angEsq >= exercicios.tricepsPoliaCorda.limites.max && angDir >= exercicios.tricepsPoliaCorda.limites.max) stageRef.current = 'cima';
-                if (angEsq <= exercicios.tricepsPoliaCorda.limites.min && angDir <= exercicios.tricepsPoliaCorda.limites.min && stageRef.current === 'cima') {
+                const min = exercicios.tricepsPoliaCorda.limites.min;
+                const max = exercicios.tricepsPoliaCorda.limites.max;
+                const tolerancia = (20) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
+
+                const limiteMin = min - (min * tolerancia); // ponto baixo aceitável
+                const limiteMax = max + (max * tolerancia); // ponto alto aceitável
+
+                // Verifica se está no ponto baixo
+                const noPontoBaixo = angEsq >= (limiteMax - (limiteMax - max)) && angDir >= (limiteMax - (limiteMax - max)); 
+                // Verifica se está no ponto alto
+                const noPontoAlto = angEsq <= (min + (min - limiteMin)) && angDir <= (min + (min - limiteMin));
+
+                if (noPontoBaixo) {
+                    stageRef.current = 'cima';
+                }
+
+                if (noPontoAlto && stageRef.current === 'cima') {
                     stageRef.current = 'baixo';
                     incrementarContador(setCounter, stop);
                 }
@@ -279,8 +337,23 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
                 const angDir = calcularAngulo(rh, rk, ra);
                 const media = (angEsq + angDir) / 2;
 
-                if (angEsq >= exercicios.cadeiraFlexora.limites.max && angDir >= exercicios.cadeiraFlexora.limites.max) stageRef.current = 'estendido';
-                if (angEsq <= exercicios.cadeiraFlexora.limites.min && angDir <= exercicios.cadeiraFlexora.limites.min && stageRef.current === 'estendido') {
+                const min = exercicios.cadeiraFlexora.limites.min;
+                const max = exercicios.cadeiraFlexora.limites.max;
+                const tolerancia = (20) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
+
+                const limiteMin = min - (min * tolerancia); // ponto baixo aceitável
+                const limiteMax = max + (max * tolerancia); // ponto alto aceitável
+
+                // Verifica se está no ponto baixo
+                const noPontoBaixo = angEsq >= (limiteMax - (limiteMax - max)) && angDir >= (limiteMax - (limiteMax - max)); 
+                // Verifica se está no ponto alto
+                const noPontoAlto = angEsq <= (min + (min - limiteMin)) && angDir <= (min + (min - limiteMin));
+
+                if (noPontoBaixo) {
+                    stageRef.current = 'estendido';
+                }
+
+                if (noPontoAlto && stageRef.current === 'estendido') {
                     stageRef.current = 'flexionado';
                     incrementarContador(setCounter, stop);
                 }
@@ -580,8 +653,6 @@ export function usePoseDetection(initialExercise = 'roscaDireta') {
         if (!pontosVisiveisRef.current) return;
 
         const tolerancia = (20) / 100; //Tolerância baseada na ROM (angulo máximo de cada exercício)
-        // const dentroRange = angulo >= (min - (min * tolerancia)) && angulo <= (max + (max * tolerancia));
-        // const dentroRange = (min >= angulo >= (min - (min * tolerancia))) || ((max + (max * tolerancia)) >= angulo >= max);
 
         const minInferior = min - (min * tolerancia);
         const maxSuperior = max + (max * tolerancia);
